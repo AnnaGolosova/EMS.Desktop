@@ -12,3 +12,6 @@ c:\Users\Администратор\Source\Repos\EMS.Desktop\obj\Debug\EMS.Deskt
 c:\Users\Администратор\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.FormAboutProgram.resources
 c:\Users\Администратор\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.FormReposForERIP.resources
 c:\Users\Администратор\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.FormReposForExcel.resources
+D:\EMS\HTTPS\bin\Debug\EMS.Desktop.exe.config
+D:\EMS\HTTPS\obj\Debug\EMS.Desktop.exe
+D:\EMS\HTTPS\obj\Debug\EMS.Desktop.pdb
