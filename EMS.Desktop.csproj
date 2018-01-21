@@ -33,8 +33,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -83,6 +91,45 @@
     <Compile Include="Helpers\IRegistryManager.cs" />
     <Compile Include="Helpers\RegistryManager.cs" />
     <Compile Include="Helpers\Repository.cs" />
+    <Compile Include="Models\Copay.cs">
+      <DependentUpon>Datas.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Datas.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Datas.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Datas.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Datas.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Datas.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Datas.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\File.cs">
+      <DependentUpon>Datas.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Homestead.cs">
+      <DependentUpon>Datas.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Meter.cs">
+      <DependentUpon>Datas.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MeterData.cs">
+      <DependentUpon>Datas.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Payment.cs">
+      <DependentUpon>Datas.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Rate.cs">
+      <DependentUpon>Datas.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Service.cs">
+      <DependentUpon>Datas.tt</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="MainForm.resx">
@@ -109,6 +156,14 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EntityDeploy Include="Models\Datas.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Datas.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Models\Datas.edmx.diagram">
+      <DependentUpon>Datas.edmx</DependentUpon>
+    </None>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -123,8 +178,22 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Models\" />
     <Folder Include="Resource\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Models\Datas.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Datas.edmx</DependentUpon>
+      <LastGenOutput>Datas.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\Datas.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Datas.edmx</DependentUpon>
+      <LastGenOutput>Datas.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
