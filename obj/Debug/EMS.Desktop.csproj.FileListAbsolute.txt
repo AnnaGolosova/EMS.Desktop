@@ -15,3 +15,6 @@ c:\Users\Администратор\Source\Repos\EMS.Desktop\obj\Debug\EMS.Deskt
 D:\EMS\HTTPS\bin\Debug\EMS.Desktop.exe.config
 D:\EMS\HTTPS\obj\Debug\EMS.Desktop.exe
 D:\EMS\HTTPS\obj\Debug\EMS.Desktop.pdb
+C:\Users\Fazz\Source\Repos\EMS.Desktop\bin\Debug\EMS.Desktop.exe.config
+C:\Users\Fazz\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.exe
+C:\Users\Fazz\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.pdb
