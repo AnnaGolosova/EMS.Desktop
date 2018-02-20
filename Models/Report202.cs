@@ -9,16 +9,16 @@ namespace EMS.Desktop.Models
     public class Report202
     {
         //Set Date field as null or _date value
-        public  List<Rate> LocalRates;
-        public List<ReportData> Datas;
+        public  List<Rate> localRates;
+        public List<ReportData> datas;
         //?????????
         //Will we use it?
-        public List<string> Descriptions;
+        public List<string> descriptions;
 
         public class ReportData
         {
             #region fields
-            int _ServiceId;
+            int _rateId;
             int _hameSteadNumber;
             string _ownerName;
             DateTime _date;
@@ -29,8 +29,8 @@ namespace EMS.Desktop.Models
             #region propertioes
             public int RateId
             {
-                get { return _ServiceId; }
-                set { _ServiceId = value; }
+                get { return _rateId; }
+                set { _rateId = value; }
             }
             public int HomeSteadNumber
             {
@@ -65,15 +65,15 @@ namespace EMS.Desktop.Models
         public void Example()
         {
             Report202 rep = new Report202();
-            rep.LocalRates = new List<Rate>()
+            rep.localRates = new List<Rate>()
             {
                 new Rate{ Id = 1, IdService = 2, Value = 0.1246 },
                 new Rate{ Id = 2, IdService = 2, Value = 0.1458 },
                 new Rate{ Id = 3, IdService = 2, Value = 0.1549 }
             };
 
-            rep.Datas = new List<ReportData>();
-            rep.Datas.Add(new ReportData() {
+            rep.datas = new List<ReportData>();
+            rep.datas.Add(new ReportData() {
                 RateId = 2,
                 Arrear = 0,
                 Date = new DateTime(2017, 9, 1),
