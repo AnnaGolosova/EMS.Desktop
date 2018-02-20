@@ -121,12 +121,15 @@
     <Compile Include="Models\MeterData.cs">
       <DependentUpon>Datas.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\MonthReport.cs" />
     <Compile Include="Models\Payment.cs">
       <DependentUpon>Datas.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Rate.cs">
       <DependentUpon>Datas.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Report202.cs" />
+    <Compile Include="Models\Report210.cs" />
     <Compile Include="Models\Service.cs">
       <DependentUpon>Datas.tt</DependentUpon>
     </Compile>

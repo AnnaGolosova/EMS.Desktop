@@ -15,3 +15,15 @@ c:\Users\Администратор\Source\Repos\EMS.Desktop\obj\Debug\EMS.Deskt
 D:\EMS\HTTPS\bin\Debug\EMS.Desktop.exe.config
 D:\EMS\HTTPS\obj\Debug\EMS.Desktop.exe
 D:\EMS\HTTPS\obj\Debug\EMS.Desktop.pdb
+D:\EMS\HTTPS\bin\Debug\EMS.Desktop.exe
+D:\EMS\HTTPS\bin\Debug\EMS.Desktop.pdb
+D:\EMS\HTTPS\bin\Debug\EntityFramework.dll
+D:\EMS\HTTPS\bin\Debug\EntityFramework.xml
+D:\EMS\HTTPS\obj\Debug\EMS.Desktop.csprojResolveAssemblyReference.cache
+D:\EMS\HTTPS\obj\Debug\EMS.Desktop.MainForm.resources
+D:\EMS\HTTPS\obj\Debug\EMS.Desktop.FormAboutProgram.resources
+D:\EMS\HTTPS\obj\Debug\EMS.Desktop.FormReposForERIP.resources
+D:\EMS\HTTPS\obj\Debug\EMS.Desktop.FormReposForExcel.resources
+D:\EMS\HTTPS\obj\Debug\EMS.Desktop.FormSettings.resources
+D:\EMS\HTTPS\obj\Debug\EMS.Desktop.Properties.Resources.resources
+D:\EMS\HTTPS\obj\Debug\EMS.Desktop.csproj.GenerateResource.Cache
