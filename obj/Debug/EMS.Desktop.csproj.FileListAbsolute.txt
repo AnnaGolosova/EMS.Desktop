@@ -27,3 +27,6 @@ D:\EMS\HTTPS\obj\Debug\EMS.Desktop.FormReposForExcel.resources
 D:\EMS\HTTPS\obj\Debug\EMS.Desktop.FormSettings.resources
 D:\EMS\HTTPS\obj\Debug\EMS.Desktop.Properties.Resources.resources
 D:\EMS\HTTPS\obj\Debug\EMS.Desktop.csproj.GenerateResource.Cache
+C:\Users\Daniil\Source\Repos\EMS.Desktop\bin\Debug\EMS.Desktop.exe.config
+C:\Users\Daniil\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.exe
+C:\Users\Daniil\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.pdb
