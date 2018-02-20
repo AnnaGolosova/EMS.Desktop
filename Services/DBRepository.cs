@@ -159,5 +159,12 @@ namespace EMS.Desktop.Services
                 .Where(s => s.Id == serviceId)
                 .FirstOrDefault();
         }
+
+        public Service GetService(string name)
+        {
+            return db.Service
+                .Where(s => s.Name.CompareTo(name) == 0)
+                .FirstOrDefault();
+        }
     }
 }
