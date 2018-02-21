@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Text;
 using OfficeOpenXml;
 
 namespace EMS.Desktop.Helpers
@@ -9,21 +10,23 @@ namespace EMS.Desktop.Helpers
     {
         void Read210(Models.Report210 datas, string firstline)
         {
-            string[] file210 = File.ReadAllLines(new ConfigAppManager().GetReports210Path());
+            Encoding win1251 = Encoding.GetEncoding(1251);
+            string[] file210 = File.ReadAllLines(new ConfigAppManager().GetReports210Path(), win1251);
             firstline = file210[0];
             datas.Datas = new List<Models.Report210.ReportData>();
             for (int i = 1; i < file210.Length; i++)
             {
+                string[] str = file210[i].Split('^');
                 datas.Datas.Add(new Models.Report210.ReportData());
-                datas.Datas[i - 1].Id = Convert.ToInt32(file210[i].Split('^')[0]);
-                datas.Datas[i - 1].RateId = Convert.ToInt32(file210[i].Split('^')[1]);
-                datas.Datas[i - 1].HomeSteadNumber = Convert.ToInt32(file210[i].Split('^')[2]);
-                datas.Datas[i - 1].OwnerName = file210[i].Split('^')[3];
-                datas.Datas[i - 1].Date = new DateTime(Convert.ToInt32(file210[i].Split('^')[5].Split('.')[1]), Convert.ToInt32(file210[i].Split('^')[5].Split('.')[0]), 1);
-                datas.Datas[i - 1].Introduced = Convert.ToDouble(file210[i].Split('^')[6].Replace(".", ","));
-                datas.Datas[i - 1].Arrer = Convert.ToDouble(file210[i].Split('^')[7].Replace(".", ","));
-                datas.Datas[i - 1].Entered = Convert.ToDouble(file210[i].Split('^')[8].Replace(".", ","));
-                datas.Datas[i - 1].Code = file210[i].Split('^')[9] + "^" + file210[i].Split('^')[10] + "^" + file210[i].Split('^')[11] + "^" + file210[i].Split('^')[12] + "^" + file210[i].Split('^')[13] + "^" + file210[i].Split('^')[14] + "^" + file210[i].Split('^')[15] + "^" + file210[i].Split('^')[16] + "^" + file210[i].Split('^')[17] + "^" + file210[i].Split('^')[18] + "^" + file210[i].Split('^')[19];
+                datas.Datas[i - 1].Id = Convert.ToInt32(str[0]);
+                datas.Datas[i - 1].RateId = Convert.ToInt32(str[1]);
+                datas.Datas[i - 1].HomeSteadNumber = Convert.ToInt32(str[2]);
+                datas.Datas[i - 1].OwnerName = str[3];
+                datas.Datas[i - 1].Date = new DateTime(Convert.ToInt32(str[5].Split('.')[1]), Convert.ToInt32(str[5].Split('.')[0]), 1);
+                datas.Datas[i - 1].Introduced = Convert.ToDouble(str[6].Replace(".", ","));
+                datas.Datas[i - 1].Arrer = Convert.ToDouble(str[7].Replace(".", ","));
+                datas.Datas[i - 1].Entered = Convert.ToDouble(str[8].Replace(".", ","));
+                datas.Datas[i - 1].Code = str[9] + "^" + str[10] + "^" + str[11] + "^" + str[12] + "^" + str[13] + "^" + str[14] + "^" + str[15] + "^" + str[16] + "^" + str[17] + "^" + str[18] + "^" + str[19];
             }
         }
 
