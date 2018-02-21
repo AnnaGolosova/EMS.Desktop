@@ -31,14 +31,16 @@
             this.Menu = new System.Windows.Forms.MenuStrip();
             this.MenuFail = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuRepos = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuReposForERIP = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuReposForExcel = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuDocuments = new System.Windows.Forms.ToolStripMenuItem();
             this.MainJournal = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuSettings = new System.Windows.Forms.ToolStripMenuItem();
+            this.SettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.SavePathTSMI = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuAboutProgram = new System.Windows.Forms.ToolStripMenuItem();
             this.MainProgressBar = new System.Windows.Forms.ProgressBar();
             this.ColorPanel = new System.Windows.Forms.Panel();
-            this.MenuReposForERIP = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuReposForExcel = new System.Windows.Forms.ToolStripMenuItem();
             this.Menu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -72,6 +74,20 @@
             this.MenuRepos.Size = new System.Drawing.Size(60, 20);
             this.MenuRepos.Text = "Отчёты";
             // 
+            // MenuReposForERIP
+            // 
+            this.MenuReposForERIP.Name = "MenuReposForERIP";
+            this.MenuReposForERIP.Size = new System.Drawing.Size(135, 22);
+            this.MenuReposForERIP.Text = "Отчёт ERIP";
+            this.MenuReposForERIP.Click += new System.EventHandler(this.MenuReposForERIP_Click);
+            // 
+            // MenuReposForExcel
+            // 
+            this.MenuReposForExcel.Name = "MenuReposForExcel";
+            this.MenuReposForExcel.Size = new System.Drawing.Size(135, 22);
+            this.MenuReposForExcel.Text = "Отчёт Excel";
+            this.MenuReposForExcel.Click += new System.EventHandler(this.MenuReposForExcel_Click);
+            // 
             // MenuDocuments
             // 
             this.MenuDocuments.Name = "MenuDocuments";
@@ -86,10 +102,26 @@
             // 
             // MenuSettings
             // 
+            this.MenuSettings.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.SettingsToolStripMenuItem,
+            this.SavePathTSMI});
             this.MenuSettings.Name = "MenuSettings";
             this.MenuSettings.Size = new System.Drawing.Size(79, 20);
             this.MenuSettings.Text = "Настройки";
-            this.MenuSettings.Click += new System.EventHandler(this.MenuSettings_Click);
+            // 
+            // SettingsToolStripMenuItem
+            // 
+            this.SettingsToolStripMenuItem.Name = "SettingsToolStripMenuItem";
+            this.SettingsToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
+            this.SettingsToolStripMenuItem.Text = "Параметры";
+            this.SettingsToolStripMenuItem.Click += new System.EventHandler(this.SettingsToolStripMenuItem_Click);
+            // 
+            // SavePathTSMI
+            // 
+            this.SavePathTSMI.Name = "SavePathTSMI";
+            this.SavePathTSMI.Size = new System.Drawing.Size(167, 22);
+            this.SavePathTSMI.Text = "Путь сохранения";
+            this.SavePathTSMI.Click += new System.EventHandler(this.SavePathTSMI_Click);
             // 
             // MenuAboutProgram
             // 
@@ -114,20 +146,6 @@
             this.ColorPanel.Name = "ColorPanel";
             this.ColorPanel.Size = new System.Drawing.Size(643, 356);
             this.ColorPanel.TabIndex = 2;
-            // 
-            // MenuReposForERIP
-            // 
-            this.MenuReposForERIP.Name = "MenuReposForERIP";
-            this.MenuReposForERIP.Size = new System.Drawing.Size(152, 22);
-            this.MenuReposForERIP.Text = "Отчёт ERIP";
-            this.MenuReposForERIP.Click += new System.EventHandler(this.MenuReposForERIP_Click);
-            // 
-            // MenuReposForExcel
-            // 
-            this.MenuReposForExcel.Name = "MenuReposForExcel";
-            this.MenuReposForExcel.Size = new System.Drawing.Size(152, 22);
-            this.MenuReposForExcel.Text = "Отчёт Excel";
-            this.MenuReposForExcel.Click += new System.EventHandler(this.MenuReposForExcel_Click);
             // 
             // MainForm
             // 
@@ -160,6 +178,8 @@
         private System.Windows.Forms.Panel ColorPanel;
         private System.Windows.Forms.ToolStripMenuItem MenuReposForERIP;
         private System.Windows.Forms.ToolStripMenuItem MenuReposForExcel;
+        private System.Windows.Forms.ToolStripMenuItem SettingsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem SavePathTSMI;
     }
 }
 
