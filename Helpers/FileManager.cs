@@ -66,7 +66,77 @@ namespace EMS.Desktop.Helpers
 
         public void MoveFiles(string fromDirectory, string toDirectory)
         {
+            try
+            {
+                string[] f202List = Directory.GetFiles(fromDirectory, "*.202");
+                string[] f210List = Directory.GetFiles(fromDirectory, "*.210");
+                string[] exelList = Directory.GetFiles(fromDirectory, "*.xlsx");
 
+                // Copy "*.202" files.
+                foreach (string f in f202List)
+                {
+
+                    // Remove path from the file name.
+                    string fName = f.Substring(fromDirectory.Length + 1);
+
+                    try
+                    {
+                        // Will not overwrite if the destination file already exists.
+                        File.Move(Path.Combine(fromDirectory, fName), Path.Combine(toDirectory, fName));
+                    }
+
+                    // Catch exception if the file was already copied.
+                    catch (IOException moveError)
+                    {
+                        Console.WriteLine(moveError.Message);
+                    }
+                }
+
+                // Copy "*.210" files.
+                foreach (string f in f210List)
+                {
+
+                    // Remove path from the file name.
+                    string fName = f.Substring(fromDirectory.Length + 1);
+
+                    try
+                    {
+                        // Will not overwrite if the destination file already exists.
+                        File.Move(Path.Combine(fromDirectory, fName), Path.Combine(toDirectory, fName));
+                    }
+
+                    // Catch exception if the file was already copied.
+                    catch (IOException moveError)
+                    {
+                        Console.WriteLine(moveError.Message);
+                    }
+                }
+
+                // Copy "*.xlsx" files.
+                foreach (string f in exelList)
+                {
+
+                    // Remove path from the file name.
+                    string fName = f.Substring(fromDirectory.Length + 1);
+
+                    try
+                    {
+                        // Will not overwrite if the destination file already exists.
+                        File.Move(Path.Combine(fromDirectory, fName), Path.Combine(toDirectory, fName));
+                    }
+
+                    // Catch exception if the file was already copied.
+                    catch (IOException moveError)
+                    {
+                        Console.WriteLine(moveError.Message);
+                    }
+                }
+            }
+
+            catch (DirectoryNotFoundException dirNotFound)
+            {
+                Console.WriteLine(dirNotFound.Message);
+            }
             //throw new NotImplementedException();
         }
 
