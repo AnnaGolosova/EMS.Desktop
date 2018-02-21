@@ -19,12 +19,6 @@ namespace EMS.Desktop
             InitializeComponent();
         }
 
-        private void MenuSettings_Click(object sender, EventArgs e)
-        {
-            FormSettings FrSett = new FormSettings();
-            FrSett.ShowDialog();
-        }
-
         private void MenuAboutProgram_Click(object sender, EventArgs e)
         {
             FormAboutProgram FrAbPr = new FormAboutProgram();
@@ -41,6 +35,18 @@ namespace EMS.Desktop
         {
             FormReposForExcel RpFrExcel = new FormReposForExcel();
             RpFrExcel.ShowDialog();
+        }
+
+        private void SettingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FormSettings FrSett = new FormSettings();
+            FrSett.ShowDialog();
+        }
+
+        private void SavePathTSMI_Click(object sender, EventArgs e)
+        {
+            FormInstallationPath FmInstPath = new FormInstallationPath();
+            FmInstPath.ShowDialog();
         }
     }
 }

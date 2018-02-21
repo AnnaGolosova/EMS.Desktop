@@ -99,5 +99,8 @@ CREATE TABLE [dbo].[Payment] (
 GO
 
 INSERT INTO [SERVICE] 
-VALUES (N'Электроэнергия')
+VALUES	(N'Взносы'),
+		(N'Электроэнергия'),
+		(N'Налог на землю'),
+		(N'Налог на недвижимость')
 GO

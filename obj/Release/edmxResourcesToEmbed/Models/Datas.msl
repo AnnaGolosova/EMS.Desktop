@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="EMSModelStoreContainer" CdmEntityContainer="EMSEntities">
+    <EntitySetMapping Name="Copay">
+      <EntityTypeMapping TypeName="EMSModel.Copay">
+        <MappingFragment StoreEntitySet="Copay">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Value" ColumnName="Value" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="File">
+      <EntityTypeMapping TypeName="EMSModel.File">
+        <MappingFragment StoreEntitySet="File">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Homestead">
+      <EntityTypeMapping TypeName="EMSModel.Homestead">
+        <MappingFragment StoreEntitySet="Homestead">
+          <ScalarProperty Name="Number" ColumnName="Number" />
+          <ScalarProperty Name="OwnerName" ColumnName="Owner_Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Meter">
+      <EntityTypeMapping TypeName="EMSModel.Meter">
+        <MappingFragment StoreEntitySet="Meter">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="IdHomestead" ColumnName="Id_Homestead" />
+          <ScalarProperty Name="MeterNumber" ColumnName="Meter_Number" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MeterData">
+      <EntityTypeMapping TypeName="EMSModel.MeterData">
+        <MappingFragment StoreEntitySet="MeterData">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="IdMeter" ColumnName="Id_Meter" />
+          <ScalarProperty Name="Value" ColumnName="Value" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Payment">
+      <EntityTypeMapping TypeName="EMSModel.Payment">
+        <MappingFragment StoreEntitySet="Payment">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="IdHomestead" ColumnName="Id_Homestead" />
+          <ScalarProperty Name="IdService" ColumnName="Id_Service" />
+          <ScalarProperty Name="IdMeterData" ColumnName="Id_Meter_Data" />
+          <ScalarProperty Name="IdFile" ColumnName="Id_File" />
+          <ScalarProperty Name="Introduced" ColumnName="INTroduced" />
+          <ScalarProperty Name="Entered" ColumnName="Entered" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Rate">
+      <EntityTypeMapping TypeName="EMSModel.Rate">
+        <MappingFragment StoreEntitySet="Rate">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="IdService" ColumnName="Id_Service" />
+          <ScalarProperty Name="Value" ColumnName="Value" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Service">
+      <EntityTypeMapping TypeName="EMSModel.Service">
+        <MappingFragment StoreEntitySet="Service">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
