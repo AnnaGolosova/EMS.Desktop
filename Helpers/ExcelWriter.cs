@@ -27,7 +27,7 @@ namespace EMS.Desktop.Helpers
             }
         }
 
-        private static void Main()
+        private static void WriteExcel()
         {
             Models.Report210 datas = new Models.Report210();
             string firstline = "";
