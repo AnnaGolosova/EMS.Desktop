@@ -16,7 +16,6 @@ namespace EMS.Desktop.Helpers
             if (file.Exists)
             {
                 file.Delete();
-                Console.WriteLine("{0} was successfully deleted.", fileName);
             }
             else
                 throw new FileNotFoundException("Error: file not found ", fileName);
@@ -26,19 +25,9 @@ namespace EMS.Desktop.Helpers
         {
             try
             {
-                string[] f202List = Directory.GetFiles(directoryPath, "*.202");
-                string[] f210List = Directory.GetFiles(directoryPath, "*.210");
-                string[] exelList = Directory.GetFiles(directoryPath, "*.xlsx");
+                string[] fileList = Directory.GetFiles(directoryPath);
 
-                foreach (string f in f202List)
-                {
-                    File.Delete(f);
-                }
-                foreach (string f in f210List)
-                {
-                    File.Delete(f);
-                }
-                foreach (string f in exelList)
+                foreach (string f in fileList)
                 {
                     File.Delete(f);
                 }
@@ -46,34 +35,25 @@ namespace EMS.Desktop.Helpers
 
             catch (DirectoryNotFoundException dirNotFound)
             {
-                Console.WriteLine(dirNotFound.Message);
+                throw new DirectoryNotFoundException("Error: directory not found ", dirNotFound);
             }
         }
 
         public List<string> GetFileNames(string directoryPath)
         {
             string[] files = Directory.GetFiles(directoryPath);
-            List<string> files2 = new List<string>();
 
-            foreach (string file in files)
-                files2.Add(file);
-
-            return files2;
-                //Console.WriteLine("{0}", file);
-
-            //throw new NotImplementedException();
+            return files.ToList();
         }
 
         public void MoveFiles(string fromDirectory, string toDirectory)
         {
             try
             {
-                string[] f202List = Directory.GetFiles(fromDirectory, "*.202");
-                string[] f210List = Directory.GetFiles(fromDirectory, "*.210");
-                string[] exelList = Directory.GetFiles(fromDirectory, "*.xlsx");
+                string[] fileList = Directory.GetFiles(fromDirectory);
 
-                // Copy "*.202" files.
-                foreach (string f in f202List)
+                // Move files.
+                foreach (string f in fileList)
                 {
 
                     // Remove path from the file name.
@@ -88,56 +68,15 @@ namespace EMS.Desktop.Helpers
                     // Catch exception if the file was already copied.
                     catch (IOException moveError)
                     {
-                        Console.WriteLine(moveError.Message);
-                    }
-                }
-
-                // Copy "*.210" files.
-                foreach (string f in f210List)
-                {
-
-                    // Remove path from the file name.
-                    string fName = f.Substring(fromDirectory.Length + 1);
-
-                    try
-                    {
-                        // Will not overwrite if the destination file already exists.
-                        File.Move(Path.Combine(fromDirectory, fName), Path.Combine(toDirectory, fName));
-                    }
-
-                    // Catch exception if the file was already copied.
-                    catch (IOException moveError)
-                    {
-                        Console.WriteLine(moveError.Message);
-                    }
-                }
-
-                // Copy "*.xlsx" files.
-                foreach (string f in exelList)
-                {
-
-                    // Remove path from the file name.
-                    string fName = f.Substring(fromDirectory.Length + 1);
-
-                    try
-                    {
-                        // Will not overwrite if the destination file already exists.
-                        File.Move(Path.Combine(fromDirectory, fName), Path.Combine(toDirectory, fName));
-                    }
-
-                    // Catch exception if the file was already copied.
-                    catch (IOException moveError)
-                    {
-                        Console.WriteLine(moveError.Message);
+                        throw new IOException("Error", moveError);
                     }
                 }
             }
 
             catch (DirectoryNotFoundException dirNotFound)
             {
-                Console.WriteLine(dirNotFound.Message);
+                throw new DirectoryNotFoundException("Error: directory not found ", dirNotFound);
             }
-            //throw new NotImplementedException();
         }
 
         //Don't do it yet
