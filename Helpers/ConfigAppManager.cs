@@ -16,26 +16,26 @@ namespace EMS.Desktop.Helpers
                 return null;
         }
 
-        public string GetReporst210Path()
+        public string GetReports210Path()
         {
-            if (System.Configuration.ConfigurationManager.AppSettings["GetNewReporst210Path"] != null)
-                return System.Configuration.ConfigurationManager.AppSettings["GetNewReporst210Path"];
+            if (System.Configuration.ConfigurationManager.AppSettings["GetReports210Path"] != null)
+                return System.Configuration.ConfigurationManager.AppSettings["GetReports210Path"];
             else
                 return null;
         }
 
         public string SetReports202Path()
         {
-            if (System.Configuration.ConfigurationManager.AppSettings["SetOldReports202Path"] != null)
-                return System.Configuration.ConfigurationManager.AppSettings["SetOldReports202Path"];
+            if (System.Configuration.ConfigurationManager.AppSettings["SetReports202Path"] != null)
+                return System.Configuration.ConfigurationManager.AppSettings["SetReports202Path"];
             else
                 return null;
         }
 
         public bool IsFirstAppEntry()
         {
-            if (System.Configuration.ConfigurationManager.AppSettings["SetOldReports202Path"] == null &&
-                System.Configuration.ConfigurationManager.AppSettings["GetNewReporst210Path"] == null &&
+            if (System.Configuration.ConfigurationManager.AppSettings["SetReports202Path"] == null &&
+                System.Configuration.ConfigurationManager.AppSettings["GetReports210Path"] == null &&
                 System.Configuration.ConfigurationManager.AppSettings["GetExcelPath"] == null)
                 return true;
             else
