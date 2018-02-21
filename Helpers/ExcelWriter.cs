@@ -9,7 +9,7 @@ namespace EMS.Desktop.Helpers
     {
         void Read210(Models.Report210 datas, string firstline)
         {
-            string[] file210 = File.ReadAllLines("D:\\test.210"/*new ConfigAppManager().GetReports210Path()*/);
+            string[] file210 = File.ReadAllLines(new ConfigAppManager().GetReports210Path());
             firstline = file210[0];
             datas.Datas = new List<Models.Report210.ReportData>();
             for (int i = 1; i < file210.Length; i++)
@@ -34,7 +34,7 @@ namespace EMS.Desktop.Helpers
             new ExcelWriter().Read210(datas, firstline);
             using (var excel = new ExcelPackage())
             {
-                var ws = excel.Workbook.Worksheets.Add("WorkSheetName");
+                var ws = excel.Workbook.Worksheets.Add("WorkSheet1");
                 foreach (Models.Report210.ReportData x in datas.Datas)
                 {
                     ws.Cells[x.Id, 1].Value = x.Id;
@@ -46,7 +46,7 @@ namespace EMS.Desktop.Helpers
                     ws.Cells[x.Id, 7].Value = x.Arrer;
                     ws.Cells[x.Id, 8].Value = x.Entered;
                 }
-                excel.SaveAs(new FileInfo("D:\\test.xlsx"/*new ConfigAppManager().GetExcelPath()*/));
+                excel.SaveAs(new FileInfo(new ConfigAppManager().GetExcelPath()));
             }
         }
     }
