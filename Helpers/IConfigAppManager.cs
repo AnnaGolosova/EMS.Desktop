@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace EMS.Desktop.Helpers
 {
-    public interface IRegistryManager
+    public interface IConfigAppManager
     {
         bool IsFirstAppEntry();
-        string GetNewReporst210Path();
-        string GetOldReports210Path();
+        string GetReports210Path();
+        string SetReports202Path();
         string GetExcelPath();
         //Up to the need
     }

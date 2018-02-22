@@ -1,8 +1,10 @@
-﻿using System;
+﻿using EMS.Desktop.Helpers;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,12 +17,6 @@ namespace EMS.Desktop
         public MainForm()
         {
             InitializeComponent();
-        }
-
-        private void MenuSettings_Click(object sender, EventArgs e)
-        {
-            FormSettings FrSett = new FormSettings();
-            FrSett.ShowDialog();
         }
 
         private void MenuAboutProgram_Click(object sender, EventArgs e)
@@ -39,6 +35,18 @@ namespace EMS.Desktop
         {
             FormReposForExcel RpFrExcel = new FormReposForExcel();
             RpFrExcel.ShowDialog();
+        }
+
+        private void SettingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FormSettings FrSett = new FormSettings();
+            FrSett.ShowDialog();
+        }
+
+        private void SavePathTSMI_Click(object sender, EventArgs e)
+        {
+            FormInstallationPath FmInstPath = new FormInstallationPath();
+            FmInstPath.ShowDialog();
         }
     }
 }

@@ -1,0 +1,193 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="EMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Copay">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Value" Type="float" Nullable="false" />
+    <Property Name="Date" Type="date" />
+  </EntityType>
+  <EntityType Name="File">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Date" Type="date" />
+  </EntityType>
+  <EntityType Name="Homestead">
+    <Key>
+      <PropertyRef Name="Number" />
+    </Key>
+    <Property Name="Number" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Owner_Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Meter">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Id_Homestead" Type="int" Nullable="false" />
+    <Property Name="Meter_Number" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="MeterData">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Id_Meter" Type="int" Nullable="false" />
+    <Property Name="Value" Type="float" Nullable="false" />
+    <Property Name="Date" Type="date" />
+  </EntityType>
+  <EntityType Name="Payment">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Id_Homestead" Type="int" Nullable="false" />
+    <Property Name="Id_Service" Type="int" Nullable="false" />
+    <Property Name="Id_Meter_Data" Type="int" Nullable="false" />
+    <Property Name="Id_File" Type="int" Nullable="false" />
+    <Property Name="INTroduced" Type="float" Nullable="false" />
+    <Property Name="Entered" Type="float" Nullable="false" />
+    <Property Name="Date" Type="date" />
+  </EntityType>
+  <EntityType Name="Rate">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Id_Service" Type="int" Nullable="false" />
+    <Property Name="Value" Type="float" Nullable="false" />
+    <Property Name="Date" Type="date" />
+  </EntityType>
+  <EntityType Name="Service">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_Meter_ToHomestead">
+    <End Role="Homestead" Type="Self.Homestead" Multiplicity="1" />
+    <End Role="Meter" Type="Self.Meter" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Homestead">
+        <PropertyRef Name="Number" />
+      </Principal>
+      <Dependent Role="Meter">
+        <PropertyRef Name="Id_Homestead" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MeterData_ToMeter">
+    <End Role="Meter" Type="Self.Meter" Multiplicity="1" />
+    <End Role="MeterData" Type="Self.MeterData" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Meter">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="MeterData">
+        <PropertyRef Name="Id_Meter" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Payment_ToFile">
+    <End Role="File" Type="Self.File" Multiplicity="1" />
+    <End Role="Payment" Type="Self.Payment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="File">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Payment">
+        <PropertyRef Name="Id_File" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Payment_ToHomestead">
+    <End Role="Homestead" Type="Self.Homestead" Multiplicity="1" />
+    <End Role="Payment" Type="Self.Payment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Homestead">
+        <PropertyRef Name="Number" />
+      </Principal>
+      <Dependent Role="Payment">
+        <PropertyRef Name="Id_Homestead" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Payment_ToMeterData">
+    <End Role="MeterData" Type="Self.MeterData" Multiplicity="1" />
+    <End Role="Payment" Type="Self.Payment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MeterData">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Payment">
+        <PropertyRef Name="Id_Meter_Data" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Payment_ToService">
+    <End Role="Service" Type="Self.Service" Multiplicity="1" />
+    <End Role="Payment" Type="Self.Payment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Service">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Payment">
+        <PropertyRef Name="Id_Service" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Rate_ToService">
+    <End Role="Service" Type="Self.Service" Multiplicity="1" />
+    <End Role="Rate" Type="Self.Rate" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Service">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Rate">
+        <PropertyRef Name="Id_Service" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="EMSModelStoreContainer">
+    <EntitySet Name="Copay" EntityType="Self.Copay" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="File" EntityType="Self.File" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Homestead" EntityType="Self.Homestead" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Meter" EntityType="Self.Meter" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="MeterData" EntityType="Self.MeterData" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Payment" EntityType="Self.Payment" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Rate" EntityType="Self.Rate" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Service" EntityType="Self.Service" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Meter_ToHomestead" Association="Self.FK_Meter_ToHomestead">
+      <End Role="Homestead" EntitySet="Homestead" />
+      <End Role="Meter" EntitySet="Meter" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MeterData_ToMeter" Association="Self.FK_MeterData_ToMeter">
+      <End Role="Meter" EntitySet="Meter" />
+      <End Role="MeterData" EntitySet="MeterData" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Payment_ToFile" Association="Self.FK_Payment_ToFile">
+      <End Role="File" EntitySet="File" />
+      <End Role="Payment" EntitySet="Payment" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Payment_ToHomestead" Association="Self.FK_Payment_ToHomestead">
+      <End Role="Homestead" EntitySet="Homestead" />
+      <End Role="Payment" EntitySet="Payment" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Payment_ToMeterData" Association="Self.FK_Payment_ToMeterData">
+      <End Role="MeterData" EntitySet="MeterData" />
+      <End Role="Payment" EntitySet="Payment" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Payment_ToService" Association="Self.FK_Payment_ToService">
+      <End Role="Service" EntitySet="Service" />
+      <End Role="Payment" EntitySet="Payment" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Rate_ToService" Association="Self.FK_Rate_ToService">
+      <End Role="Service" EntitySet="Service" />
+      <End Role="Rate" EntitySet="Rate" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
