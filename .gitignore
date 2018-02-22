@@ -2,6 +2,6 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-.vs/EMS.Desktop/v14
-/bin/Debug
-/obj/Debug/edmxResourcesToEmbed/Models
+.vs/EMS.Desktop/v14/.suo/
+/bin/Debug/
+/obj/Debug/edmxResourcesToEmbed/Models/
