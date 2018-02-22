@@ -2,7 +2,7 @@
 using System.IO;
 using System.Collections.Generic;
 using System.Text;
-using OfficeOpenXml;
+//using OfficeOpenXml;
 
 namespace EMS.Desktop.Helpers
 {
@@ -35,22 +35,22 @@ namespace EMS.Desktop.Helpers
             Models.Report210 datas = new Models.Report210();
             string firstline = "";
             new ExcelWriter().Read210(datas, firstline);
-            using (var excel = new ExcelPackage())
-            {
-                var ws = excel.Workbook.Worksheets.Add("WorkSheet1");
-                foreach (Models.Report210.ReportData x in datas.Datas)
-                {
-                    ws.Cells[x.Id, 1].Value = x.Id;
-                    ws.Cells[x.Id, 2].Value = x.RateId;
-                    ws.Cells[x.Id, 3].Value = x.HomeSteadNumber;
-                    ws.Cells[x.Id, 4].Value = x.OwnerName;
-                    ws.Cells[x.Id, 5].Value = Convert.ToString(x.Date);
-                    ws.Cells[x.Id, 6].Value = x.Introduced;
-                    ws.Cells[x.Id, 7].Value = x.Arrer;
-                    ws.Cells[x.Id, 8].Value = x.Entered;
-                }
-                excel.SaveAs(new FileInfo(new ConfigAppManager().GetExcelPath()));
-            }
+            //using (var excel = new ExcelPackage())
+            //{
+            //    var ws = excel.Workbook.Worksheets.Add("WorkSheet1");
+            //    foreach (Models.Report210.ReportData x in datas.Datas)
+            //    {
+            //        ws.Cells[x.Id, 1].Value = x.Id;
+            //        ws.Cells[x.Id, 2].Value = x.RateId;
+            //        ws.Cells[x.Id, 3].Value = x.HomeSteadNumber;
+            //        ws.Cells[x.Id, 4].Value = x.OwnerName;
+            //        ws.Cells[x.Id, 5].Value = Convert.ToString(x.Date);
+            //        ws.Cells[x.Id, 6].Value = x.Introduced;
+            //        ws.Cells[x.Id, 7].Value = x.Arrer;
+            //        ws.Cells[x.Id, 8].Value = x.Entered;
+            //    }
+            //    excel.SaveAs(new FileInfo(new ConfigAppManager().GetExcelPath()));
+            //}
         }
     }
 }
