@@ -112,7 +112,6 @@
             this.MonthTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.MonthTimePicker.Location = new System.Drawing.Point(201, 41);
             this.MonthTimePicker.Name = "MonthTimePicker";
-            this.MonthTimePicker.ShowUpDown = true;
             this.MonthTimePicker.Size = new System.Drawing.Size(169, 20);
             this.MonthTimePicker.TabIndex = 3;
             // 

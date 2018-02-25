@@ -25,15 +25,16 @@ namespace EMS.Desktop
         {
             if (true)
             {
-                MainProgressBar.Maximum = 6000;
+                Action MaxPrBr = () => { MainProgressBar.Maximum = 110000; };
+                Invoke(MaxPrBr);
                 for (int i = 0; i <= MainProgressBar.Maximum; i++)
                 {
-                    Action action = () =>
+                    Action AddPrgBr = () =>
                     {
                         MainProgressBar.Value = i;
                         LabelProgrBar.Text = i + "/" + MainProgressBar.Maximum;
                     };
-                    Invoke(action);
+                    Invoke(AddPrgBr);
                 }
             }
         }
