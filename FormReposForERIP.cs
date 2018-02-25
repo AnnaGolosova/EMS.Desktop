@@ -46,5 +46,10 @@ namespace EMS.Desktop
             ToDatePicker.Enabled = false;
             FromDatePicker.Enabled = false;
         }
+
+        private void CreateReportButton_Click(object sender, EventArgs e)
+        {
+            Hide();
+        }
     }
 }

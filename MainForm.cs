@@ -23,7 +23,19 @@ namespace EMS.Desktop
 
         public void OnCreate()
         {
-            
+            if (true)
+            {
+                MainProgressBar.Maximum = 6000;
+                for (int i = 0; i <= MainProgressBar.Maximum; i++)
+                {
+                    Action action = () =>
+                    {
+                        MainProgressBar.Value = i;
+                        LabelProgrBar.Text = i + "/" + MainProgressBar.Maximum;
+                    };
+                    Invoke(action);
+                }
+            }
         }
 
         private void MenuAboutProgram_Click(object sender, EventArgs e)
@@ -55,5 +67,7 @@ namespace EMS.Desktop
             FormInstallationPath FmInstPath = new FormInstallationPath();
             FmInstPath.ShowDialog();
         }
+
+        
     }
 }

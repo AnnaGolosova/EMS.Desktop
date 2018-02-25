@@ -41,7 +41,9 @@
             this.MenuAboutProgram = new System.Windows.Forms.ToolStripMenuItem();
             this.MainProgressBar = new System.Windows.Forms.ProgressBar();
             this.ColorPanel = new System.Windows.Forms.Panel();
+            this.LabelProgrBar = new System.Windows.Forms.Label();
             this.Menu.SuspendLayout();
+            this.ColorPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // Menu
@@ -141,11 +143,24 @@
             // ColorPanel
             // 
             this.ColorPanel.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.ColorPanel.Controls.Add(this.LabelProgrBar);
             this.ColorPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ColorPanel.Location = new System.Drawing.Point(0, 24);
             this.ColorPanel.Name = "ColorPanel";
             this.ColorPanel.Size = new System.Drawing.Size(643, 356);
             this.ColorPanel.TabIndex = 2;
+            // 
+            // LabelProgrBar
+            // 
+            this.LabelProgrBar.AutoSize = true;
+            this.LabelProgrBar.BackColor = System.Drawing.Color.Transparent;
+            this.LabelProgrBar.Cursor = System.Windows.Forms.Cursors.Default;
+            this.LabelProgrBar.ForeColor = System.Drawing.Color.Green;
+            this.LabelProgrBar.Location = new System.Drawing.Point(3, 340);
+            this.LabelProgrBar.Name = "LabelProgrBar";
+            this.LabelProgrBar.Size = new System.Drawing.Size(169, 13);
+            this.LabelProgrBar.TabIndex = 0;
+            this.LabelProgrBar.Text = "Количество прочитанных строк:";
             // 
             // MainForm
             // 
@@ -160,6 +175,8 @@
             this.Text = "E.M.S.";
             this.Menu.ResumeLayout(false);
             this.Menu.PerformLayout();
+            this.ColorPanel.ResumeLayout(false);
+            this.ColorPanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -180,6 +197,7 @@
         private System.Windows.Forms.ToolStripMenuItem MenuReposForExcel;
         private System.Windows.Forms.ToolStripMenuItem SettingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem SavePathTSMI;
+        private System.Windows.Forms.Label LabelProgrBar;
     }
 }
 
