@@ -11,7 +11,7 @@ namespace EMS.Desktop.Helpers
         void Read210(Models.Report210 datas, string firstline)
         {
             Encoding win1251 = Encoding.GetEncoding(1251);
-            string[] file210 = File.ReadAllLines(new ConfigAppManager().GetReports210Path(), win1251);
+            string[] file210 = File.ReadAllLines(ConfigAppManager.GetReports210Path(), win1251);
             firstline = file210[0];
             datas.Datas = new List<Models.Report210.ReportData>();
             for (int i = 1; i < file210.Length; i++)

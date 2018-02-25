@@ -7,7 +7,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace EMS.Desktop
@@ -17,6 +17,13 @@ namespace EMS.Desktop
         public MainForm()
         {
             InitializeComponent();
+            Thread NewFile = new Thread(OnCreate);
+            NewFile.Start();
+        }
+
+        public void OnCreate()
+        {
+            
         }
 
         private void MenuAboutProgram_Click(object sender, EventArgs e)

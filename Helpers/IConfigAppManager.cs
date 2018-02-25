@@ -8,10 +8,13 @@ namespace EMS.Desktop.Helpers
 {
     public interface IConfigAppManager
     {
-        bool IsFirstAppEntry();
-        string GetReports210Path();
-        string SetReports202Path();
         string GetExcelPath();
+        void SetExcelPath(string path);
+        string GetReports210Path();
+        void SetReports210Path(string path);
+        string GetReports202Path();
+        void SetReports202Path(string path);
+        bool IsFirstAppEntry();
         //Up to the need
     }
 }
