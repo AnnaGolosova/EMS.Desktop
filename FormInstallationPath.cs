@@ -1,4 +1,5 @@
-﻿using Microsoft.WindowsAPICodePack.Dialogs;
+﻿using EMS.Desktop.Helpers;
+using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,9 +19,10 @@ namespace EMS.Desktop
         public FormInstallationPath()
         {
             InitializeComponent();
-            PathExcelTextBox.Text = System.Configuration.ConfigurationManager.AppSettings["GetExcelPath"];
-            Path202TextBox.Text = System.Configuration.ConfigurationManager.AppSettings["SetReports202Path"];
-            Path210TextBox.Text = System.Configuration.ConfigurationManager.AppSettings["GetReports210Path"];
+            Configuration config = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
+            PathExcelTextBox.Text = config.AppSettings.Settings["ExcelPath"].Value;
+            Path202TextBox.Text = config.AppSettings.Settings["Reports202Path"].Value;
+            Path210TextBox.Text = config.AppSettings.Settings["Reports210Path"].Value;
         }
 
         private void OverViewExcelButton_Click(object sender, EventArgs e)
@@ -32,10 +34,7 @@ namespace EMS.Desktop
                 if (result == CommonFileDialogResult.Ok && !string.IsNullOrWhiteSpace(openDialog.FileName))
                 {
                     PathExcelTextBox.Text = openDialog.FileName;
-                    Configuration config = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
-                    config.AppSettings.Settings["GetExcelPath"].Value = openDialog.FileName;
-                    config.Save(ConfigurationSaveMode.Modified);
-                    ConfigurationManager.RefreshSection("appSettings");
+                    ConfigAppManager.SetExcelPath(openDialog.FileName);
                 }
             }
         }
@@ -49,10 +48,7 @@ namespace EMS.Desktop
                 if (result == CommonFileDialogResult.Ok && !string.IsNullOrWhiteSpace(openDialog.FileName))
                 {
                     Path202TextBox.Text = openDialog.FileName;
-                    Configuration config = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
-                    config.AppSettings.Settings["SetReports202Path"].Value = openDialog.FileName;
-                    config.Save(ConfigurationSaveMode.Modified);
-                    ConfigurationManager.RefreshSection("appSettings");
+                    ConfigAppManager.SetReports202Path(openDialog.FileName);
                 }
             }
         }
@@ -66,10 +62,7 @@ namespace EMS.Desktop
                 if (result == CommonFileDialogResult.Ok && !string.IsNullOrWhiteSpace(openDialog.FileName))
                 {
                     Path210TextBox.Text = openDialog.FileName;
-                    Configuration config = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
-                    config.AppSettings.Settings["GetReports210Path"].Value = openDialog.FileName;
-                    config.Save(ConfigurationSaveMode.Modified);
-                    ConfigurationManager.RefreshSection("appSettings");
+                    ConfigAppManager.SetReports210Path(openDialog.FileName);
                 }
             }
         }
