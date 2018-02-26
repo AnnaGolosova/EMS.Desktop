@@ -27,6 +27,45 @@ namespace EMS.Desktop.Helpers
                 datas.Datas[i - 1].Arrer = Convert.ToDouble(str[7].Replace(".", ","));
                 datas.Datas[i - 1].Entered = Convert.ToDouble(str[8].Replace(".", ","));
                 datas.Datas[i - 1].Code = str[9] + "^" + str[10] + "^" + str[11] + "^" + str[12] + "^" + str[13] + "^" + str[14] + "^" + str[15] + "^" + str[16] + "^" + str[17] + "^" + str[18] + "^" + str[19];
+                if (datas.Datas[i - 1].RateId == 2)
+                    for (int j = 0; j < Convert.ToInt32(str[10][0]); j++)
+                        datas.Datas[i - 1].meterInfo.Add(new Models.Report210.ReportData.MeterInfo()
+                        {
+                            oldValue = Convert.ToInt32(str[10].Split('~')[6 + 5 * j]),
+                            newValue = Convert.ToInt32(str[10].Split('~')[8 + 5 * j]),
+                        });
+            }
+        }
+
+        List<Models.Report202.ReportData.MeterInfo> metInfo (List<Models.Report210.ReportData.MeterInfo> meter)
+        {
+            List<Models.Report202.ReportData.MeterInfo> mi = new List<Models.Report202.ReportData.MeterInfo>();
+            foreach (Models.Report210.ReportData.MeterInfo mt in meter)
+                mi.Add(new Models.Report202.ReportData.MeterInfo() { LocalRateId = 1, Value = mt.oldValue });
+            return mi;
+        }
+
+        void Write202(Models.Report210 datas)
+        {
+            Models.Report202 rep = new Models.Report202();
+            rep.LocalRates = new List<Models.Rate>()
+            {
+                new Models.Rate{ Id = 1, IdService = 2, Value = 0.1246 },
+                new Models.Rate{ Id = 2, IdService = 2, Value = 0.1458 },
+                new Models.Rate{ Id = 3, IdService = 2, Value = 0.1549 }
+            };
+            rep.Datas = new List<Models.Report202.ReportData>();
+            foreach (Models.Report210.ReportData x in datas.Datas)
+            {
+                rep.Datas.Add(new Models.Report202.ReportData()
+                {
+                    RateId = x.RateId,
+                    Arrear = x.Arrer,
+                    Date = x.Date,
+                    HomeSteadNumber = x.HomeSteadNumber,
+                    OwnerName = x.OwnerName,
+                    meterInfo = metInfo(x.meterInfo)
+                });
             }
         }
 
