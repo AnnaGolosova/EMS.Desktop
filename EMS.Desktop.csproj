@@ -63,6 +63,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\DataBaseException.cs" />
     <Compile Include="FormInstallationPath.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -70,6 +71,7 @@
       <DependentUpon>FormInstallationPath.cs</DependentUpon>
     </Compile>
     <Compile Include="Helpers\ExcelWriter.cs" />
+    <Compile Include="Helpers\FileParameterSetter.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -105,7 +107,6 @@
     <Compile Include="Helpers\IFileManager.cs" />
     <Compile Include="Helpers\IConfigAppManager.cs" />
     <Compile Include="Helpers\ConfigAppManager.cs" />
-    <Compile Include="Helpers\Repository.cs" />
     <Compile Include="Models\Copay.cs">
       <DependentUpon>Datas.tt</DependentUpon>
     </Compile>
@@ -183,6 +184,8 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>Datas.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <None Include="1.202" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="Models\Datas.edmx.diagram">
       <DependentUpon>Datas.edmx</DependentUpon>
     </None>
@@ -217,6 +220,17 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="DSOFile">
+      <Guid>{58968145-CF00-4341-995F-2EE093F6ABA3}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>1</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

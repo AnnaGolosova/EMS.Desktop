@@ -14,7 +14,7 @@ namespace EMS.Desktop.Services
         Homestead GetHomestead(int number);
         List<Homestead> GetHomestead();
 
-        int GetMeterNumber(int id);
+        int? GetMeterNumber(int id);
         Meter GetMeter(int id);
         List<Meter> GetMeter();
 
