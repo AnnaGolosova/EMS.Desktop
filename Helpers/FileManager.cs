@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using DSOFile;
 
 namespace EMS.Desktop.Helpers
 {
-    class FileManager : IFileManager
+    class FileManager //: IFileManager
     {
-        public void DeleteFile(string fileName)
+        public static void DeleteFile(string fileName)
         {
             FileInfo file = new FileInfo(fileName);
 
@@ -21,7 +22,7 @@ namespace EMS.Desktop.Helpers
                 throw new FileNotFoundException("Error: file not found ", fileName);
         }
 
-        public void DeleteFiles(string directoryPath)
+        public static void DeleteFiles(string directoryPath)
         {
             try
             {
@@ -39,14 +40,14 @@ namespace EMS.Desktop.Helpers
             }
         }
 
-        public List<string> GetFileNames(string directoryPath)
+        public static List<string> GetFileNames(string directoryPath)
         {
             string[] files = Directory.GetFiles(directoryPath);
 
             return files.ToList();
         }
 
-        public void MoveFiles(string fromDirectory, string toDirectory)
+        public static void MoveFiles(string fromDirectory, string toDirectory)
         {
             try
             {
@@ -80,24 +81,46 @@ namespace EMS.Desktop.Helpers
         }
 
         //Don't do it yet
-        public void ChangeFileState(string filePath, FileState State)
+        public static void ChangeFileState(string filePath, FileState state)
         {
-            throw new NotImplementedException();
+            using (FileParameterSetter setter = new FileParameterSetter(filePath))
+            {
+                setter.SetCustomProperty(state);
+            }
+        }
+        
+        public static FileState GetFileState(string filePath)
+        {
+            using (FileParameterSetter setter = new FileParameterSetter(filePath))
+            {
+                return setter.GetProperty();
+            }
         }
 
-        public FileState GetFileState(string filePath)
+        public static List<string> GetNewFilePathes(string directoryPath)
         {
-            throw new NotImplementedException();
+            DirectoryInfo dir = new DirectoryInfo(directoryPath);
+            List<FileInfo> files = dir.GetFiles().ToList();
+            List<string> result = new List<string>();
+            foreach(FileInfo file in files)
+            {
+                using (FileParameterSetter setter = new FileParameterSetter(file.FullName))
+                {
+                    if (setter.GetProperty() == FileState.New)
+                        result.Add(file.FullName);
+                }
+            }
+            return result;
         }
 
-        public List<string> GetNewFilePathes(string directoryPath)
+        /// <summary>
+        /// Returns count of new .210 files
+        /// </summary>
+        /// <param name="directoryPath">path to target directory</param>
+        /// <returns></returns>
+        public static int GetNewFilesCount(string directoryPath)
         {
-            throw new NotImplementedException();
-        }
-
-        public int GetNewFilesCount(string directoryPath)
-        {
-            throw new NotImplementedException();
+            return GetNewFilePathes(directoryPath).Count;
         }
     }
 }

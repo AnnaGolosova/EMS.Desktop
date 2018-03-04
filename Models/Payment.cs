@@ -19,7 +19,13 @@ namespace EMS.Desktop.Models
         public int IdService { get; set; }
         public int IdMeterData { get; set; }
         public int IdFile { get; set; }
+        /// <summary>
+        /// Внесено, без вычета пени
+        /// </summary>
         public double Introduced { get; set; }
+        /// <summary>
+        /// Зачислено на рассчетный счет
+        /// </summary>
         public double Entered { get; set; }
         public Nullable<System.DateTime> Date { get; set; }
     

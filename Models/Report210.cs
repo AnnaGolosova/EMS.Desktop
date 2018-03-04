@@ -13,7 +13,7 @@ namespace EMS.Desktop.Models
         public class ReportData
         {
             public int Id;
-            public int RateId;
+            public int ServiceId;
             public int HomeSteadNumber;
             public string OwnerName;
             public DateTime Date;
@@ -27,6 +27,7 @@ namespace EMS.Desktop.Models
             //1~100~12.52~~~1~9145~~9245~100
             public class MeterInfo
             {
+                public int number;
                 public int oldValue;
                 public int newValue;
             }
