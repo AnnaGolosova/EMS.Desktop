@@ -19,7 +19,8 @@ namespace EMS.Desktop.Models
             this.Meter = new HashSet<Meter>();
             this.Payment = new HashSet<Payment>();
         }
-    
+
+        public int Id { get; set; }
         public int Number { get; set; }
         public string OwnerName { get; set; }
     
