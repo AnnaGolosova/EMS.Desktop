@@ -30,15 +30,6 @@ namespace EMS.Desktop
 
         private void MenuAboutProgram_Click(object sender, EventArgs e)
         {
-            //foreach(string file in FileManager.GetNewFilePathes(Application.StartupPath))
-            //{
-            //    Report210 report = ExcelWriter.Read210(file);
-            //    using (DBRepository db = new DBRepository())
-            //    {
-            //        db.LoadReport210(report);
-            //    }
-            //}
-
             FormAboutProgram FrAbPr = new FormAboutProgram();
             FrAbPr.ShowDialog();
         }
