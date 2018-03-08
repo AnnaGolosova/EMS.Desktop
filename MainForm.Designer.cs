@@ -43,7 +43,6 @@
             this.ColorPanel = new System.Windows.Forms.Panel();
             this.LabelProgrBar = new System.Windows.Forms.Label();
             this.Menu.SuspendLayout();
-            this.ColorPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // Menu
@@ -143,7 +142,6 @@
             // ColorPanel
             // 
             this.ColorPanel.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.ColorPanel.Controls.Add(this.LabelProgrBar);
             this.ColorPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ColorPanel.Location = new System.Drawing.Point(0, 24);
             this.ColorPanel.Name = "ColorPanel";
@@ -153,30 +151,32 @@
             // LabelProgrBar
             // 
             this.LabelProgrBar.AutoSize = true;
-            this.LabelProgrBar.BackColor = System.Drawing.Color.Transparent;
+            this.LabelProgrBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.LabelProgrBar.Cursor = System.Windows.Forms.Cursors.Default;
-            this.LabelProgrBar.ForeColor = System.Drawing.Color.Green;
-            this.LabelProgrBar.Location = new System.Drawing.Point(3, 340);
+            this.LabelProgrBar.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.LabelProgrBar.Location = new System.Drawing.Point(245, 383);
             this.LabelProgrBar.Name = "LabelProgrBar";
-            this.LabelProgrBar.Size = new System.Drawing.Size(169, 13);
+            this.LabelProgrBar.Size = new System.Drawing.Size(103, 13);
             this.LabelProgrBar.TabIndex = 0;
-            this.LabelProgrBar.Text = "Количество прочитанных строк:";
+            this.LabelProgrBar.Text = "Файлы загружены";
+            this.LabelProgrBar.Visible = false;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(643, 403);
+            this.Controls.Add(this.LabelProgrBar);
             this.Controls.Add(this.ColorPanel);
             this.Controls.Add(this.MainProgressBar);
             this.Controls.Add(this.Menu);
             this.MainMenuStrip = this.Menu;
             this.Name = "MainForm";
             this.Text = "E.M.S.";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Closed_MainForm);
+            this.Load += new System.EventHandler(this.Load_MainForm);
             this.Menu.ResumeLayout(false);
             this.Menu.PerformLayout();
-            this.ColorPanel.ResumeLayout(false);
-            this.ColorPanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 

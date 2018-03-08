@@ -26,13 +26,11 @@ namespace EMS.Desktop.Helpers
             try
             {
                 string[] fileList = Directory.GetFiles(directoryPath);
-
                 foreach (string f in fileList)
                 {
                     File.Delete(f);
                 }
             }
-
             catch (DirectoryNotFoundException dirNotFound)
             {
                 throw new DirectoryNotFoundException("Error: directory not found ", dirNotFound);
@@ -42,7 +40,6 @@ namespace EMS.Desktop.Helpers
         public List<string> GetFileNames(string directoryPath)
         {
             string[] files = Directory.GetFiles(directoryPath);
-
             return files.ToList();
         }
 
@@ -51,28 +48,19 @@ namespace EMS.Desktop.Helpers
             try
             {
                 string[] fileList = Directory.GetFiles(fromDirectory);
-
-                // Move files.
                 foreach (string f in fileList)
                 {
-
-                    // Remove path from the file name.
                     string fName = f.Substring(fromDirectory.Length + 1);
-
                     try
                     {
-                        // Will not overwrite if the destination file already exists.
                         File.Move(Path.Combine(fromDirectory, fName), Path.Combine(toDirectory, fName));
                     }
-
-                    // Catch exception if the file was already copied.
                     catch (IOException moveError)
                     {
                         throw new IOException("Error", moveError);
                     }
                 }
             }
-
             catch (DirectoryNotFoundException dirNotFound)
             {
                 throw new DirectoryNotFoundException("Error: directory not found ", dirNotFound);
@@ -92,12 +80,16 @@ namespace EMS.Desktop.Helpers
 
         public List<string> GetNewFilePathes(string directoryPath)
         {
-            throw new NotImplementedException();
+            return new List<string>()
+            {
+                "C:\\file1.csv",
+                "C:\\file2.csv"
+            };
         }
 
         public int GetNewFilesCount(string directoryPath)
         {
-            throw new NotImplementedException();
+            return 2;
         }
     }
 }

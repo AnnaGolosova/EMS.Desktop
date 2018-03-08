@@ -17,25 +17,30 @@ namespace EMS.Desktop
         public MainForm()
         {
             InitializeComponent();
-            Thread NewFile = new Thread(OnCreate);
-            NewFile.Start();
         }
 
         public void OnCreate()
         {
-            if (true)
+            if (new FileManager().GetNewFilesCount(ConfigAppManager.GetReports210Path()) != 0)
             {
-                Action MaxPrBr = () => { MainProgressBar.Maximum = 110000; };
+                Action MaxPrBr = () => 
+                {
+                    MainProgressBar.Maximum = 50000;
+                };
                 Invoke(MaxPrBr);
-                for (int i = 0; i <= MainProgressBar.Maximum; i++)
+                for (int i = 0; i <= MainProgressBar.Maximum - 1; i++)
                 {
                     Action AddPrgBr = () =>
                     {
+                        ExcelWriter Ex = new ExcelWriter();
+                        Ex.Read210();
+                        MainProgressBar.Value = i + 1;
                         MainProgressBar.Value = i;
-                        LabelProgrBar.Text = i + "/" + MainProgressBar.Maximum;
                     };
                     Invoke(AddPrgBr);
                 }
+                Action ShowComp = () => { LabelProgrBar.Visible = true; };
+                Invoke(ShowComp);
             }
         }
 
@@ -69,6 +74,15 @@ namespace EMS.Desktop
             FmInstPath.ShowDialog();
         }
 
-        
+        private void Load_MainForm(object sender, EventArgs e)
+        {
+            Thread NewFile = new Thread(OnCreate);
+            NewFile.Start();
+        }
+
+        private void Closed_MainForm(object sender, FormClosedEventArgs e)
+        {
+            Environment.Exit(1);
+        }
     }
 }
