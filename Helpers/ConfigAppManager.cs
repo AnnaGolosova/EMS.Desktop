@@ -13,8 +13,9 @@ namespace EMS.Desktop.Helpers
     {
         public static string GetExcelPath()
         {
-            if (ConfigurationManager.AppSettings["ExcelPath"] != null)
-                return ConfigurationManager.AppSettings["ExcelPath"];
+            Configuration config = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
+            if (config.AppSettings.Settings["ExcelPath"].Value != null)
+                return config.AppSettings.Settings["ExcelPath"].Value;
             else
                 return null;
         }
@@ -29,8 +30,9 @@ namespace EMS.Desktop.Helpers
 
         public static string GetReports210Path()
         {
-            if (ConfigurationManager.AppSettings["Reports210Path"] != null)
-                return ConfigurationManager.AppSettings["Reports210Path"];
+            Configuration config = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
+            if (config.AppSettings.Settings["Reports210Path"].Value != null)
+                return config.AppSettings.Settings["Reports210Path"].Value;
             else
                 return null;
         }
@@ -45,8 +47,9 @@ namespace EMS.Desktop.Helpers
 
         public static string GetReports202Path()
         {
-            if (ConfigurationManager.AppSettings["Reports202Path"] != null)
-                return ConfigurationManager.AppSettings["Reports202Path"];
+            Configuration config = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
+            if (config.AppSettings.Settings["Reports202Path"].Value != null)
+                return config.AppSettings.Settings["Reports202Path"].Value;
             else
                 return null;
         }
@@ -61,9 +64,10 @@ namespace EMS.Desktop.Helpers
 
         public static bool IsFirstAppEntry()
         {
-            if (ConfigurationManager.AppSettings["Reports202Path"] == null &&
-                ConfigurationManager.AppSettings["Reports210Path"] == null &&
-                ConfigurationManager.AppSettings["ExcelPath"] == null)
+            Configuration config = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
+            if (config.AppSettings.Settings["Reports202Path"].Value == null &&
+                config.AppSettings.Settings["Reports210Path"].Value == null &&
+                config.AppSettings.Settings["ExcelPath"].Value == null)
                 return true;
             else
                 return false;

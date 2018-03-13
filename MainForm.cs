@@ -1,4 +1,5 @@
 ﻿using EMS.Desktop.Helpers;
+using EMS.Desktop.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -21,29 +22,8 @@ namespace EMS.Desktop
 
         public void OnCreate()
         {
-            if (new FileManager().GetNewFilesCount(ConfigAppManager.GetReports210Path()) != 0)
-            {
-                Action MaxPrBr = () => 
-                {
-                    MainProgressBar.Maximum = 50000;
-                };
-                Invoke(MaxPrBr);
-                for (int i = 0; i <= MainProgressBar.Maximum - 1; i++)
-                {
-                    Action AddPrgBr = () =>
-                    {
-                        ExcelWriter Ex = new ExcelWriter();
-                        Ex.Read210();
-                        MainProgressBar.Value = i + 1;
-                        MainProgressBar.Value = i;
-                    };
-                    Invoke(AddPrgBr);
-                }
-                Action ShowComp = () => { LabelProgrBar.Visible = true; };
-                Invoke(ShowComp);
-            }
+            LoadNewFile.LoadFile(this);
         }
-
         private void MenuAboutProgram_Click(object sender, EventArgs e)
         {
             FormAboutProgram FrAbPr = new FormAboutProgram();
@@ -80,9 +60,19 @@ namespace EMS.Desktop
             NewFile.Start();
         }
 
-        private void Closed_MainForm(object sender, FormClosedEventArgs e)
+        private void Closing_MainForm(object sender, FormClosingEventArgs e)
         {
-            Environment.Exit(1);
+            if (MainProgressBar.Value != MainProgressBar.Maximum)
+            {
+                if (MessageBox.Show("Процесс загрузки новых файлов .210 ещё не завершён!\nВы действительнно хотите выйти ?", "Внимание!", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.No)
+                {
+                    e.Cancel = true;
+                }
+                else
+                    Environment.Exit(1);
+            }
+            else
+                Environment.Exit(1);
         }
     }
 }

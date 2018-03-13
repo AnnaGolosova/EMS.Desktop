@@ -150,15 +150,16 @@
             // 
             // LabelProgrBar
             // 
-            this.LabelProgrBar.AutoSize = true;
-            this.LabelProgrBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.LabelProgrBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
             this.LabelProgrBar.Cursor = System.Windows.Forms.Cursors.Default;
-            this.LabelProgrBar.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.LabelProgrBar.Location = new System.Drawing.Point(245, 383);
+            this.LabelProgrBar.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.LabelProgrBar.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
+            this.LabelProgrBar.Location = new System.Drawing.Point(0, 380);
             this.LabelProgrBar.Name = "LabelProgrBar";
-            this.LabelProgrBar.Size = new System.Drawing.Size(103, 13);
+            this.LabelProgrBar.Size = new System.Drawing.Size(643, 23);
             this.LabelProgrBar.TabIndex = 0;
             this.LabelProgrBar.Text = "Файлы загружены";
+            this.LabelProgrBar.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.LabelProgrBar.Visible = false;
             // 
             // MainForm
@@ -173,7 +174,7 @@
             this.MainMenuStrip = this.Menu;
             this.Name = "MainForm";
             this.Text = "E.M.S.";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Closed_MainForm);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Closing_MainForm);
             this.Load += new System.EventHandler(this.Load_MainForm);
             this.Menu.ResumeLayout(false);
             this.Menu.PerformLayout();
@@ -191,13 +192,13 @@
         private System.Windows.Forms.ToolStripMenuItem MainJournal;
         private System.Windows.Forms.ToolStripMenuItem MenuSettings;
         private System.Windows.Forms.ToolStripMenuItem MenuAboutProgram;
-        private System.Windows.Forms.ProgressBar MainProgressBar;
         private System.Windows.Forms.Panel ColorPanel;
         private System.Windows.Forms.ToolStripMenuItem MenuReposForERIP;
         private System.Windows.Forms.ToolStripMenuItem MenuReposForExcel;
         private System.Windows.Forms.ToolStripMenuItem SettingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem SavePathTSMI;
-        private System.Windows.Forms.Label LabelProgrBar;
+        public System.Windows.Forms.Label LabelProgrBar;
+        public System.Windows.Forms.ProgressBar MainProgressBar;
     }
 }
 

@@ -9,6 +9,7 @@ namespace EMS.Desktop.Helpers
     public enum FileState
     {
         New = 0,
-        Loaded
+        Loaded,
+        None
     }
 }
