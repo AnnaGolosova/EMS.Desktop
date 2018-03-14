@@ -3,12 +3,7 @@ using EMS.Desktop.Models;
 using EMS.Desktop.Services;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -30,15 +25,6 @@ namespace EMS.Desktop
 
         private void MenuAboutProgram_Click(object sender, EventArgs e)
         {
-            //foreach(string file in FileManager.GetNewFilePathes(Application.StartupPath))
-            //{
-            //    Report210 report = ExcelWriter.Read210(file);
-            //    using (DBRepository db = new DBRepository())
-            //    {
-            //        db.LoadReport210(report);
-            //    }
-            //}
-
             FormAboutProgram FrAbPr = new FormAboutProgram();
             FrAbPr.ShowDialog();
         }

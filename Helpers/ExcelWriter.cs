@@ -3,6 +3,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Text;
 using EMS.Desktop.Models;
+using EMS.Desktop.Services;
 //using OfficeOpenXml;
 
 namespace EMS.Desktop.Helpers
@@ -13,6 +14,12 @@ namespace EMS.Desktop.Helpers
         {
             Report210 datas = new Report210();
             Encoding win1251 = Encoding.GetEncoding(1251);
+            int fileId = FileManager.GetFileId(fileName);
+            Models.File file;
+            DBRepository db = new DBRepository();
+            file  = db.FindOrAddFile(fileId);
+            FileManager.SetFileId(fileName, file.Id);
+            datas.FileId = file.Id;
             string[] file210 = System.IO.File.ReadAllLines(fileName, win1251);
             datas.Datas = new List<Report210.ReportData>();
             for (int i = 1; i < file210.Length; i++)
@@ -29,16 +36,18 @@ namespace EMS.Desktop.Helpers
                 datas.Datas[i - 1].Entered = Convert.ToDouble(str[8].Replace(".", ","));
                 datas.Datas[i - 1].Code = str[9] + "^" + str[10] + "^" + str[11] + "^" + str[12] + "^" + str[13] + "^" + str[14] + "^" + str[15] + "^" + str[16] + "^" + str[17] + "^" + str[18] + "^" + str[19];
                 datas.Datas[i - 1].meterInfo = new List<Report210.ReportData.MeterInfo>();
-                int countOfMeters = int.Parse(str[10].Split('~')[0]);
                 if (datas.Datas[i - 1].ServiceId == 2)
+                {
+                    int countOfMeters = int.Parse(str[10].Split('~')[0]);
                     for (int j = 0; j < countOfMeters; j++)
                         datas.Datas[i - 1].meterInfo.Add(new Report210.ReportData.MeterInfo()
                         {
                             oldValue = Convert.ToInt32(str[10].Split('~')[6 + 5 * j]),
                             newValue = Convert.ToInt32(str[10].Split('~')[8 + 5 * j]),
                             //Parse meter's number
-                            number = 1
+                            number = j + 1
                         });
+                }
 
             }
             return datas;

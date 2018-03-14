@@ -9,6 +9,7 @@ namespace EMS.Desktop.Models
     public class Report210
     {
         public List<ReportData> Datas;
+        public int FileId;
 
         public class ReportData
         {

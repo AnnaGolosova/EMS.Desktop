@@ -2,17 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using EMS.Desktop.Models;
-using System.Windows.Forms;
 using EMS.Desktop.Exceptions;
 
 namespace EMS.Desktop.Services
 {
-    public class DBRepository : IRepository, IDisposable
+    public class DBRepository :/* IRepository, */IDisposable
     {
         static EMSEntities db;
 
         #region Getters
-        static DBRepository()
+        public int GetNextFileId()
+        {
+            return db.File.Max(f => f.Id) + 1;
+        }
+
+        public DBRepository()
         {
             if (db == null)
                 db = new EMSEntities();
@@ -20,7 +24,7 @@ namespace EMS.Desktop.Services
 
         public void Dispose()
         {
-            db = null;
+            db.Dispose();
         }
 
         public List<Copay> GetCopay()
@@ -28,14 +32,18 @@ namespace EMS.Desktop.Services
             return db.Copay.ToList();
         }
 
-        public File GetFile(int id)
+        public File FindOrAddFile(int id)
         {
             try
             {
                 return db.File.Where(f => f.Id == id).First();
-            } catch(InvalidOperationException)
+            }
+            catch (InvalidOperationException)
             {
-                return null;
+                File file = new File() { Date = DateTime.Now };
+                db.File.Add(file);
+                db.SaveChanges();
+                return file;
             }
             
         }
@@ -107,12 +115,12 @@ namespace EMS.Desktop.Services
             return db.MeterData.ToList();
         }
 
-        public List<MeterData> GetMeterData(string ownerName)
-        {
-            return db.MeterData
-                .Where(md => md.Meter.Homestead.OwnerName.CompareTo(ownerName) == 0)
-                .ToList();
-        }
+        //public List<MeterData> GetMeterData(string ownerName)
+        //{
+        //    return db.MeterData
+        //        .Where(md => md.Meter.Homestead.OwnerName.CompareTo(ownerName) == 0)
+        //        .ToList();
+        //}
 
         public List<MeterData> GetMeterData(DateTime date)
         {
@@ -237,30 +245,35 @@ namespace EMS.Desktop.Services
 
         public void LoadReport210(Report210 report)
         {
-            foreach(Report210.ReportData data in report.Datas)
+            try
             {
-                if (data.meterInfo != null)
+                foreach(Report210.ReportData data in report.Datas)
                 {
-                    foreach (Report210.ReportData.MeterInfo info in data.meterInfo)
+                    Payment currentPayment = new Payment();
+                    Homestead homestead = GetHomestead(data.HomeSteadNumber);
+                    if (homestead == null)
                     {
-                        try
+                        homestead = new Homestead() { OwnerName = data.OwnerName, Number = data.HomeSteadNumber };
+                        db.Homestead.Add(homestead);
+                        db.SaveChanges();
+                    }
+                    currentPayment.IdHomestead = (int)homestead.Id;
+                    
+                    currentPayment.Date = data.Date;
+                    currentPayment.Introduced = data.Introduced;
+                    currentPayment.Entered = data.Entered;
+                    currentPayment.IdService = data.ServiceId;
+                    currentPayment.IdFile = report.FileId;
+                    if (data.meterInfo != null || data.meterInfo.Count != 0)
+                    {
+                        foreach (Report210.ReportData.MeterInfo info in data.meterInfo)
                         {
-                            Payment currentPayment = new Payment();
                             MeterData meterData = new MeterData();
                             Meter meter;
-
-                            Homestead homestead = GetHomestead(data.HomeSteadNumber);
-                            if (homestead == null)
-                            {
-                                homestead = new Homestead() { OwnerName = data.OwnerName, Number = data.HomeSteadNumber };
-                                db.Homestead.Add(homestead);
-                                db.SaveChanges();
-                            }
-                            currentPayment.IdHomestead = homestead.Number;
-
+                            
                             try
                             {
-                                meter = GetMeter().Where(m => m.IdHomestead == homestead.Number && m.MeterNumber == info.number).First();
+                                meter = GetMeter().Where(m => m.IdHomestead == homestead.Id && m.MeterNumber == info.number).First();
                             }
                             catch (InvalidOperationException)
                             {
@@ -269,7 +282,7 @@ namespace EMS.Desktop.Services
                             if (meter == null)
                             {
                                 meter = new Meter();
-                                meter.IdHomestead = homestead.Number;
+                                meter.IdHomestead = (int)homestead.Id;
                                 meter.MeterNumber = info.number;
                                 db.Meter.Add(meter);
                                 db.SaveChanges();
@@ -282,26 +295,16 @@ namespace EMS.Desktop.Services
                             db.MeterData.Add(meterData);
                             db.SaveChanges();
                             currentPayment.IdMeterData = meterData.Id;
-
-                            currentPayment.Date = data.Date;
-                            currentPayment.Introduced = data.Introduced;
-                            currentPayment.Entered = data.Entered;
-                            currentPayment.IdService = data.ServiceId;
-
-                            db.Payment.Add(currentPayment);
-                            db.SaveChanges();
-                        }
-                        catch(InvalidCastException ex)
-                        {
-                            MessageBox.Show("Упс, что-то пошло не так! Проверьте кодключение к базе данных.");
-                            //throw new DataBaseException(ex.Message, ex);
+                            
                         }
                     }
+                    db.Payment.Add(currentPayment);
+                    db.SaveChanges();
                 }
-                else
-                {
-
-                }
+            }
+            catch(InvalidCastException ex)
+            {
+                throw new DataBaseException("Упс, что-то пошло не так! Проверьте кодключение к базе данных.", ex);
             }
         }
 

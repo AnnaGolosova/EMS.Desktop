@@ -14,8 +14,6 @@
         <EntityTypeShape EntityType="EMSModel.Rate" Width="1.5" PointX="9.5" PointY="3.875" IsExpanded="true" />
         <EntityTypeShape EntityType="EMSModel.Service" Width="1.5" PointX="9.375" PointY="1.625" IsExpanded="true" />
         <AssociationConnector Association="EMSModel.FK_Payment_ToFile" ManuallyRouted="false" />
-        <AssociationConnector Association="EMSModel.FK_Meter_ToHomestead" ManuallyRouted="false" />
-        <AssociationConnector Association="EMSModel.FK_Payment_ToHomestead" ManuallyRouted="false" />
         <AssociationConnector Association="EMSModel.FK_MeterData_ToMeter" ManuallyRouted="false" />
         <AssociationConnector Association="EMSModel.FK_Payment_ToMeterData" ManuallyRouted="false" />
         <AssociationConnector Association="EMSModel.FK_Payment_ToService" ManuallyRouted="false" />

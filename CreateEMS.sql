@@ -57,8 +57,9 @@ CREATE TABLE [dbo].[File] (
 GO
 
 CREATE TABLE [dbo].[Homestead] (
-    [Number]     INT          IDENTITY (1, 1) NOT NULL PRIMARY KEY,
-    [Owner_Name] nvarchar(50) NOT NULL
+	Id INT  IDENTITY (1, 1) NOT NULL PRIMARY KEY,
+    [Number]     INT        ,
+    [Owner_Name] nvarchar(50)
 )
 GO
 
@@ -67,7 +68,6 @@ CREATE TABLE [dbo].[Meter] (
     [Id_Homestead] INT NOT NULL,
     [Meter_Number] INT NOT NULL,
 
-	CONSTRAINT FK_Meter_ToHomestead FOREIGN KEY (Id_Homestead) REFERENCES Homestead(Number)
 )
 GO
 
@@ -85,13 +85,12 @@ CREATE TABLE [dbo].[Payment] (
     [Id]            INT        IDENTITY (1, 1) NOT NULL PRIMARY KEY,
     [Id_Homestead]  INT        NOT NULL,
     [Id_Service]    INT        NOT NULL,
-    [Id_Meter_Data] INT        NOT NULL,
+    [Id_Meter_Data] INT        NULL,
     [Id_File]       INT        NOT NULL,
     [INTroduced]    FLOAT (53) NOT NULL DEFAULT 0,
     [Entered]       FLOAT (53) NOT NULL DEFAULT 0,
     [Date]          DATE       NULL,
 	
-	CONSTRAINT FK_Payment_ToHomestead	FOREIGN KEY ([Id_Homestead])	REFERENCES Homestead(Number),
 	CONSTRAINT FK_Payment_ToService		FOREIGN KEY ([Id_Service])		REFERENCES [Service](Id),
 	CONSTRAINT FK_Payment_ToMeterData	FOREIGN KEY ([Id_Meter_Data])	REFERENCES MeterData(Id),
 	CONSTRAINT FK_Payment_ToFile		FOREIGN KEY ([Id_File])			REFERENCES [File](Id)

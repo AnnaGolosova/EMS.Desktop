@@ -88,12 +88,28 @@ namespace EMS.Desktop.Helpers
                 setter.SetCustomProperty(state);
             }
         }
-        
+
         public static FileState GetFileState(string filePath)
         {
             using (FileParameterSetter setter = new FileParameterSetter(filePath))
             {
                 return setter.GetProperty();
+            }
+        }
+
+        public static int GetFileId(string filePath)
+        {
+            using (FileParameterSetter setter = new FileParameterSetter(filePath))
+            {
+                return setter.GetFileId();
+            }
+        }
+
+        public static void SetFileId(string filePath, int Id)
+        {
+            using (FileParameterSetter setter = new FileParameterSetter(filePath))
+            {
+                setter.SetFileId(Id);
             }
         }
 

@@ -29,8 +29,9 @@ namespace EMS.Desktop.Helpers
 
         public static string GetReports210Path()
         {
-            if (ConfigurationManager.AppSettings["Reports210Path"] != null)
-                return ConfigurationManager.AppSettings["Reports210Path"];
+            Configuration config = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
+            if (config.AppSettings.Settings["Reports210Path"].Value != null)
+                return config.AppSettings.Settings["Reports210Path"].Value;
             else
                 return null;
         }
