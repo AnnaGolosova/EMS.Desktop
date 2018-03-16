@@ -14,12 +14,6 @@ namespace EMS.Desktop.Helpers
         {
             Report210 datas = new Report210();
             Encoding win1251 = Encoding.GetEncoding(1251);
-            int fileId = FileManager.GetFileId(fileName);
-            Models.File file;
-            DBRepository db = new DBRepository();
-            file  = db.FindOrAddFile(fileId);
-            FileManager.SetFileId(fileName, file.Id);
-            datas.FileId = file.Id;
             string[] file210 = System.IO.File.ReadAllLines(fileName, win1251);
             datas.Datas = new List<Report210.ReportData>();
             for (int i = 1; i < file210.Length; i++)
@@ -53,7 +47,7 @@ namespace EMS.Desktop.Helpers
             return datas;
         }
 
-        static List<Report202.ReportData.MeterInfo> metInfo (List<Report210.ReportData.MeterInfo> meter)
+        static List<Report202.ReportData.MeterInfo> metInfo(List<Report210.ReportData.MeterInfo> meter)
         {
             List<Report202.ReportData.MeterInfo> mi = new List<Report202.ReportData.MeterInfo>();
             foreach (Report210.ReportData.MeterInfo mt in meter)

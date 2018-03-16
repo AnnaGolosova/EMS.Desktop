@@ -29,15 +29,15 @@
         private void InitializeComponent()
         {
             this.GroupBox = new System.Windows.Forms.GroupBox();
-            this.MonthRB = new System.Windows.Forms.RadioButton();
-            this.QuarterRB = new System.Windows.Forms.RadioButton();
-            this.DuringTimeRB = new System.Windows.Forms.RadioButton();
-            this.MonthTimePicker = new System.Windows.Forms.DateTimePicker();
-            this.QuarterTimePicker = new System.Windows.Forms.DateTimePicker();
-            this.FromDatePicker = new System.Windows.Forms.DateTimePicker();
-            this.ToDatePicker = new System.Windows.Forms.DateTimePicker();
-            this.FromLabel = new System.Windows.Forms.Label();
             this.ToLabel = new System.Windows.Forms.Label();
+            this.FromLabel = new System.Windows.Forms.Label();
+            this.ToDatePicker = new System.Windows.Forms.DateTimePicker();
+            this.FromDatePicker = new System.Windows.Forms.DateTimePicker();
+            this.QuarterTimePicker = new System.Windows.Forms.DateTimePicker();
+            this.MonthTimePicker = new System.Windows.Forms.DateTimePicker();
+            this.DuringTimeRB = new System.Windows.Forms.RadioButton();
+            this.QuarterRB = new System.Windows.Forms.RadioButton();
+            this.MonthRB = new System.Windows.Forms.RadioButton();
             this.CreateReportButton = new System.Windows.Forms.Button();
             this.CancelButton = new System.Windows.Forms.Button();
             this.GroupBox.SuspendLayout();
@@ -63,27 +63,59 @@
             this.GroupBox.TabStop = false;
             this.GroupBox.Text = "Выбор времени";
             // 
-            // MonthRB
+            // ToLabel
             // 
-            this.MonthRB.AutoSize = true;
-            this.MonthRB.Location = new System.Drawing.Point(24, 41);
-            this.MonthRB.Name = "MonthRB";
-            this.MonthRB.Size = new System.Drawing.Size(104, 17);
-            this.MonthRB.TabIndex = 0;
-            this.MonthRB.Text = "Отчёт за месяц";
-            this.MonthRB.UseVisualStyleBackColor = true;
-            this.MonthRB.CheckedChanged += new System.EventHandler(this.MonthRB_CheckedChanged);
+            this.ToLabel.AutoSize = true;
+            this.ToLabel.Location = new System.Drawing.Point(413, 146);
+            this.ToLabel.Name = "ToLabel";
+            this.ToLabel.Size = new System.Drawing.Size(21, 13);
+            this.ToLabel.TabIndex = 8;
+            this.ToLabel.Text = "По";
             // 
-            // QuarterRB
+            // FromLabel
             // 
-            this.QuarterRB.AutoSize = true;
-            this.QuarterRB.Location = new System.Drawing.Point(24, 89);
-            this.QuarterRB.Name = "QuarterRB";
-            this.QuarterRB.Size = new System.Drawing.Size(113, 17);
-            this.QuarterRB.TabIndex = 1;
-            this.QuarterRB.Text = "Отчёт за квартал";
-            this.QuarterRB.UseVisualStyleBackColor = true;
-            this.QuarterRB.CheckedChanged += new System.EventHandler(this.QuarterRB_CheckedChanged);
+            this.FromLabel.AutoSize = true;
+            this.FromLabel.Location = new System.Drawing.Point(181, 145);
+            this.FromLabel.Name = "FromLabel";
+            this.FromLabel.Size = new System.Drawing.Size(14, 13);
+            this.FromLabel.TabIndex = 7;
+            this.FromLabel.Text = "C";
+            // 
+            // ToDatePicker
+            // 
+            this.ToDatePicker.Enabled = false;
+            this.ToDatePicker.Location = new System.Drawing.Point(440, 139);
+            this.ToDatePicker.Name = "ToDatePicker";
+            this.ToDatePicker.Size = new System.Drawing.Size(169, 20);
+            this.ToDatePicker.TabIndex = 6;
+            // 
+            // FromDatePicker
+            // 
+            this.FromDatePicker.Enabled = false;
+            this.FromDatePicker.Location = new System.Drawing.Point(201, 138);
+            this.FromDatePicker.Name = "FromDatePicker";
+            this.FromDatePicker.Size = new System.Drawing.Size(169, 20);
+            this.FromDatePicker.TabIndex = 5;
+            // 
+            // QuarterTimePicker
+            // 
+            this.QuarterTimePicker.Enabled = false;
+            this.QuarterTimePicker.Location = new System.Drawing.Point(201, 89);
+            this.QuarterTimePicker.Name = "QuarterTimePicker";
+            this.QuarterTimePicker.Size = new System.Drawing.Size(169, 20);
+            this.QuarterTimePicker.TabIndex = 4;
+            // 
+            // MonthTimePicker
+            // 
+            this.MonthTimePicker.Checked = false;
+            this.MonthTimePicker.CustomFormat = "MMMM yyyy г.";
+            this.MonthTimePicker.Enabled = false;
+            this.MonthTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.MonthTimePicker.Location = new System.Drawing.Point(201, 41);
+            this.MonthTimePicker.Name = "MonthTimePicker";
+            this.MonthTimePicker.ShowUpDown = true;
+            this.MonthTimePicker.Size = new System.Drawing.Size(169, 20);
+            this.MonthTimePicker.TabIndex = 3;
             // 
             // DuringTimeRB
             // 
@@ -96,58 +128,27 @@
             this.DuringTimeRB.UseVisualStyleBackColor = true;
             this.DuringTimeRB.CheckedChanged += new System.EventHandler(this.DuringTimeRB_CheckedChanged);
             // 
-            // MonthTimePicker
+            // QuarterRB
             // 
-            this.MonthTimePicker.CustomFormat = "MMMM yyyy г.";
-            this.MonthTimePicker.Enabled = false;
-            this.MonthTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.MonthTimePicker.Location = new System.Drawing.Point(201, 41);
-            this.MonthTimePicker.Name = "MonthTimePicker";
-            this.MonthTimePicker.ShowUpDown = true;
-            this.MonthTimePicker.Size = new System.Drawing.Size(169, 20);
-            this.MonthTimePicker.TabIndex = 3;
+            this.QuarterRB.AutoSize = true;
+            this.QuarterRB.Location = new System.Drawing.Point(24, 89);
+            this.QuarterRB.Name = "QuarterRB";
+            this.QuarterRB.Size = new System.Drawing.Size(113, 17);
+            this.QuarterRB.TabIndex = 1;
+            this.QuarterRB.Text = "Отчёт за квартал";
+            this.QuarterRB.UseVisualStyleBackColor = true;
+            this.QuarterRB.CheckedChanged += new System.EventHandler(this.QuarterRB_CheckedChanged);
             // 
-            // QuarterTimePicker
+            // MonthRB
             // 
-            this.QuarterTimePicker.Enabled = false;
-            this.QuarterTimePicker.Location = new System.Drawing.Point(201, 89);
-            this.QuarterTimePicker.Name = "QuarterTimePicker";
-            this.QuarterTimePicker.Size = new System.Drawing.Size(169, 20);
-            this.QuarterTimePicker.TabIndex = 4;
-            // 
-            // FromDatePicker
-            // 
-            this.FromDatePicker.Enabled = false;
-            this.FromDatePicker.Location = new System.Drawing.Point(201, 138);
-            this.FromDatePicker.Name = "FromDatePicker";
-            this.FromDatePicker.Size = new System.Drawing.Size(169, 20);
-            this.FromDatePicker.TabIndex = 5;
-            // 
-            // ToDatePicker
-            // 
-            this.ToDatePicker.Enabled = false;
-            this.ToDatePicker.Location = new System.Drawing.Point(440, 139);
-            this.ToDatePicker.Name = "ToDatePicker";
-            this.ToDatePicker.Size = new System.Drawing.Size(169, 20);
-            this.ToDatePicker.TabIndex = 6;
-            // 
-            // FromLabel
-            // 
-            this.FromLabel.AutoSize = true;
-            this.FromLabel.Location = new System.Drawing.Point(181, 145);
-            this.FromLabel.Name = "FromLabel";
-            this.FromLabel.Size = new System.Drawing.Size(14, 13);
-            this.FromLabel.TabIndex = 7;
-            this.FromLabel.Text = "C";
-            // 
-            // ToLabel
-            // 
-            this.ToLabel.AutoSize = true;
-            this.ToLabel.Location = new System.Drawing.Point(413, 146);
-            this.ToLabel.Name = "ToLabel";
-            this.ToLabel.Size = new System.Drawing.Size(21, 13);
-            this.ToLabel.TabIndex = 8;
-            this.ToLabel.Text = "По";
+            this.MonthRB.AutoSize = true;
+            this.MonthRB.Location = new System.Drawing.Point(24, 41);
+            this.MonthRB.Name = "MonthRB";
+            this.MonthRB.Size = new System.Drawing.Size(104, 17);
+            this.MonthRB.TabIndex = 0;
+            this.MonthRB.Text = "Отчёт за месяц";
+            this.MonthRB.UseVisualStyleBackColor = true;
+            this.MonthRB.CheckedChanged += new System.EventHandler(this.MonthRB_CheckedChanged);
             // 
             // CreateReportButton
             // 
@@ -157,6 +158,7 @@
             this.CreateReportButton.TabIndex = 1;
             this.CreateReportButton.Text = "Сформировать отчёт";
             this.CreateReportButton.UseVisualStyleBackColor = true;
+            this.CreateReportButton.Click += new System.EventHandler(this.CreateReportButton_Click);
             // 
             // CancelButton
             // 

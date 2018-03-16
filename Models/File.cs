@@ -21,6 +21,7 @@ namespace EMS.Desktop.Models
     
         public int Id { get; set; }
         public Nullable<System.DateTime> Date { get; set; }
+        public string Path { get; set; }
     
         public virtual ICollection<Payment> Payment { get; set; }
     }

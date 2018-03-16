@@ -35,7 +35,7 @@ CREATE TABLE [dbo].[Copay] (
 GO
 
 CREATE TABLE [dbo].[Service] (
-    [Id]   INT          IDENTITY (1, 1) NOT NULL PRIMARY KEY,
+    [Id]   INT           NOT NULL PRIMARY KEY,
     [Name] nvarchar (50) NOT NULL
 )
 GO
@@ -52,7 +52,8 @@ GO
 
 CREATE TABLE [dbo].[File] (
     [Id]   INT  IDENTITY (1, 1) NOT NULL PRIMARY KEY,
-    [Date] DATE NULL
+    [Date] DATE NULL,
+    [Path] nvarchar(256) NOT NULL
 )
 GO
 
@@ -98,8 +99,8 @@ CREATE TABLE [dbo].[Payment] (
 GO
 
 INSERT INTO [SERVICE] 
-VALUES	(N'Взносы'),
-		(N'Электроэнергия'),
-		(N'Налог на землю'),
-		(N'Налог на недвижимость')
+VALUES	(1, N'Взносы'),
+		(2, N'Электроэнергия'),
+		(3, N'Налог на землю'),
+		(4, N'Налог на недвижимость')
 GO

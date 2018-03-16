@@ -75,6 +75,7 @@
     </Compile>
     <Compile Include="Helpers\ExcelWriter.cs" />
     <Compile Include="Helpers\FileParameterSetter.cs" />
+    <Compile Include="Helpers\LoadNewFile.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

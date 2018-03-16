@@ -11,8 +11,10 @@ namespace EMS.Desktop.Services
         static EMSEntities db;
 
         #region Getters
-        public int GetNextFileId()
+        public int? GetNextFileId()
         {
+            if (db.File.ToList().Count == 0)
+                return null;
             return db.File.Max(f => f.Id) + 1;
         }
 
@@ -32,7 +34,7 @@ namespace EMS.Desktop.Services
             return db.Copay.ToList();
         }
 
-        public File FindOrAddFile(int id)
+        public File FindOrAddFile(int? id, string filePath)
         {
             try
             {
@@ -40,7 +42,7 @@ namespace EMS.Desktop.Services
             }
             catch (InvalidOperationException)
             {
-                File file = new File() { Date = DateTime.Now };
+                File file = new File() { Date = DateTime.Now, Path = filePath };
                 db.File.Add(file);
                 db.SaveChanges();
                 return file;
