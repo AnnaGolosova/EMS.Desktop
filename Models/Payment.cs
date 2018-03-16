@@ -17,20 +17,13 @@ namespace EMS.Desktop.Models
         public int Id { get; set; }
         public int IdHomestead { get; set; }
         public int IdService { get; set; }
-        public int IdMeterData { get; set; }
+        public Nullable<int> IdMeterData { get; set; }
         public int IdFile { get; set; }
-        /// <summary>
-        /// Внесено, без вычета пени
-        /// </summary>
         public double Introduced { get; set; }
-        /// <summary>
-        /// Зачислено на рассчетный счет
-        /// </summary>
         public double Entered { get; set; }
         public Nullable<System.DateTime> Date { get; set; }
     
         public virtual File File { get; set; }
-        public virtual Homestead Homestead { get; set; }
         public virtual MeterData MeterData { get; set; }
         public virtual Service Service { get; set; }
     }

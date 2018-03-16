@@ -41,6 +41,7 @@
             this.MenuAboutProgram = new System.Windows.Forms.ToolStripMenuItem();
             this.MainProgressBar = new System.Windows.Forms.ProgressBar();
             this.ColorPanel = new System.Windows.Forms.Panel();
+            this.LabelProgrBar = new System.Windows.Forms.Label();
             this.Menu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -147,17 +148,34 @@
             this.ColorPanel.Size = new System.Drawing.Size(643, 356);
             this.ColorPanel.TabIndex = 2;
             // 
+            // LabelProgrBar
+            // 
+            this.LabelProgrBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+            this.LabelProgrBar.Cursor = System.Windows.Forms.Cursors.Default;
+            this.LabelProgrBar.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.LabelProgrBar.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
+            this.LabelProgrBar.Location = new System.Drawing.Point(0, 380);
+            this.LabelProgrBar.Name = "LabelProgrBar";
+            this.LabelProgrBar.Size = new System.Drawing.Size(643, 23);
+            this.LabelProgrBar.TabIndex = 0;
+            this.LabelProgrBar.Text = "Файлы загружены";
+            this.LabelProgrBar.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.LabelProgrBar.Visible = false;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(643, 403);
+            this.Controls.Add(this.LabelProgrBar);
             this.Controls.Add(this.ColorPanel);
             this.Controls.Add(this.MainProgressBar);
             this.Controls.Add(this.Menu);
             this.MainMenuStrip = this.Menu;
             this.Name = "MainForm";
             this.Text = "E.M.S.";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Closing_MainForm);
+            this.Load += new System.EventHandler(this.Load_MainForm);
             this.Menu.ResumeLayout(false);
             this.Menu.PerformLayout();
             this.ResumeLayout(false);
@@ -174,12 +192,13 @@
         private System.Windows.Forms.ToolStripMenuItem MainJournal;
         private System.Windows.Forms.ToolStripMenuItem MenuSettings;
         private System.Windows.Forms.ToolStripMenuItem MenuAboutProgram;
-        private System.Windows.Forms.ProgressBar MainProgressBar;
         private System.Windows.Forms.Panel ColorPanel;
         private System.Windows.Forms.ToolStripMenuItem MenuReposForERIP;
         private System.Windows.Forms.ToolStripMenuItem MenuReposForExcel;
         private System.Windows.Forms.ToolStripMenuItem SettingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem SavePathTSMI;
+        public System.Windows.Forms.Label LabelProgrBar;
+        public System.Windows.Forms.ProgressBar MainProgressBar;
     }
 }
 

@@ -35,7 +35,7 @@ CREATE TABLE [dbo].[Copay] (
 GO
 
 CREATE TABLE [dbo].[Service] (
-    [Id]   INT          IDENTITY (1, 1) NOT NULL PRIMARY KEY,
+    [Id]   INT           NOT NULL PRIMARY KEY,
     [Name] nvarchar (50) NOT NULL
 )
 GO
@@ -52,14 +52,15 @@ GO
 
 CREATE TABLE [dbo].[File] (
     [Id]   INT  IDENTITY (1, 1) NOT NULL PRIMARY KEY,
-    [Date] DATE NULL
+    [Date] DATE NULL,
+    [Path] nvarchar(256) NOT NULL
 )
 GO
 
 CREATE TABLE [dbo].[Homestead] (
-    [Id]           INT IDENTITY (1, 1) NOT NULL PRIMARY KEY,
-    [Number]     INT          NOT NULL,
-    [Owner_Name] nvarchar(50) NOT NULL
+	Id INT  IDENTITY (1, 1) NOT NULL PRIMARY KEY,
+    [Number]     INT        ,
+    [Owner_Name] nvarchar(50)
 )
 GO
 
@@ -68,7 +69,6 @@ CREATE TABLE [dbo].[Meter] (
     [Id_Homestead] INT NOT NULL,
     [Meter_Number] INT NOT NULL,
 
-	CONSTRAINT FK_Meter_ToHomestead FOREIGN KEY (Id_Homestead) REFERENCES Homestead(Id)
 )
 GO
 
@@ -86,13 +86,12 @@ CREATE TABLE [dbo].[Payment] (
     [Id]            INT        IDENTITY (1, 1) NOT NULL PRIMARY KEY,
     [Id_Homestead]  INT        NOT NULL,
     [Id_Service]    INT        NOT NULL,
-    [Id_Meter_Data] INT        NOT NULL,
+    [Id_Meter_Data] INT        NULL,
     [Id_File]       INT        NOT NULL,
     [INTroduced]    FLOAT (53) NOT NULL DEFAULT 0,
     [Entered]       FLOAT (53) NOT NULL DEFAULT 0,
     [Date]          DATE       NULL,
 	
-	CONSTRAINT FK_Payment_ToHomestead	FOREIGN KEY ([Id_Homestead])	REFERENCES Homestead(Id),
 	CONSTRAINT FK_Payment_ToService		FOREIGN KEY ([Id_Service])		REFERENCES [Service](Id),
 	CONSTRAINT FK_Payment_ToMeterData	FOREIGN KEY ([Id_Meter_Data])	REFERENCES MeterData(Id),
 	CONSTRAINT FK_Payment_ToFile		FOREIGN KEY ([Id_File])			REFERENCES [File](Id)
@@ -100,8 +99,8 @@ CREATE TABLE [dbo].[Payment] (
 GO
 
 INSERT INTO [SERVICE] 
-VALUES	(N'Взносы'),
-		(N'Электроэнергия'),
-		(N'Налог на землю'),
-		(N'Налог на недвижимость')
+VALUES	(1, N'Взносы'),
+		(2, N'Электроэнергия'),
+		(3, N'Налог на землю'),
+		(4, N'Налог на недвижимость')
 GO

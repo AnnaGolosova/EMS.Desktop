@@ -1,5 +1,4 @@
 ﻿using EMS.Desktop.Helpers;
-using EMS.Desktop.Models;
 using EMS.Desktop.Services;
 using System;
 using System.Collections.Generic;
@@ -19,15 +18,12 @@ namespace EMS.Desktop
         public MainForm()
         {
             InitializeComponent();
-            Thread NewFile = new Thread(OnCreate);
-            NewFile.Start();
         }
 
         public void OnCreate()
         {
-            
+            LoadNewFile.LoadFile(this);
         }
-
         private void MenuAboutProgram_Click(object sender, EventArgs e)
         {
             FormAboutProgram FrAbPr = new FormAboutProgram();
@@ -56,6 +52,27 @@ namespace EMS.Desktop
         {
             FormInstallationPath FmInstPath = new FormInstallationPath();
             FmInstPath.ShowDialog();
+        }
+
+        private void Load_MainForm(object sender, EventArgs e)
+        {
+            Thread NewFile = new Thread(OnCreate);
+            NewFile.Start();
+        }
+
+        private void Closing_MainForm(object sender, FormClosingEventArgs e)
+        {
+            if (MainProgressBar.Value != MainProgressBar.Maximum)
+            {
+                if (MessageBox.Show("Процесс загрузки новых файлов .210 ещё не завершён!\nВы действительнно хотите выйти ?", "Внимание!", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.No)
+                {
+                    e.Cancel = true;
+                }
+                else
+                    Environment.Exit(1);
+            }
+            else
+                Environment.Exit(1);
         }
     }
 }

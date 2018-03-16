@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using DSOFile;
+using EMS.Desktop.Services;
 
 namespace EMS.Desktop.Helpers
 {
@@ -33,7 +34,6 @@ namespace EMS.Desktop.Helpers
                     File.Delete(f);
                 }
             }
-
             catch (DirectoryNotFoundException dirNotFound)
             {
                 throw new DirectoryNotFoundException("Error: directory not found ", dirNotFound);
@@ -88,7 +88,7 @@ namespace EMS.Desktop.Helpers
                 setter.SetCustomProperty(state);
             }
         }
-        
+
         public static FileState GetFileState(string filePath)
         {
             using (FileParameterSetter setter = new FileParameterSetter(filePath))
@@ -97,18 +97,44 @@ namespace EMS.Desktop.Helpers
             }
         }
 
+        public static int GetFileId(string filePath)
+        {
+            using (FileParameterSetter setter = new FileParameterSetter(filePath))
+            {
+                return setter.GetFileId();
+            }
+        }
+
+        public static int SetFileId(string filePath, int? Id)
+        {
+            using (FileParameterSetter setter = new FileParameterSetter(filePath))
+            {
+                DBRepository db = new DBRepository();
+                Models.File f = db.FindOrAddFile(Id, filePath);
+                setter.SetFileId(f.Id);
+                return f.Id;
+            }
+        }
+        
         public static List<string> GetNewFilePathes(string directoryPath)
         {
-            DirectoryInfo dir = new DirectoryInfo(directoryPath);
-            List<FileInfo> files = dir.GetFiles().ToList();
             List<string> result = new List<string>();
-            foreach(FileInfo file in files)
+            try
             {
-                using (FileParameterSetter setter = new FileParameterSetter(file.FullName))
+                DirectoryInfo dir = new DirectoryInfo(directoryPath);
+                List<FileInfo> files = dir.GetFiles().ToList();
+                foreach (FileInfo file in files)
                 {
-                    if (setter.GetProperty() == FileState.New)
-                        result.Add(file.FullName);
+                    using (FileParameterSetter setter = new FileParameterSetter(file.FullName))
+                    {
+                        if (setter.GetProperty() == FileState.New)
+                            result.Add(file.FullName);
+                    }
                 }
+            }
+            catch
+            {
+                //Не может найти путь - обработать исключение
             }
             return result;
         }
