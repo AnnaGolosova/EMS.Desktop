@@ -127,7 +127,7 @@ namespace EMS.Desktop.Helpers
                 {
                     using (FileParameterSetter setter = new FileParameterSetter(file.FullName))
                     {
-                        if (setter.GetProperty() == FileState.New)
+                        if (setter.GetProperty() == FileState.New || setter.GetProperty() == FileState.None)
                             result.Add(file.FullName);
                     }
                 }
