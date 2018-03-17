@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -125,10 +125,13 @@ namespace EMS.Desktop.Helpers
                 List<FileInfo> files = dir.GetFiles().ToList();
                 foreach (FileInfo file in files)
                 {
-                    using (FileParameterSetter setter = new FileParameterSetter(file.FullName))
+                    if(file.Name.Split('.').Last().CompareTo("210") == 0)
                     {
-                        if (setter.GetProperty() == FileState.New || setter.GetProperty() == FileState.None)
-                            result.Add(file.FullName);
+                        using (FileParameterSetter setter = new FileParameterSetter(file.FullName))
+                        {
+                            if (setter.GetProperty() == FileState.New || setter.GetProperty() == FileState.None)
+                                result.Add(file.FullName);
+                        }
                     }
                 }
             }
