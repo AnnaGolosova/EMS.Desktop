@@ -22,7 +22,7 @@ namespace EMS.Desktop
 
         public void OnCreate()
         {
-            LoadNewFile.LoadFile(this);
+            //LoadNewFile.LoadFile(this);
         }
         private void MenuAboutProgram_Click(object sender, EventArgs e)
         {
@@ -56,23 +56,71 @@ namespace EMS.Desktop
 
         private void Load_MainForm(object sender, EventArgs e)
         {
-            Thread NewFile = new Thread(OnCreate);
-            NewFile.Start();
+            if (FileManager.GetNewFilesCount(ConfigAppManager.GetReports210Path()) != 0)
+            {
+                Thread NewFile = new Thread(OnCreate);
+                NewFile.Start();
+            }
         }
 
         private void Closing_MainForm(object sender, FormClosingEventArgs e)
         {
-            if (MainProgressBar.Value != MainProgressBar.Maximum)
+            if (FileManager.GetNewFilesCount(ConfigAppManager.GetReports210Path()) != 0)
             {
-                if (MessageBox.Show("Процесс загрузки новых файлов .210 ещё не завершён!\nВы действительнно хотите выйти ?", "Внимание!", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.No)
+                if (MainProgressBar.Value != MainProgressBar.Maximum)
                 {
-                    e.Cancel = true;
+                    if (MessageBox.Show("Процесс загрузки новых файлов .210 ещё не завершён!\nВы действительнно хотите выйти ?", "Внимание!", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.No)
+                    {
+                        e.Cancel = true;
+                    }
+                    else
+                        Environment.Exit(1);
                 }
                 else
                     Environment.Exit(1);
             }
             else
                 Environment.Exit(1);
+        }
+
+        private void MainJournal_Click(object sender, EventArgs e)
+        {
+            {
+                dataGridView1.Visible = true;
+
+                var column1 = new DataGridViewColumn();
+                column1.HeaderText = "Количество платежей";
+                column1.Name = "count";
+                column1.MinimumWidth = 90;
+                column1.CellTemplate = new DataGridViewTextBoxCell();
+
+                var column2 = new DataGridViewColumn();
+                column2.HeaderText = "Время обработки";
+                column2.Name = "time";
+                column2.MinimumWidth = 90;
+                column2.CellTemplate = new DataGridViewTextBoxCell();
+
+                var column3 = new DataGridViewColumn();
+                column3.HeaderText = "Путь к файлу";
+                column3.Name = "path";
+                column3.MinimumWidth = 90;
+                column3.CellTemplate = new DataGridViewTextBoxCell();
+                
+                dataGridView1.Columns.Add(column1);
+                dataGridView1.Columns.Add(column2);
+                dataGridView1.Columns.Add(column3);
+
+                dataGridView1.AllowUserToAddRows = false; 
+                
+                DBRepository repository = new DBRepository();
+                List<Models.File> listdbr = repository.GetFiles();
+                listdbr.OrderBy(s => s.Date);
+                foreach (Models.File s in listdbr)
+                {
+                    dataGridView1.Rows.Add(s.Payment.Count, s.Date.Value.ToShortTimeString(), s.Path);
+         
+                }
+            }
         }
     }
 }

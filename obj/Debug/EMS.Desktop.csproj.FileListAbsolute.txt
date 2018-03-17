@@ -52,3 +52,7 @@ C:\Users\source\EMS.Desktop\obj\Debug\EMS.Desktop.exe
 C:\Users\source\EMS.Desktop\obj\Debug\EMS.Desktop.pdb
 C:\Users\source\EMS.Desktop\obj\Debug\Interop.DSOFile.dll
 C:\Users\source\EMS.Desktop\obj\Debug\EMS.Desktop.csproj.ResolveComReference.cache
+c:\Users\Администратор\Source\Repos\EMS.Desktop\obj\Debug\Interop.DSOFile.dll
+c:\Users\Администратор\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.csproj.ResolveComReference.cache
+c:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\EntityFramework.SqlServer.dll
+c:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\EntityFramework.SqlServer.xml

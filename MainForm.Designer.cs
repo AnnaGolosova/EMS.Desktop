@@ -42,7 +42,10 @@
             this.MainProgressBar = new System.Windows.Forms.ProgressBar();
             this.ColorPanel = new System.Windows.Forms.Panel();
             this.LabelProgrBar = new System.Windows.Forms.Label();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.Menu.SuspendLayout();
+            this.ColorPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // Menu
@@ -100,6 +103,7 @@
             this.MainJournal.Name = "MainJournal";
             this.MainJournal.Size = new System.Drawing.Size(63, 20);
             this.MainJournal.Text = "Журнал";
+            this.MainJournal.Click += new System.EventHandler(this.MainJournal_Click);
             // 
             // MenuSettings
             // 
@@ -142,6 +146,7 @@
             // ColorPanel
             // 
             this.ColorPanel.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.ColorPanel.Controls.Add(this.dataGridView1);
             this.ColorPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ColorPanel.Location = new System.Drawing.Point(0, 24);
             this.ColorPanel.Name = "ColorPanel";
@@ -162,6 +167,18 @@
             this.LabelProgrBar.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.LabelProgrBar.Visible = false;
             // 
+            // dataGridView1
+            // 
+            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridView1.Location = new System.Drawing.Point(0, 0);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.RowHeadersVisible = false;
+            this.dataGridView1.Size = new System.Drawing.Size(643, 356);
+            this.dataGridView1.TabIndex = 0;
+            this.dataGridView1.Visible = false;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -178,6 +195,8 @@
             this.Load += new System.EventHandler(this.Load_MainForm);
             this.Menu.ResumeLayout(false);
             this.Menu.PerformLayout();
+            this.ColorPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -199,6 +218,7 @@
         private System.Windows.Forms.ToolStripMenuItem SavePathTSMI;
         public System.Windows.Forms.Label LabelProgrBar;
         public System.Windows.Forms.ProgressBar MainProgressBar;
+        private System.Windows.Forms.DataGridView dataGridView1;
     }
 }
 
