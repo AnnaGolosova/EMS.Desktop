@@ -29,8 +29,8 @@ namespace EMS.Desktop.Models
             public class MeterInfo
             {
                 public int number;
-                public int oldValue;
-                public int newValue;
+                public double? oldValue;
+                public double newValue;
             }
 
         }

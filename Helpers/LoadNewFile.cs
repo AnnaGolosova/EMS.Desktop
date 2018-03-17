@@ -26,7 +26,7 @@ namespace EMS.Desktop.Helpers
                     {
                         DBRepository db = new DBRepository();
                         Report210 report = ExcelWriter.Read210(s);
-                        FileManager.ChangeFileState(path, FileState.Loaded);
+                        FileManager.ChangeFileState(s, FileState.Loaded);
                         int fileId = FileManager.SetFileId(s, db.GetNextFileId());
                         report.FileId = fileId;
                         db.LoadReport210(report);

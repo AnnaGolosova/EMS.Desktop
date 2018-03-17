@@ -1,4 +1,4 @@
-using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -115,7 +115,7 @@ namespace EMS.Desktop.Helpers
                 return f.Id;
             }
         }
-        
+
         public static List<string> GetNewFilePathes(string directoryPath)
         {
             List<string> result = new List<string>();
@@ -125,7 +125,7 @@ namespace EMS.Desktop.Helpers
                 List<FileInfo> files = dir.GetFiles().ToList();
                 foreach (FileInfo file in files)
                 {
-                    if(file.Name.Split('.').Last().CompareTo("210") == 0)
+                    if (file.Name.Split('.').Last().CompareTo("210") == 0)
                     {
                         using (FileParameterSetter setter = new FileParameterSetter(file.FullName))
                         {
@@ -150,6 +150,17 @@ namespace EMS.Desktop.Helpers
         public static int GetNewFilesCount(string directoryPath)
         {
             return GetNewFilePathes(directoryPath).Count;
+        }
+
+        public static void ClearFileStates(string directoryPath)
+        {
+            foreach (string file in GetFileNames(directoryPath))
+            {
+                using (FileParameterSetter setter = new FileParameterSetter(file))
+                {
+                    setter.SetCustomProperty(FileState.New);
+                }
+            }
         }
     }
 }

@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using System.Text;
 using EMS.Desktop.Models;
 using EMS.Desktop.Services;
-//using OfficeOpenXml;
+using OfficeOpenXml;
+using System.Windows.Forms;
 
 namespace EMS.Desktop.Helpers
 {
@@ -38,7 +39,6 @@ namespace EMS.Desktop.Helpers
                         {
                             oldValue = Convert.ToInt32(str[10].Split('~')[6 + 5 * j]),
                             newValue = Convert.ToInt32(str[10].Split('~')[8 + 5 * j]),
-                            //Parse meter's number
                             number = j + 1
                         });
                 }
@@ -47,59 +47,103 @@ namespace EMS.Desktop.Helpers
             return datas;
         }
 
-        static List<Report202.ReportData.MeterInfo> metInfo(List<Report210.ReportData.MeterInfo> meter)
+        static List<Report202.ReportData.MeterInfo> ConvertTo202(List<Report210.ReportData.MeterInfo> meter)
         {
             List<Report202.ReportData.MeterInfo> mi = new List<Report202.ReportData.MeterInfo>();
             foreach (Report210.ReportData.MeterInfo mt in meter)
-                mi.Add(new Report202.ReportData.MeterInfo() { LocalRateId = 1, Value = mt.oldValue });
+                mi.Add(new Report202.ReportData.MeterInfo() { LocalRateId = 2, Value = mt.newValue });
             return mi;
         }
 
-        public static void Write202(Report210 datas)
+        public static void Write202(Report210 datas, List<Rate> rates, string fileName)
         {
             Report202 rep = new Report202();
-            rep.LocalRates = new List<Rate>()
-            {
-                new Rate{ Id = 1, IdService = 2, Value = 0.1246 },
-                new Rate{ Id = 2, IdService = 2, Value = 0.1458 },
-                new Rate{ Id = 3, IdService = 2, Value = 0.1549 }
-            };
+            rep.LocalRates = rates;
+
             rep.Datas = new List<Report202.ReportData>();
             foreach (Report210.ReportData x in datas.Datas)
             {
                 rep.Datas.Add(new Report202.ReportData()
                 {
+                    ServiceId = x.ServiceId,
                     // Нужно разобраться с этим
-                    RateId = x.ServiceId,
                     Arrear = x.Arrer,
                     Date = x.Date,
                     HomeSteadNumber = x.HomeSteadNumber,
                     OwnerName = x.OwnerName,
-                    meterInfo = metInfo(x.meterInfo)
+                    Introdused = x.Introduced,
+                    Entered = x.Entered
                 });
+                if (x.meterInfo != null)
+                    rep.Datas[rep.Datas.Count - 1].meterInfo = ConvertTo202(x.meterInfo);
             }
+            WriteExcel(rep, fileName);
         }
 
-        private static void WriteExcel()
+        private static void WriteExcel(Report202 report, string fileName)
         {
-            string firstline = "";
-            Report210 datas = ExcelWriter.Read210(firstline);
-            //using (var excel = new ExcelPackage())
-            //{
-            //    var ws = excel.Workbook.Worksheets.Add("WorkSheet1");
-            //    foreach (Report210.ReportData x in datas.Datas)
-            //    {
-            //        ws.Cells[x.Id, 1].Value = x.Id;
-            //        ws.Cells[x.Id, 2].Value = x.RateId;
-            //        ws.Cells[x.Id, 3].Value = x.HomeSteadNumber;
-            //        ws.Cells[x.Id, 4].Value = x.OwnerName;
-            //        ws.Cells[x.Id, 5].Value = Convert.ToString(x.Date);
-            //        ws.Cells[x.Id, 6].Value = x.Introduced;
-            //        ws.Cells[x.Id, 7].Value = x.Arrer;
-            //        ws.Cells[x.Id, 8].Value = x.Entered;
-            //    }
-            //    excel.SaveAs(new FileInfo(new ConfigAppManager().GetExcelPath()));
-            //}
+            if(report.Datas.Count == 0)
+            {
+                MessageBox.Show("Отчет по заданным параметрам не имеет записей! Измените параметры и повторите попытку.", "Отчет не содержит записей", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+            using (DBRepository db = new DBRepository())
+            {
+                using (var excel = new ExcelPackage())
+                {
+                    var ws = excel.Workbook.Worksheets.Add("WorkSheet1");
+                    int i = 2;
+                    if (report.Datas[0].ServiceId == 2)
+                    {
+                        foreach (Rate r in report.LocalRates)
+                        {
+                            ws.Cells[i, 1].Value = 1;
+                            ws.Cells[i, 2].Value = r.Id;
+                            r.Service = db.GetService(r.IdService);
+                            ws.Cells[i, 3].Value = r.Service.Name;
+                            ws.Cells[i++, 8].Value = r.Value;
+                        }
+                    }
+                    foreach (Report202.ReportData x in report.Datas)
+                    {
+                        ws.Cells[i, 1].Value = "2";
+                        ws.Cells[i, 2].Value = x.HomeSteadNumber;
+                        ws.Cells[i, 3].Value =  x.OwnerName;
+                        ws.Cells[i, 4].Value = "Номер участка " +x.HomeSteadNumber;
+                        ws.Cells[i, 5].Value = x.Date.Month.ToString() + "." + x.Date.Year.ToString();
+                        ws.Cells[i, 6].Value = x.Arrear;
+                        if (x.ServiceId == 2)
+                        {
+                            string s = x.meterInfo.Count.ToString() + "~";
+                            int j = 1;
+                            foreach (Report202.ReportData.MeterInfo mi in x.meterInfo)
+                            {
+                                s += j++ + "~" + mi.LocalRateId + "~~~6~" + mi.Value + "~";
+                            }
+                            ws.Cells[i++, 7].Value = s;
+                            ws.Cells[i++, 8].Value = "^^^^";
+                        }
+                        else
+                        {
+                            ws.Cells[i, 8].Value = x.Introdused;
+                            ws.Cells[i++, 9].Value = "^^^^";
+                        }
+                    }
+                    try
+                    {
+                        excel.SaveAs(new FileInfo(ConfigAppManager.GetExcelPath() + "//" + fileName + ".xlsx"));
+
+                    } catch(InvalidOperationException ex)
+                    {
+                        MessageBox.Show("Файл" + fileName +" существует либо уже используется.", "Ошибка записи файла", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    catch(ArgumentException ex)
+                    {
+                        MessageBox.Show("Неверное имя файла. Проверьте пути для сохранения файлов в настройках", "Неверное имя файла", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                    }
+                }
+            }
         }
     }
 }
