@@ -41,8 +41,11 @@
             this.MenuAboutProgram = new System.Windows.Forms.ToolStripMenuItem();
             this.MainProgressBar = new System.Windows.Forms.ProgressBar();
             this.ColorPanel = new System.Windows.Forms.Panel();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.LabelProgrBar = new System.Windows.Forms.Label();
             this.Menu.SuspendLayout();
+            this.ColorPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // Menu
@@ -80,14 +83,14 @@
             // MenuReposForERIP
             // 
             this.MenuReposForERIP.Name = "MenuReposForERIP";
-            this.MenuReposForERIP.Size = new System.Drawing.Size(181, 26);
+            this.MenuReposForERIP.Size = new System.Drawing.Size(161, 26);
             this.MenuReposForERIP.Text = "Отчёт .202";
             this.MenuReposForERIP.Click += new System.EventHandler(this.MenuReposForERIP_Click);
             // 
             // MenuReposForExcel
             // 
             this.MenuReposForExcel.Name = "MenuReposForExcel";
-            this.MenuReposForExcel.Size = new System.Drawing.Size(181, 26);
+            this.MenuReposForExcel.Size = new System.Drawing.Size(161, 26);
             this.MenuReposForExcel.Text = "Отчёт Excel";
             this.MenuReposForExcel.Click += new System.EventHandler(this.MenuReposForExcel_Click);
             // 
@@ -102,6 +105,7 @@
             this.MainJournal.Name = "MainJournal";
             this.MainJournal.Size = new System.Drawing.Size(75, 24);
             this.MainJournal.Text = "Журнал";
+            this.MainJournal.Click += new System.EventHandler(this.MainJournal_Click);
             // 
             // MenuSettings
             // 
@@ -137,7 +141,7 @@
             // 
             this.MainProgressBar.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.MainProgressBar.Location = new System.Drawing.Point(0, 468);
-            this.MainProgressBar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.MainProgressBar.Margin = new System.Windows.Forms.Padding(4);
             this.MainProgressBar.Name = "MainProgressBar";
             this.MainProgressBar.Size = new System.Drawing.Size(857, 28);
             this.MainProgressBar.TabIndex = 1;
@@ -145,12 +149,25 @@
             // ColorPanel
             // 
             this.ColorPanel.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.ColorPanel.Controls.Add(this.dataGridView1);
             this.ColorPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ColorPanel.Location = new System.Drawing.Point(0, 28);
-            this.ColorPanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ColorPanel.Margin = new System.Windows.Forms.Padding(4);
             this.ColorPanel.Name = "ColorPanel";
             this.ColorPanel.Size = new System.Drawing.Size(857, 440);
             this.ColorPanel.TabIndex = 2;
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridView1.Location = new System.Drawing.Point(0, 0);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.RowHeadersVisible = false;
+            this.dataGridView1.Size = new System.Drawing.Size(857, 440);
+            this.dataGridView1.TabIndex = 0;
+            this.dataGridView1.Visible = false;
             // 
             // LabelProgrBar
             // 
@@ -177,13 +194,15 @@
             this.Controls.Add(this.MainProgressBar);
             this.Controls.Add(this.Menu);
             this.MainMenuStrip = this.Menu;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "MainForm";
             this.Text = "E.M.S.";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Closing_MainForm);
             this.Load += new System.EventHandler(this.Load_MainForm);
             this.Menu.ResumeLayout(false);
             this.Menu.PerformLayout();
+            this.ColorPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -205,6 +224,7 @@
         private System.Windows.Forms.ToolStripMenuItem SavePathTSMI;
         public System.Windows.Forms.Label LabelProgrBar;
         public System.Windows.Forms.ProgressBar MainProgressBar;
+        private System.Windows.Forms.DataGridView dataGridView1;
     }
 }
 

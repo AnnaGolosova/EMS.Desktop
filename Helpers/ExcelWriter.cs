@@ -137,6 +137,11 @@ namespace EMS.Desktop.Helpers
                     {
                         MessageBox.Show("Файл" + fileName +" существует либо уже используется.", "Ошибка записи файла", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
+                    catch(ArgumentException ex)
+                    {
+                        MessageBox.Show("Неверное имя файла. Проверьте пути для сохранения файлов в настройках", "Неверное имя файла", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                    }
                 }
             }
         }
