@@ -17,41 +17,16 @@ namespace EMS.Desktop.Models
 
         public class ReportData
         {
-            #region fields
-            int _ServiceId;
-            int _hameSteadNumber;
-            string _ownerName;
-            DateTime _date;
-            double _arrear; //задолжность
-            public List<MeterInfo> meterInfo;
-            #endregion
 
-            #region propertioes
-            public int RateId
-            {
-                get { return _ServiceId; }
-                set { _ServiceId = value; }
-            }
-            public int HomeSteadNumber
-            {
-                get { return _hameSteadNumber; }
-                set { _hameSteadNumber = value; }
-            }
-            public string OwnerName
-            {
-                get { return _ownerName; }
-                set { _ownerName = value; }
-            }
-            public DateTime Date
-            {
-                get { return _date; }
-                set { _date = value; }
-            }
-            public double Arrear
-            {
-                get { return _arrear; }
-                set { _arrear = value; }
-            }
+            #region fields
+            public int ServiceId;
+            public int HomeSteadNumber;
+            public string OwnerName;
+            public DateTime Date;
+            public double Arrear;
+            public double Introdused;
+            public double Entered;
+            public List<MeterInfo> meterInfo;
             #endregion
 
             public class MeterInfo
@@ -59,31 +34,11 @@ namespace EMS.Desktop.Models
                 public int LocalRateId;
                 public double Value;
             }
-        }
 
-        //Example method
-        public void Example()
-        {
-            Report202 rep = new Report202();
-            rep.LocalRates = new List<Rate>()
+            public ReportData()
             {
-                new Rate{ Id = 1, IdService = 2, Value = 0.1246 },
-                new Rate{ Id = 2, IdService = 2, Value = 0.1458 },
-                new Rate{ Id = 3, IdService = 2, Value = 0.1549 }
-            };
-
-            rep.Datas = new List<ReportData>();
-            rep.Datas.Add(new ReportData() {
-                RateId = 2,
-                Arrear = 0,
-                Date = new DateTime(2017, 9, 1),
-                HomeSteadNumber = 5,
-                OwnerName = "Owner",
-                meterInfo = new List<ReportData.MeterInfo>() {
-                    new ReportData.MeterInfo() { LocalRateId = 1, Value = 458 },
-                    new ReportData.MeterInfo() { LocalRateId = 1, Value = 4524 }
-                }
-            });
+                meterInfo = new List<MeterInfo>();
+            }
         }
     }
 }

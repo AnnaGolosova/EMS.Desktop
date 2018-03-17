@@ -33,7 +33,7 @@ namespace EMS.Desktop
         private void MenuReposForERIP_Click(object sender, EventArgs e)
         {
             FormReposForERIP RpFrERIP = new FormReposForERIP();
-            RpFrERIP.ShowDialog();
+            RpFrERIP.ShowDialog(this);
         }
 
         private void MenuReposForExcel_Click(object sender, EventArgs e)

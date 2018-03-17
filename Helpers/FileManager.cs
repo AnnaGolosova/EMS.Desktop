@@ -125,10 +125,13 @@ namespace EMS.Desktop.Helpers
                 List<FileInfo> files = dir.GetFiles().ToList();
                 foreach (FileInfo file in files)
                 {
-                    using (FileParameterSetter setter = new FileParameterSetter(file.FullName))
+                    if(file.Name.Split('.').Last().CompareTo("210") == 0)
                     {
-                        if (setter.GetProperty() == FileState.New)
-                            result.Add(file.FullName);
+                        using (FileParameterSetter setter = new FileParameterSetter(file.FullName))
+                        {
+                            if (setter.GetProperty() == FileState.New || setter.GetProperty() == FileState.None)
+                                result.Add(file.FullName);
+                        }
                     }
                 }
             }
@@ -147,6 +150,17 @@ namespace EMS.Desktop.Helpers
         public static int GetNewFilesCount(string directoryPath)
         {
             return GetNewFilePathes(directoryPath).Count;
+        }
+
+        public static void ClearFileStates(string directoryPath)
+        {
+            foreach(string file in GetFileNames(directoryPath))
+            {
+                using (FileParameterSetter setter = new FileParameterSetter(file))
+                {
+                    setter.SetCustomProperty(FileState.New);
+                }
+            }
         }
     }
 }

@@ -5,9 +5,9 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="8d706e7e1cdd453c8795abe87a642ebc" Name="Diagram1" ZoomLevel="81">
-        <EntityTypeShape EntityType="EMSModel.Copay" Width="1.5" PointX="6.375" PointY="6.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="EMSModel.File" Width="1.5" PointX="5.25" PointY="4.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="EMSModel.Homestead" Width="1.5" PointX="8.125" PointY="6.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMSModel.Copay" Width="1.5" PointX="5" PointY="5.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMSModel.File" Width="1.5" PointX="3" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMSModel.Homestead" Width="1.5" PointX="6.75" PointY="5.625" IsExpanded="true" />
         <EntityTypeShape EntityType="EMSModel.Meter" Width="1.5" PointX="3" PointY="1.625" IsExpanded="true" />
         <EntityTypeShape EntityType="EMSModel.MeterData" Width="1.5" PointX="5.25" PointY="1.625" IsExpanded="true" />
         <EntityTypeShape EntityType="EMSModel.Payment" Width="1.5" PointX="7.5" PointY="1.625" IsExpanded="true" />
@@ -15,11 +15,12 @@
         <EntityTypeShape EntityType="EMSModel.Service" Width="1.5" PointX="9.375" PointY="1.625" IsExpanded="true" />
         <AssociationConnector Association="EMSModel.FK_Payment_ToFile" ManuallyRouted="false" />
         <AssociationConnector Association="EMSModel.FK_MeterData_ToMeter" ManuallyRouted="false" />
-        <AssociationConnector Association="EMSModel.FK_Payment_ToMeterData" ManuallyRouted="false" />
         <AssociationConnector Association="EMSModel.FK_Payment_ToService" ManuallyRouted="false" />
         <AssociationConnector Association="EMSModel.FK_Rate_ToService" ManuallyRouted="false" />
         <AssociationConnector Association="EMSModel.FK_Meter_ToHomestead" />
         <AssociationConnector Association="EMSModel.FK_Payment_ToHomestead" />
+        <AssociationConnector Association="EMSModel.FK_MeterData_ToPayment" />
+        <AssociationConnector Association="EMSModel.FK_MeterData_ToRate" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

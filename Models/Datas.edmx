@@ -43,6 +43,8 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Id_Meter" Type="int" Nullable="false" />
+          <Property Name="Id_Payment" Type="int" />
+          <Property Name="Id_Rate" Type="int" />
           <Property Name="Value" Type="float" Nullable="false" />
           <Property Name="Date" Type="date" />
         </EntityType>
@@ -53,7 +55,6 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Id_Homestead" Type="int" Nullable="false" />
           <Property Name="Id_Service" Type="int" Nullable="false" />
-          <Property Name="Id_Meter_Data" Type="int" />
           <Property Name="Id_File" Type="int" Nullable="false" />
           <Property Name="INTroduced" Type="float" Nullable="false" />
           <Property Name="Entered" Type="float" Nullable="false" />
@@ -87,6 +88,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_MeterData_ToPayment">
+          <End Role="Payment" Type="Self.Payment" Multiplicity="0..1" />
+          <End Role="MeterData" Type="Self.MeterData" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Payment">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MeterData">
+              <PropertyRef Name="Id_Payment" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MeterData_ToRate">
+          <End Role="Rate" Type="Self.Rate" Multiplicity="0..1" />
+          <End Role="MeterData" Type="Self.MeterData" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rate">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MeterData">
+              <PropertyRef Name="Id_Rate" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Payment_ToFile">
           <End Role="File" Type="Self.File" Multiplicity="1" />
           <End Role="Payment" Type="Self.Payment" Multiplicity="*" />
@@ -96,18 +121,6 @@
             </Principal>
             <Dependent Role="Payment">
               <PropertyRef Name="Id_File" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Payment_ToMeterData">
-          <End Role="MeterData" Type="Self.MeterData" Multiplicity="0..1" />
-          <End Role="Payment" Type="Self.Payment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MeterData">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Payment">
-              <PropertyRef Name="Id_Meter_Data" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -148,12 +161,16 @@
             <End Role="Meter" EntitySet="Meter" />
             <End Role="MeterData" EntitySet="MeterData" />
           </AssociationSet>
+          <AssociationSet Name="FK_MeterData_ToPayment" Association="Self.FK_MeterData_ToPayment">
+            <End Role="Payment" EntitySet="Payment" />
+            <End Role="MeterData" EntitySet="MeterData" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MeterData_ToRate" Association="Self.FK_MeterData_ToRate">
+            <End Role="Rate" EntitySet="Rate" />
+            <End Role="MeterData" EntitySet="MeterData" />
+          </AssociationSet>
           <AssociationSet Name="FK_Payment_ToFile" Association="Self.FK_Payment_ToFile">
             <End Role="File" EntitySet="File" />
-            <End Role="Payment" EntitySet="Payment" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Payment_ToMeterData" Association="Self.FK_Payment_ToMeterData">
-            <End Role="MeterData" EntitySet="MeterData" />
             <End Role="Payment" EntitySet="Payment" />
           </AssociationSet>
           <AssociationSet Name="FK_Payment_ToService" Association="Self.FK_Payment_ToService">
@@ -212,7 +229,10 @@
           <Property Name="Value" Type="Double" Nullable="false" />
           <Property Name="Date" Type="DateTime" Precision="0" />
           <NavigationProperty Name="Meter" Relationship="Self.FK_MeterData_ToMeter" FromRole="MeterData" ToRole="Meter" />
-          <NavigationProperty Name="Payment" Relationship="Self.FK_Payment_ToMeterData" FromRole="MeterData" ToRole="Payment" />
+          <Property Name="Id_Payment" Type="Int32" />
+          <NavigationProperty Name="Payment" Relationship="EMSModel.FK_MeterData_ToPayment" FromRole="MeterData" ToRole="Payment" />
+          <Property Name="Id_Rate" Type="Int32" />
+          <NavigationProperty Name="Rate" Relationship="EMSModel.FK_MeterData_ToRate" FromRole="MeterData" ToRole="Rate" />
         </EntityType>
         <EntityType Name="Payment">
           <Key>
@@ -221,14 +241,13 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IdHomestead" Type="Int32" Nullable="false" />
           <Property Name="IdService" Type="Int32" Nullable="false" />
-          <Property Name="IdMeterData" Type="Int32" />
           <Property Name="IdFile" Type="Int32" Nullable="false" />
           <Property Name="Introduced" Type="Double" Nullable="false" />
           <Property Name="Entered" Type="Double" Nullable="false" />
           <Property Name="Date" Type="DateTime" Precision="0" />
           <NavigationProperty Name="File" Relationship="Self.FK_Payment_ToFile" FromRole="Payment" ToRole="File" />
-          <NavigationProperty Name="MeterData" Relationship="Self.FK_Payment_ToMeterData" FromRole="Payment" ToRole="MeterData" />
           <NavigationProperty Name="Service" Relationship="Self.FK_Payment_ToService" FromRole="Payment" ToRole="Service" />
+          <NavigationProperty Name="MeterData" Relationship="EMSModel.FK_MeterData_ToPayment" FromRole="Payment" ToRole="MeterData" />
         </EntityType>
         <EntityType Name="Rate">
           <Key>
@@ -239,6 +258,7 @@
           <Property Name="Value" Type="Double" Nullable="false" />
           <Property Name="Date" Type="DateTime" Precision="0" />
           <NavigationProperty Name="Service" Relationship="Self.FK_Rate_ToService" FromRole="Rate" ToRole="Service" />
+          <NavigationProperty Name="MeterData" Relationship="EMSModel.FK_MeterData_ToRate" FromRole="Rate" ToRole="MeterData" />
         </EntityType>
         <EntityType Name="Service">
           <Key>
@@ -270,18 +290,6 @@
             </Principal>
             <Dependent Role="MeterData">
               <PropertyRef Name="IdMeter" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Payment_ToMeterData">
-          <End Role="MeterData" Type="Self.MeterData" Multiplicity="0..1" />
-          <End Role="Payment" Type="Self.Payment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MeterData">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Payment">
-              <PropertyRef Name="IdMeterData" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -326,10 +334,6 @@
             <End Role="Meter" EntitySet="Meter" />
             <End Role="MeterData" EntitySet="MeterData" />
           </AssociationSet>
-          <AssociationSet Name="FK_Payment_ToMeterData" Association="Self.FK_Payment_ToMeterData">
-            <End Role="MeterData" EntitySet="MeterData" />
-            <End Role="Payment" EntitySet="Payment" />
-          </AssociationSet>
           <AssociationSet Name="FK_Payment_ToService" Association="Self.FK_Payment_ToService">
             <End Role="Service" EntitySet="Service" />
             <End Role="Payment" EntitySet="Payment" />
@@ -338,7 +342,39 @@
             <End Role="Service" EntitySet="Service" />
             <End Role="Rate" EntitySet="Rate" />
           </AssociationSet>
+          <AssociationSet Name="FK_MeterData_ToPayment" Association="EMSModel.FK_MeterData_ToPayment">
+            <End Role="Payment" EntitySet="Payment" />
+            <End Role="MeterData" EntitySet="MeterData" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MeterData_ToRate" Association="EMSModel.FK_MeterData_ToRate">
+            <End Role="Rate" EntitySet="Rate" />
+            <End Role="MeterData" EntitySet="MeterData" />
+          </AssociationSet>
         </EntityContainer>
+        <Association Name="FK_MeterData_ToPayment">
+          <End Type="EMSModel.Payment" Role="Payment" Multiplicity="0..1" />
+          <End Type="EMSModel.MeterData" Role="MeterData" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Payment">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MeterData">
+              <PropertyRef Name="Id_Payment" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MeterData_ToRate">
+          <End Type="EMSModel.Rate" Role="Rate" Multiplicity="0..1" />
+          <End Type="EMSModel.MeterData" Role="MeterData" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rate">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MeterData">
+              <PropertyRef Name="Id_Rate" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -384,6 +420,8 @@
           <EntitySetMapping Name="MeterData">
             <EntityTypeMapping TypeName="EMSModel.MeterData">
               <MappingFragment StoreEntitySet="MeterData">
+                <ScalarProperty Name="Id_Rate" ColumnName="Id_Rate" />
+                <ScalarProperty Name="Id_Payment" ColumnName="Id_Payment" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="IdMeter" ColumnName="Id_Meter" />
                 <ScalarProperty Name="Value" ColumnName="Value" />
@@ -397,7 +435,6 @@
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="IdHomestead" ColumnName="Id_Homestead" />
                 <ScalarProperty Name="IdService" ColumnName="Id_Service" />
-                <ScalarProperty Name="IdMeterData" ColumnName="Id_Meter_Data" />
                 <ScalarProperty Name="IdFile" ColumnName="Id_File" />
                 <ScalarProperty Name="Introduced" ColumnName="INTroduced" />
                 <ScalarProperty Name="Entered" ColumnName="Entered" />

@@ -14,11 +14,17 @@ namespace EMS.Desktop.Models
     
     public partial class Rate
     {
+        public Rate()
+        {
+            this.MeterData = new HashSet<MeterData>();
+        }
+    
         public int Id { get; set; }
         public int IdService { get; set; }
         public double Value { get; set; }
         public Nullable<System.DateTime> Date { get; set; }
     
         public virtual Service Service { get; set; }
+        public virtual ICollection<MeterData> MeterData { get; set; }
     }
 }

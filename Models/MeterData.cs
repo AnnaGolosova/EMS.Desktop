@@ -14,17 +14,15 @@ namespace EMS.Desktop.Models
     
     public partial class MeterData
     {
-        public MeterData()
-        {
-            this.Payment = new HashSet<Payment>();
-        }
-    
         public int Id { get; set; }
         public int IdMeter { get; set; }
         public double Value { get; set; }
         public Nullable<System.DateTime> Date { get; set; }
+        public Nullable<int> Id_Payment { get; set; }
+        public Nullable<int> Id_Rate { get; set; }
     
         public virtual Meter Meter { get; set; }
-        public virtual ICollection<Payment> Payment { get; set; }
+        public virtual Payment Payment { get; set; }
+        public virtual Rate Rate { get; set; }
     }
 }
