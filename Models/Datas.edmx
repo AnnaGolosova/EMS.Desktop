@@ -57,6 +57,7 @@
           <Property Name="Id_Service" Type="int" Nullable="false" />
           <Property Name="Id_File" Type="int" Nullable="false" />
           <Property Name="INTroduced" Type="float" Nullable="false" />
+          <Property Name="Arrear" Type="float" Nullable="false" />
           <Property Name="Entered" Type="float" Nullable="false" />
           <Property Name="Date" Type="date" />
         </EntityType>
@@ -285,6 +286,7 @@
           <NavigationProperty Name="Service" Relationship="Self.FK_Payment_ToService" FromRole="Payment" ToRole="Service" />
           <NavigationProperty Name="MeterData" Relationship="EMSModel.FK_MeterData_ToPayment" FromRole="Payment" ToRole="MeterData" />
           <NavigationProperty Name="Homestead" Relationship="EMSModel.FK_Payment_ToHomestead" FromRole="Payment" ToRole="Homestead" />
+          <Property Name="Arrear" Type="Double" Nullable="false" />
         </EntityType>
         <EntityType Name="Rate">
           <Key>
@@ -502,6 +504,7 @@
           <EntitySetMapping Name="Payment">
             <EntityTypeMapping TypeName="EMSModel.Payment">
               <MappingFragment StoreEntitySet="Payment">
+                <ScalarProperty Name="Arrear" ColumnName="Arrear" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="IdHomestead" ColumnName="Id_Homestead" />
                 <ScalarProperty Name="IdService" ColumnName="Id_Service" />

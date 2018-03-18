@@ -26,6 +26,7 @@ namespace EMS.Desktop.Models
         public double Introduced { get; set; }
         public double Entered { get; set; }
         public Nullable<System.DateTime> Date { get; set; }
+        public double Arrear { get; set; }
     
         public virtual File File { get; set; }
         public virtual Service Service { get; set; }
