@@ -41,7 +41,11 @@ namespace EMS.Desktop.Helpers
                         MessageBox.Show("Ошибка при загрузки файла!");
                     }
                 }
-                Action ShowComp = () => { obj.LabelProgrBar.Visible = true; };
+                Action ShowComp = () => 
+                {
+                    obj.LabelProgrBar.Text = "Файлы загружены";
+                    obj.LabelProgrBar.Visible = true;
+                };
                 obj.Invoke(ShowComp);
             }
         }
