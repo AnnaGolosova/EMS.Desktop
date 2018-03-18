@@ -22,7 +22,7 @@ namespace EMS.Desktop
 
         public void OnCreate()
         {
-            //LoadNewFile.LoadFile(this);
+            LoadNewFile.LoadFile(this);
         }
         private void MenuAboutProgram_Click(object sender, EventArgs e)
         {
@@ -85,7 +85,11 @@ namespace EMS.Desktop
 
         private void MainJournal_Click(object sender, EventArgs e)
         {
+            DBRepository dbrepository = new DBRepository();
+            if (dbrepository.GetFiles().Count != 0)
             {
+                dataGridView1.Columns.Clear();
+                dataGridView1.Rows.Clear();
                 dataGridView1.Visible = true;
 
                 var column1 = new DataGridViewColumn();
@@ -107,21 +111,24 @@ namespace EMS.Desktop
                 column3.Name = "path";
                 column3.MinimumWidth = 90;
                 column3.CellTemplate = new DataGridViewTextBoxCell();
-                
+
                 dataGridView1.Columns.Add(column1);
                 dataGridView1.Columns.Add(column2);
                 dataGridView1.Columns.Add(column3);
 
-                dataGridView1.AllowUserToAddRows = false; 
-                
+                dataGridView1.AllowUserToAddRows = false;
                 DBRepository repository = new DBRepository();
                 List<Models.File> listdbr = repository.GetFiles();
                 listdbr.OrderBy(s => s.Date);
                 foreach (Models.File s in listdbr)
                 {
                     dataGridView1.Rows.Add(s.Payment.Count, s.Date.Value.ToShortDateString(), s.Path);
-         
                 }
+            }
+            else
+            {
+                LabelProgrBar.Text = "Нет файлов для создания журнала";
+                LabelProgrBar.Visible = true;
             }
         }
     }
