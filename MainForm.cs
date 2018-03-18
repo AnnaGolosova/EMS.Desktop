@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace EMS.Desktop
 {
@@ -61,6 +62,11 @@ namespace EMS.Desktop
                 Thread NewFile = new Thread(OnCreate);
                 NewFile.Start();
             }
+            else
+            {
+                LabelProgrBar.Visible = true;
+                LabelProgrBar.Text = "Новых файлов нет";
+            }
         }
 
         private void Closing_MainForm(object sender, FormClosingEventArgs e)
@@ -85,7 +91,12 @@ namespace EMS.Desktop
 
         private void MainJournal_Click(object sender, EventArgs e)
         {
+            LoadingLabel.Visible = true;
+            DBRepository dbrepository = new DBRepository();
+            if (dbrepository.GetFiles().Count != 0)
             {
+                dataGridView1.Columns.Clear();
+                dataGridView1.Rows.Clear();
                 dataGridView1.Visible = true;
 
                 var column1 = new DataGridViewColumn();
@@ -107,21 +118,46 @@ namespace EMS.Desktop
                 column3.Name = "path";
                 column3.MinimumWidth = 90;
                 column3.CellTemplate = new DataGridViewTextBoxCell();
-                
+
+                LoadingLabel.Visible = false;
                 dataGridView1.Columns.Add(column1);
                 dataGridView1.Columns.Add(column2);
                 dataGridView1.Columns.Add(column3);
 
-                dataGridView1.AllowUserToAddRows = false; 
-                
+                dataGridView1.AllowUserToAddRows = false;
                 DBRepository repository = new DBRepository();
                 List<Models.File> listdbr = repository.GetFiles();
                 listdbr.OrderBy(s => s.Date);
                 foreach (Models.File s in listdbr)
                 {
                     dataGridView1.Rows.Add(s.Payment.Count, s.Date.Value.ToShortDateString(), s.Path);
-         
                 }
+            }
+            else
+            {
+                LabelProgrBar.Text = "Нет файлов для создания журнала";
+                LabelProgrBar.Visible = true;
+            }
+        }
+
+        private void MenuDocuments_Click(object sender, EventArgs e)
+        {
+            //FileManager.ClearFileStates(ConfigAppManager.GetExcelPath());
+        }
+
+        private void ToolStripDownloadNewFile_Click(object sender, EventArgs e)
+        {
+            MainProgressBar.Value = 0;
+            LabelProgrBar.Visible = false;
+            if (FileManager.GetNewFilesCount(ConfigAppManager.GetReports210Path()) != 0)
+            {
+                Thread NewFile = new Thread(OnCreate);
+                NewFile.Start();
+            }
+            else
+            {
+                LabelProgrBar.Visible = true;
+                LabelProgrBar.Text = "Новых файлов нет";
             }
         }
 

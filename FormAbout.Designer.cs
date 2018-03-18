@@ -31,6 +31,7 @@
             this.AuthorsGroupBox = new System.Windows.Forms.GroupBox();
             this.OkButton = new System.Windows.Forms.Button();
             this.NameLabel = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // AuthorsGroupBox
@@ -56,17 +57,26 @@
             // 
             this.NameLabel.AutoSize = true;
             this.NameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.NameLabel.Location = new System.Drawing.Point(70, 29);
+            this.NameLabel.Location = new System.Drawing.Point(12, 23);
             this.NameLabel.Name = "NameLabel";
             this.NameLabel.Size = new System.Drawing.Size(56, 20);
             this.NameLabel.TabIndex = 2;
             this.NameLabel.Text = "E.M.S.";
+            // 
+            // label1
+            // 
+            this.label1.Location = new System.Drawing.Point(12, 52);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(234, 36);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "Програмное обеспечение предназначенное для загрузки и обработки файлов ERIP";
             // 
             // FormAboutProgram
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(333, 331);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.NameLabel);
             this.Controls.Add(this.OkButton);
             this.Controls.Add(this.AuthorsGroupBox);
@@ -82,5 +92,6 @@
         private System.Windows.Forms.GroupBox AuthorsGroupBox;
         private System.Windows.Forms.Button OkButton;
         private System.Windows.Forms.Label NameLabel;
+        private System.Windows.Forms.Label label1;
     }
 }

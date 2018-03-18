@@ -51,7 +51,7 @@ namespace EMS.Desktop.Helpers
         {
             List<Report202.ReportData.MeterInfo> mi = new List<Report202.ReportData.MeterInfo>();
             foreach (Report210.ReportData.MeterInfo mt in meter)
-                mi.Add(new Report202.ReportData.MeterInfo() { LocalRateId = 2, Value = mt.newValue });
+                mi.Add(new Report202.ReportData.MeterInfo() { LocalRateId = mt.rateId, Value = mt.newValue });
             return mi;
         }
 
@@ -103,7 +103,7 @@ namespace EMS.Desktop.Helpers
                         int j = 1;
                         foreach (Report202.ReportData.MeterInfo mi in x.meterInfo)
                         {
-                            s += j++ + "~" + mi.LocalRateId + "~~~6~" + mi.Value + "~";
+                            s += j++ + "~" + db.GetRatePosition(mi.LocalRateId) + "~~~6~" + mi.Value + "~";
                         }
                         recordStr += s + "^^^^^";
                     }
@@ -171,7 +171,7 @@ namespace EMS.Desktop.Helpers
                             int j = 1;
                             foreach (Report202.ReportData.MeterInfo mi in x.meterInfo)
                             {
-                                s += j++ + "~" + mi.LocalRateId + "~~~6~" + mi.Value + "~";
+                                s += j++ + "~" + db.GetRatePosition(mi.LocalRateId) + "~~~6~" + mi.Value + "~";
                             }
                             ws.Cells[i, 7].Value = s;
                             ws.Cells[i++, 8].Value = "^^^^";

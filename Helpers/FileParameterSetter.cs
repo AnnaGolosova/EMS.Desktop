@@ -42,6 +42,7 @@ namespace EMS.Desktop.Helpers
                 try
                 {
                     object value = state.ToString();
+                    System.Diagnostics.Debugger.NotifyOfCrossThreadDependency();
                     System.Collections.IEnumerator it = m_file.CustomProperties.GetEnumerator();
                     it.Reset();
                     while (it.MoveNext() != false)

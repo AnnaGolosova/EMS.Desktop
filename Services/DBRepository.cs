@@ -105,6 +105,13 @@ namespace EMS.Desktop.Services
                                       .ToList();
         }
 
+        internal void ChangeMeterData(int id, int? rateId)
+        {
+            MeterData md = db.MeterData.Where(m => m.Id == id).First();
+            md.Id_Rate = rateId;
+            db.SaveChanges();
+        }
+
         public List<Homestead> GetHomestead()
         {
             return db.Homestead.ToList();
@@ -356,6 +363,7 @@ namespace EMS.Desktop.Services
                     
                     currentPayment.Date = data.Date;
                     currentPayment.Introduced = data.Introduced;
+                    currentPayment.Arrear = data.Arrer;
                     currentPayment.Entered = data.Entered;
                     currentPayment.IdService = data.ServiceId;
                     currentPayment.IdFile = report.FileId;

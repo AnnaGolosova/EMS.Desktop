@@ -80,6 +80,7 @@ CREATE TABLE [dbo].[Payment] (
     [Id_Service]    INT        NOT NULL,
     [Id_File]       INT        NOT NULL,
     [INTroduced]    FLOAT (53) NOT NULL DEFAULT 0,
+    [Arrear]       FLOAT (53) NOT NULL DEFAULT 0,
     [Entered]       FLOAT (53) NOT NULL DEFAULT 0,
     [Date]          DATE       NULL,
 	
@@ -102,6 +103,30 @@ Create Table [dbo].[MeterData] (
 	CONSTRAINT FK_MeterData_ToPayment	FOREIGN KEY ([Id_Payment])	REFERENCES [Payment](Id)
 )
 GO
+
+drop view FullInfo
+go
+create view fullInfo
+as
+select	payment.Id,
+		payment.Id_service,
+		homestead.number,
+		introduced,
+		arrear,
+		entered,
+		payment.[date],
+		id_rate,
+		MeterData.value as 'meterValue',
+		owner_name,
+		meter_number,
+		[path]
+
+from ((payment left join meterdata on meterdata.id_payment = payment.id)
+	join homestead on homestead.Id = payment.id_homestead)
+	join meter on meter.Id = meterData.id_meter
+	left join rate on rate.id = meterdata.id_rate
+	join [file] on [file].id = payment.id_file
+go
 
 INSERT INTO [SERVICE] 
 VALUES	(1, N'Взносы'),

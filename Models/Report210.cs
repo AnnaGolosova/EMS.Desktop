@@ -32,6 +32,7 @@ namespace EMS.Desktop.Models
                 public int? rateId;
                 public double? oldValue;
                 public double newValue;
+                public int? id;
             }
 
         }

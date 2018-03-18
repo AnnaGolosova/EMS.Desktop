@@ -30,6 +30,8 @@
         {
             this.Menu = new System.Windows.Forms.MenuStrip();
             this.MenuFail = new System.Windows.Forms.ToolStripMenuItem();
+            this.CLearFileStatesMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripDownloadNewFile = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuRepos = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuReposForERIP = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuReposForExcel = new System.Windows.Forms.ToolStripMenuItem();
@@ -41,9 +43,9 @@
             this.MenuAboutProgram = new System.Windows.Forms.ToolStripMenuItem();
             this.MainProgressBar = new System.Windows.Forms.ProgressBar();
             this.ColorPanel = new System.Windows.Forms.Panel();
+            this.LoadingLabel = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.LabelProgrBar = new System.Windows.Forms.Label();
-            this.CLearFileStatesMI = new System.Windows.Forms.ToolStripMenuItem();
             this.Menu.SuspendLayout();
             this.ColorPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -69,10 +71,25 @@
             // MenuFail
             // 
             this.MenuFail.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.CLearFileStatesMI});
+            this.CLearFileStatesMI,
+            this.ToolStripDownloadNewFile});
             this.MenuFail.Name = "MenuFail";
             this.MenuFail.Size = new System.Drawing.Size(57, 24);
             this.MenuFail.Text = "Файл";
+            // 
+            // CLearFileStatesMI
+            // 
+            this.CLearFileStatesMI.Name = "CLearFileStatesMI";
+            this.CLearFileStatesMI.Size = new System.Drawing.Size(282, 26);
+            this.CLearFileStatesMI.Text = "Сбросить состояния файлов";
+            this.CLearFileStatesMI.Click += new System.EventHandler(this.CLearFileStatesMI_Click);
+            // 
+            // ToolStripDownloadNewFile
+            // 
+            this.ToolStripDownloadNewFile.Name = "ToolStripDownloadNewFile";
+            this.ToolStripDownloadNewFile.Size = new System.Drawing.Size(282, 26);
+            this.ToolStripDownloadNewFile.Text = "Загрузка новых файлов";
+            this.ToolStripDownloadNewFile.Click += new System.EventHandler(this.ToolStripDownloadNewFile_Click);
             // 
             // MenuRepos
             // 
@@ -102,6 +119,7 @@
             this.MenuDocuments.Name = "MenuDocuments";
             this.MenuDocuments.Size = new System.Drawing.Size(148, 24);
             this.MenuDocuments.Text = "Просмотр данных";
+            this.MenuDocuments.Click += new System.EventHandler(this.MenuDocuments_Click);
             // 
             // MainJournal
             // 
@@ -144,7 +162,7 @@
             // 
             this.MainProgressBar.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.MainProgressBar.Location = new System.Drawing.Point(0, 468);
-            this.MainProgressBar.Margin = new System.Windows.Forms.Padding(4);
+            this.MainProgressBar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.MainProgressBar.Name = "MainProgressBar";
             this.MainProgressBar.Size = new System.Drawing.Size(857, 28);
             this.MainProgressBar.TabIndex = 1;
@@ -152,13 +170,30 @@
             // ColorPanel
             // 
             this.ColorPanel.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.ColorPanel.Controls.Add(this.LoadingLabel);
             this.ColorPanel.Controls.Add(this.dataGridView1);
             this.ColorPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ColorPanel.Location = new System.Drawing.Point(0, 28);
-            this.ColorPanel.Margin = new System.Windows.Forms.Padding(4);
+            this.ColorPanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.ColorPanel.Name = "ColorPanel";
             this.ColorPanel.Size = new System.Drawing.Size(857, 440);
             this.ColorPanel.TabIndex = 2;
+            // 
+            // LoadingLabel
+            // 
+            this.LoadingLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.LoadingLabel.AutoSize = true;
+            this.LoadingLabel.BackColor = System.Drawing.Color.Transparent;
+            this.LoadingLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.LoadingLabel.Location = new System.Drawing.Point(355, 182);
+            this.LoadingLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.LoadingLabel.Name = "LoadingLabel";
+            this.LoadingLabel.Size = new System.Drawing.Size(106, 24);
+            this.LoadingLabel.TabIndex = 1;
+            this.LoadingLabel.Text = "Загрузка...";
+            this.LoadingLabel.Visible = false;
             // 
             // dataGridView1
             // 
@@ -166,6 +201,7 @@
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.Location = new System.Drawing.Point(0, 0);
+            this.dataGridView1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.Size = new System.Drawing.Size(857, 440);
@@ -174,6 +210,8 @@
             // 
             // LabelProgrBar
             // 
+            this.LabelProgrBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.LabelProgrBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
             this.LabelProgrBar.Cursor = System.Windows.Forms.Cursors.Default;
             this.LabelProgrBar.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -187,13 +225,6 @@
             this.LabelProgrBar.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.LabelProgrBar.Visible = false;
             // 
-            // CLearFileStatesMI
-            // 
-            this.CLearFileStatesMI.Name = "CLearFileStatesMI";
-            this.CLearFileStatesMI.Size = new System.Drawing.Size(282, 26);
-            this.CLearFileStatesMI.Text = "Сбросить состояния файлов";
-            this.CLearFileStatesMI.Click += new System.EventHandler(this.CLearFileStatesMI_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -204,7 +235,8 @@
             this.Controls.Add(this.MainProgressBar);
             this.Controls.Add(this.Menu);
             this.MainMenuStrip = this.Menu;
-            this.Margin = new System.Windows.Forms.Padding(4);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.MinimumSize = new System.Drawing.Size(873, 533);
             this.Name = "MainForm";
             this.Text = "E.M.S.";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Closing_MainForm);
@@ -212,6 +244,7 @@
             this.Menu.ResumeLayout(false);
             this.Menu.PerformLayout();
             this.ColorPanel.ResumeLayout(false);
+            this.ColorPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -236,6 +269,8 @@
         public System.Windows.Forms.ProgressBar MainProgressBar;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.ToolStripMenuItem CLearFileStatesMI;
+        private System.Windows.Forms.Label LoadingLabel;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripDownloadNewFile;
     }
 }
 
