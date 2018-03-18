@@ -82,6 +82,12 @@
     <Compile Include="FormInstallationPath.Designer.cs">
       <DependentUpon>FormInstallationPath.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\RateEditForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\RateEditForm.Designer.cs">
+      <DependentUpon>RateEditForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Helpers\ExcelWriter.cs" />
     <Compile Include="Helpers\FileParameterSetter.cs" />
     <Compile Include="Helpers\LoadNewFile.cs" />
@@ -169,6 +175,9 @@
     <Compile Include="Services\IRepository.cs" />
     <EmbeddedResource Include="FormInstallationPath.resx">
       <DependentUpon>FormInstallationPath.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\RateEditForm.resx">
+      <DependentUpon>RateEditForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

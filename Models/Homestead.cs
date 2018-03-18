@@ -14,8 +14,17 @@ namespace EMS.Desktop.Models
     
     public partial class Homestead
     {
+        public Homestead()
+        {
+            this.Meter = new HashSet<Meter>();
+            this.Payment = new HashSet<Payment>();
+        }
+    
         public Nullable<int> Number { get; set; }
         public string OwnerName { get; set; }
         public int Id { get; set; }
+    
+        public virtual ICollection<Meter> Meter { get; set; }
+        public virtual ICollection<Payment> Payment { get; set; }
     }
 }

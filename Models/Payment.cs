@@ -30,5 +30,6 @@ namespace EMS.Desktop.Models
         public virtual File File { get; set; }
         public virtual Service Service { get; set; }
         public virtual ICollection<MeterData> MeterData { get; set; }
+        public virtual Homestead Homestead { get; set; }
     }
 }

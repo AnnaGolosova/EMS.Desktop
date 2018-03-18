@@ -29,7 +29,12 @@
         private void InitializeComponent()
         {
             this.GroupBox = new System.Windows.Forms.GroupBox();
-            this.CreateExcelCB = new System.Windows.Forms.CheckBox();
+            this.RateEdirB = new System.Windows.Forms.Button();
+            this.RateGrB = new System.Windows.Forms.GroupBox();
+            this.RateDGV = new System.Windows.Forms.DataGridView();
+            this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Title = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Value = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.Service4RB = new System.Windows.Forms.RadioButton();
             this.Service1RB = new System.Windows.Forms.RadioButton();
@@ -44,20 +49,15 @@
             this.DuringTimeRB = new System.Windows.Forms.RadioButton();
             this.QuarterRB = new System.Windows.Forms.RadioButton();
             this.MonthRB = new System.Windows.Forms.RadioButton();
+            this.CreateExcelCB = new System.Windows.Forms.CheckBox();
             this.CreateReportButton = new System.Windows.Forms.Button();
             this.CancelButton = new System.Windows.Forms.Button();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.RateDGV = new System.Windows.Forms.DataGridView();
-            this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Title = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Value = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.button1 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.FileNameTB = new System.Windows.Forms.TextBox();
             this.GroupBox.SuspendLayout();
-            this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
+            this.RateGrB.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.RateDGV)).BeginInit();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // GroupBox
@@ -65,8 +65,8 @@
             this.GroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.GroupBox.Controls.Add(this.button1);
-            this.GroupBox.Controls.Add(this.groupBox2);
+            this.GroupBox.Controls.Add(this.RateEdirB);
+            this.GroupBox.Controls.Add(this.RateGrB);
             this.GroupBox.Controls.Add(this.groupBox1);
             this.GroupBox.Controls.Add(this.ToLabel);
             this.GroupBox.Controls.Add(this.FromLabel);
@@ -86,16 +86,68 @@
             this.GroupBox.TabStop = false;
             this.GroupBox.Text = "Выбор времени";
             // 
-            // CreateExcelCB
+            // RateEdirB
             // 
-            this.CreateExcelCB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.CreateExcelCB.AutoSize = true;
-            this.CreateExcelCB.Location = new System.Drawing.Point(13, 470);
-            this.CreateExcelCB.Name = "CreateExcelCB";
-            this.CreateExcelCB.Size = new System.Drawing.Size(217, 21);
-            this.CreateExcelCB.TabIndex = 11;
-            this.CreateExcelCB.Text = "Создать такой же .xls отчет ";
-            this.CreateExcelCB.UseVisualStyleBackColor = true;
+            this.RateEdirB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.RateEdirB.Location = new System.Drawing.Point(7, 390);
+            this.RateEdirB.Name = "RateEdirB";
+            this.RateEdirB.Size = new System.Drawing.Size(165, 31);
+            this.RateEdirB.TabIndex = 13;
+            this.RateEdirB.Text = "Назначить тарифы";
+            this.RateEdirB.UseVisualStyleBackColor = true;
+            this.RateEdirB.Click += new System.EventHandler(this.RateEdirB_Click);
+            // 
+            // RateGrB
+            // 
+            this.RateGrB.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.RateGrB.Controls.Add(this.RateDGV);
+            this.RateGrB.Location = new System.Drawing.Point(8, 267);
+            this.RateGrB.Name = "RateGrB";
+            this.RateGrB.Size = new System.Drawing.Size(688, 117);
+            this.RateGrB.TabIndex = 12;
+            this.RateGrB.TabStop = false;
+            this.RateGrB.Text = "Редактирование тарифов";
+            // 
+            // RateDGV
+            // 
+            this.RateDGV.AllowUserToAddRows = false;
+            this.RateDGV.AllowUserToDeleteRows = false;
+            this.RateDGV.AllowUserToResizeRows = false;
+            this.RateDGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.RateDGV.ColumnHeadersVisible = false;
+            this.RateDGV.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.ID,
+            this.Title,
+            this.Value});
+            this.RateDGV.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.RateDGV.Location = new System.Drawing.Point(3, 18);
+            this.RateDGV.Name = "RateDGV";
+            this.RateDGV.RowHeadersVisible = false;
+            this.RateDGV.RowTemplate.Height = 24;
+            this.RateDGV.Size = new System.Drawing.Size(682, 96);
+            this.RateDGV.TabIndex = 0;
+            // 
+            // ID
+            // 
+            this.ID.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.ID.HeaderText = "";
+            this.ID.Name = "ID";
+            this.ID.ReadOnly = true;
+            this.ID.Width = 5;
+            // 
+            // Title
+            // 
+            this.Title.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Title.HeaderText = "";
+            this.Title.Name = "Title";
+            this.Title.ReadOnly = true;
+            // 
+            // Value
+            // 
+            this.Value.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Value.HeaderText = "";
+            this.Value.Name = "Value";
             // 
             // groupBox1
             // 
@@ -234,6 +286,7 @@
             // QuarterRB
             // 
             this.QuarterRB.AutoSize = true;
+            this.QuarterRB.Enabled = false;
             this.QuarterRB.Location = new System.Drawing.Point(8, 82);
             this.QuarterRB.Margin = new System.Windows.Forms.Padding(4);
             this.QuarterRB.Name = "QuarterRB";
@@ -254,6 +307,17 @@
             this.MonthRB.Text = "Отчёт за месяц";
             this.MonthRB.UseVisualStyleBackColor = true;
             this.MonthRB.CheckedChanged += new System.EventHandler(this.MonthRB_CheckedChanged);
+            // 
+            // CreateExcelCB
+            // 
+            this.CreateExcelCB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.CreateExcelCB.AutoSize = true;
+            this.CreateExcelCB.Location = new System.Drawing.Point(13, 470);
+            this.CreateExcelCB.Name = "CreateExcelCB";
+            this.CreateExcelCB.Size = new System.Drawing.Size(217, 21);
+            this.CreateExcelCB.TabIndex = 11;
+            this.CreateExcelCB.Text = "Создать такой же .xls отчет ";
+            this.CreateExcelCB.UseVisualStyleBackColor = true;
             // 
             // CreateReportButton
             // 
@@ -278,69 +342,6 @@
             this.CancelButton.Text = "Отмена";
             this.CancelButton.UseVisualStyleBackColor = true;
             this.CancelButton.Click += new System.EventHandler(this.CancelButton_Click);
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox2.Controls.Add(this.RateDGV);
-            this.groupBox2.Location = new System.Drawing.Point(8, 267);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(688, 117);
-            this.groupBox2.TabIndex = 12;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Редактирование тарифов";
-            // 
-            // RateDGV
-            // 
-            this.RateDGV.AllowUserToAddRows = false;
-            this.RateDGV.AllowUserToDeleteRows = false;
-            this.RateDGV.AllowUserToResizeRows = false;
-            this.RateDGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.RateDGV.ColumnHeadersVisible = false;
-            this.RateDGV.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.ID,
-            this.Title,
-            this.Value});
-            this.RateDGV.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.RateDGV.Location = new System.Drawing.Point(3, 18);
-            this.RateDGV.Name = "RateDGV";
-            this.RateDGV.RowHeadersVisible = false;
-            this.RateDGV.RowTemplate.Height = 24;
-            this.RateDGV.Size = new System.Drawing.Size(682, 96);
-            this.RateDGV.TabIndex = 0;
-            // 
-            // ID
-            // 
-            this.ID.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.ID.HeaderText = "";
-            this.ID.Name = "ID";
-            this.ID.ReadOnly = true;
-            this.ID.Width = 5;
-            // 
-            // Title
-            // 
-            this.Title.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Title.HeaderText = "";
-            this.Title.Name = "Title";
-            this.Title.ReadOnly = true;
-            // 
-            // Value
-            // 
-            this.Value.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Value.HeaderText = "";
-            this.Value.Name = "Value";
-            // 
-            // button1
-            // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button1.Location = new System.Drawing.Point(7, 390);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(165, 31);
-            this.button1.TabIndex = 13;
-            this.button1.Text = "Назначить тарифы";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // label1
             // 
@@ -372,15 +373,15 @@
             this.Controls.Add(this.GroupBox);
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximumSize = new System.Drawing.Size(1000, 1000);
-            this.MinimumSize = new System.Drawing.Size(1, 1);
+            this.MinimumSize = new System.Drawing.Size(18, 47);
             this.Name = "FormReposForERIP";
             this.Text = "Отчёт ERIP";
             this.GroupBox.ResumeLayout(false);
             this.GroupBox.PerformLayout();
+            this.RateGrB.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.RateDGV)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.RateDGV)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -406,12 +407,12 @@
         private System.Windows.Forms.RadioButton Service3RB;
         private System.Windows.Forms.RadioButton Service2RB;
         private System.Windows.Forms.CheckBox CreateExcelCB;
-        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.GroupBox RateGrB;
         private System.Windows.Forms.DataGridView RateDGV;
         private System.Windows.Forms.DataGridViewTextBoxColumn ID;
         private System.Windows.Forms.DataGridViewTextBoxColumn Title;
         private System.Windows.Forms.DataGridViewTextBoxColumn Value;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button RateEdirB;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox FileNameTB;
     }

@@ -8,7 +8,7 @@ namespace EMS.Desktop.Services
 {
     public class DBRepository :/* IRepository, */IDisposable
     {
-        static EMSEntities db;
+        public static EMSEntities db;
 
         #region Getters
         public int? GetNextFileId()
@@ -37,6 +37,14 @@ namespace EMS.Desktop.Services
                 }
             }
             return list;
+        }
+
+        public int? GetRatePosition(int? rateId)
+        {
+            Rate rate = GetRate(null, rateId);
+            int rateNumber = (int)rate.Number;
+            int firstRateId = db.Rate.Where(r => r.Number == rateNumber).OrderBy(r => r.Id).First().Id;
+            return (int)rateId - firstRateId + 1;
         }
 
         public DBRepository()
@@ -128,6 +136,12 @@ namespace EMS.Desktop.Services
             }
         }
 
+        public List<Rate> GetLastRates()
+        {
+            int? lastNumber = GetLastRateNumber();
+            return db.Rate.Where(r => r.Number == lastNumber).OrderBy(r => r.Id).ToList();
+        }
+
         public List<Meter> GetMeter()
         {
             return db.Meter.ToList();
@@ -169,11 +183,30 @@ namespace EMS.Desktop.Services
 
         public void ChangeRate(List<Rate> rates)
         {
-            foreach(Rate rate in rates)
+            try
             {
-                Rate newRate = db.Rate.Where(r => r.Id == rate.Id).First();
-                newRate.Value = rate.Value;
-                newRate.Date = rate.Date;
+                if (db.Rate.Count() == 0)
+                    throw new InvalidOperationException();
+                foreach(Rate rate in rates)
+                {
+                    Rate oldRate = db.Rate.Where(r => r.Id == rate.Id).First();
+                    if(oldRate.Value != rate.Value)
+                    {
+                        throw new InvalidOperationException();
+                    }
+                }
+
+            }
+            catch(InvalidOperationException)
+            {
+                int newNumber = (GetLastRateNumber() ?? 0) + 1;
+                foreach(Rate rate in rates)
+                {
+                    rate.Id = 0;
+                    rate.Number = newNumber;
+                    db.Rate.Add(rate);
+                }
+                db.SaveChanges();
             }
             db.SaveChanges();
         }
@@ -234,18 +267,39 @@ namespace EMS.Desktop.Services
             return db.Rate.AsNoTracking().ToList();
         }
 
-        public Rate GetRate(int serviceId)
+        public Rate GetRate(int? number, int? id)
         {
             try
             {
-                return db.Rate
-                    .Where(r => r.IdService == serviceId)
-                    .First();
+                if(number != null)
+                    return db.Rate
+                        .Where(r => r.Number == (int)number)
+                        .First();
+                else
+                    return db.Rate
+                        .Where(r => r.Id == (int)id)
+                        .First();
+
             }
             catch (InvalidOperationException)
             {
                 return null;
             }
+        }
+
+        public int? GetLastRateNumber()
+        {
+            return db.Rate.Max(r => r.Number);
+        }
+
+        public int? GetPreviousRateNumber()
+        {
+            if (GetLastRateNumber() == null)
+                return null;
+            int x = (int)GetLastRateNumber();
+            List<Rate> lastRates = db.Rate.Where(r => r.Number == x).ToList();
+            List<Rate> all = db.Rate.ToList().Except(lastRates).ToList();
+            return db.Rate.ToList().Except(lastRates).Max(r => r.Number);
         }
 
         public List<Service> GetService()

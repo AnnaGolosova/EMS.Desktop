@@ -68,6 +68,7 @@
           <Property Name="Id_Service" Type="int" Nullable="false" />
           <Property Name="Value" Type="float" Nullable="false" />
           <Property Name="Date" Type="date" />
+          <Property Name="Number" Type="int" />
         </EntityType>
         <EntityType Name="Service">
           <Key>
@@ -76,6 +77,18 @@
           <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <Association Name="FK_Meter_ToHomestead">
+          <End Role="Homestead" Type="Self.Homestead" Multiplicity="1" />
+          <End Role="Meter" Type="Self.Meter" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Homestead">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Meter">
+              <PropertyRef Name="Id_Homestead" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_MeterData_ToMeter">
           <End Role="Meter" Type="Self.Meter" Multiplicity="1" />
           <End Role="MeterData" Type="Self.MeterData" Multiplicity="*" />
@@ -124,6 +137,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Payment_ToHomestead">
+          <End Role="Homestead" Type="Self.Homestead" Multiplicity="1" />
+          <End Role="Payment" Type="Self.Payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Homestead">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Payment">
+              <PropertyRef Name="Id_Homestead" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Payment_ToService">
           <End Role="Service" Type="Self.Service" Multiplicity="1" />
           <End Role="Payment" Type="Self.Payment" Multiplicity="*" />
@@ -157,6 +182,10 @@
           <EntitySet Name="Payment" EntityType="Self.Payment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Rate" EntityType="Self.Rate" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Service" EntityType="Self.Service" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Meter_ToHomestead" Association="Self.FK_Meter_ToHomestead">
+            <End Role="Homestead" EntitySet="Homestead" />
+            <End Role="Meter" EntitySet="Meter" />
+          </AssociationSet>
           <AssociationSet Name="FK_MeterData_ToMeter" Association="Self.FK_MeterData_ToMeter">
             <End Role="Meter" EntitySet="Meter" />
             <End Role="MeterData" EntitySet="MeterData" />
@@ -171,6 +200,10 @@
           </AssociationSet>
           <AssociationSet Name="FK_Payment_ToFile" Association="Self.FK_Payment_ToFile">
             <End Role="File" EntitySet="File" />
+            <End Role="Payment" EntitySet="Payment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Payment_ToHomestead" Association="Self.FK_Payment_ToHomestead">
+            <End Role="Homestead" EntitySet="Homestead" />
             <End Role="Payment" EntitySet="Payment" />
           </AssociationSet>
           <AssociationSet Name="FK_Payment_ToService" Association="Self.FK_Payment_ToService">
@@ -210,6 +243,8 @@
           <Property Name="Number" Type="Int32" annotation:StoreGeneratedPattern="None" />
           <Property Name="OwnerName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Meter" Relationship="EMSModel.FK_Meter_ToHomestead" FromRole="Homestead" ToRole="Meter" />
+          <NavigationProperty Name="Payment" Relationship="EMSModel.FK_Payment_ToHomestead" FromRole="Homestead" ToRole="Payment" />
         </EntityType>
         <EntityType Name="Meter">
           <Key>
@@ -219,6 +254,7 @@
           <Property Name="IdHomestead" Type="Int32" Nullable="false" />
           <Property Name="MeterNumber" Type="Int32" Nullable="false" />
           <NavigationProperty Name="MeterData" Relationship="Self.FK_MeterData_ToMeter" FromRole="Meter" ToRole="MeterData" />
+          <NavigationProperty Name="Homestead" Relationship="EMSModel.FK_Meter_ToHomestead" FromRole="Meter" ToRole="Homestead" />
         </EntityType>
         <EntityType Name="MeterData">
           <Key>
@@ -248,6 +284,7 @@
           <NavigationProperty Name="File" Relationship="Self.FK_Payment_ToFile" FromRole="Payment" ToRole="File" />
           <NavigationProperty Name="Service" Relationship="Self.FK_Payment_ToService" FromRole="Payment" ToRole="Service" />
           <NavigationProperty Name="MeterData" Relationship="EMSModel.FK_MeterData_ToPayment" FromRole="Payment" ToRole="MeterData" />
+          <NavigationProperty Name="Homestead" Relationship="EMSModel.FK_Payment_ToHomestead" FromRole="Payment" ToRole="Homestead" />
         </EntityType>
         <EntityType Name="Rate">
           <Key>
@@ -259,6 +296,7 @@
           <Property Name="Date" Type="DateTime" Precision="0" />
           <NavigationProperty Name="Service" Relationship="Self.FK_Rate_ToService" FromRole="Rate" ToRole="Service" />
           <NavigationProperty Name="MeterData" Relationship="EMSModel.FK_MeterData_ToRate" FromRole="Rate" ToRole="MeterData" />
+          <Property Name="Number" Type="Int32" />
         </EntityType>
         <EntityType Name="Service">
           <Key>
@@ -350,6 +388,14 @@
             <End Role="Rate" EntitySet="Rate" />
             <End Role="MeterData" EntitySet="MeterData" />
           </AssociationSet>
+          <AssociationSet Name="FK_Meter_ToHomestead" Association="EMSModel.FK_Meter_ToHomestead">
+            <End Role="Homestead" EntitySet="Homestead" />
+            <End Role="Meter" EntitySet="Meter" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Payment_ToHomestead" Association="EMSModel.FK_Payment_ToHomestead">
+            <End Role="Homestead" EntitySet="Homestead" />
+            <End Role="Payment" EntitySet="Payment" />
+          </AssociationSet>
         </EntityContainer>
         <Association Name="FK_MeterData_ToPayment">
           <End Type="EMSModel.Payment" Role="Payment" Multiplicity="0..1" />
@@ -372,6 +418,30 @@
             </Principal>
             <Dependent Role="MeterData">
               <PropertyRef Name="Id_Rate" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Meter_ToHomestead">
+          <End Type="EMSModel.Homestead" Role="Homestead" Multiplicity="1" />
+          <End Type="EMSModel.Meter" Role="Meter" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Homestead">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Meter">
+              <PropertyRef Name="IdHomestead" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Payment_ToHomestead">
+          <End Type="EMSModel.Homestead" Role="Homestead" Multiplicity="1" />
+          <End Type="EMSModel.Payment" Role="Payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Homestead">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Payment">
+              <PropertyRef Name="IdHomestead" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -445,6 +515,7 @@
           <EntitySetMapping Name="Rate">
             <EntityTypeMapping TypeName="EMSModel.Rate">
               <MappingFragment StoreEntitySet="Rate">
+                <ScalarProperty Name="Number" ColumnName="Number" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="IdService" ColumnName="Id_Service" />
                 <ScalarProperty Name="Value" ColumnName="Value" />
