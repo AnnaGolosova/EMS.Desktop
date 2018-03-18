@@ -22,7 +22,7 @@ namespace EMS.Desktop
 
         public void OnCreate()
         {
-            //LoadNewFile.LoadFile(this);
+            LoadNewFile.LoadFile(this);
         }
         private void MenuAboutProgram_Click(object sender, EventArgs e)
         {
@@ -123,6 +123,16 @@ namespace EMS.Desktop
          
                 }
             }
+        }
+
+        private void CLearFileStatesMI_Click(object sender, EventArgs e)
+        {
+            if(string .IsNullOrEmpty(ConfigAppManager.GetReports210Path()))
+            {
+                MessageBox.Show("Путь для 201 файлов пуст. Проверьте настройки.", "Путь для 201 файлов пуст", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+            FileManager.ClearFileStates(ConfigAppManager.GetReports210Path());
         }
     }
 }

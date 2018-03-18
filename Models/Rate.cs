@@ -23,6 +23,7 @@ namespace EMS.Desktop.Models
         public int IdService { get; set; }
         public double Value { get; set; }
         public Nullable<System.DateTime> Date { get; set; }
+        public Nullable<int> Number { get; set; }
     
         public virtual Service Service { get; set; }
         public virtual ICollection<MeterData> MeterData { get; set; }

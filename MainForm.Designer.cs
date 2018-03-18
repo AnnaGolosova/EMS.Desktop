@@ -43,6 +43,7 @@
             this.ColorPanel = new System.Windows.Forms.Panel();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.LabelProgrBar = new System.Windows.Forms.Label();
+            this.CLearFileStatesMI = new System.Windows.Forms.ToolStripMenuItem();
             this.Menu.SuspendLayout();
             this.ColorPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -67,6 +68,8 @@
             // 
             // MenuFail
             // 
+            this.MenuFail.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.CLearFileStatesMI});
             this.MenuFail.Name = "MenuFail";
             this.MenuFail.Size = new System.Drawing.Size(57, 24);
             this.MenuFail.Text = "Файл";
@@ -184,6 +187,13 @@
             this.LabelProgrBar.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.LabelProgrBar.Visible = false;
             // 
+            // CLearFileStatesMI
+            // 
+            this.CLearFileStatesMI.Name = "CLearFileStatesMI";
+            this.CLearFileStatesMI.Size = new System.Drawing.Size(282, 26);
+            this.CLearFileStatesMI.Text = "Сбросить состояния файлов";
+            this.CLearFileStatesMI.Click += new System.EventHandler(this.CLearFileStatesMI_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -225,6 +235,7 @@
         public System.Windows.Forms.Label LabelProgrBar;
         public System.Windows.Forms.ProgressBar MainProgressBar;
         private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.ToolStripMenuItem CLearFileStatesMI;
     }
 }
 

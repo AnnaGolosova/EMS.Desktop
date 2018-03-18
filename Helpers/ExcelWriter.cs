@@ -55,11 +55,11 @@ namespace EMS.Desktop.Helpers
             return mi;
         }
 
-        public static void Write202(Report210 datas, List<Rate> rates, string fileName)
+        public static void Write202(Report210 datas, List<Rate> rates, string fileName, bool CreateExcel)
         {
             Report202 rep = new Report202();
             rep.LocalRates = rates;
-
+            DBRepository db = new DBRepository();
             rep.Datas = new List<Report202.ReportData>();
             foreach (Report210.ReportData x in datas.Datas)
             {
@@ -77,14 +77,67 @@ namespace EMS.Desktop.Helpers
                 if (x.meterInfo != null)
                     rep.Datas[rep.Datas.Count - 1].meterInfo = ConvertTo202(x.meterInfo);
             }
-            WriteExcel(rep, fileName);
+            try
+            {
+                FileStream stream = new FileStream(ConfigAppManager.GetReports202Path() + "//" + fileName, FileMode.Create);
+                StreamWriter writer = new StreamWriter(stream);
+                writer.WriteLine();
+                if (rep.Datas[0].ServiceId == 2)
+                {
+                    foreach (Rate r in rep.LocalRates)
+                    {
+                        string rateStr = "1^" + r.Id + "^";
+                        r.Service = db.GetService(r.IdService);
+                        rateStr += r.Service.Name + "^^^^^" + r.Value;
+                        writer.WriteLine(rateStr);
+                    }
+                }
+                foreach (Report202.ReportData x in rep.Datas)
+                {
+                    string recordStr = "2^" + x.HomeSteadNumber + "^";
+                    recordStr += x.OwnerName + "^Номер участка " + x.HomeSteadNumber + "^";
+                    recordStr += x.Date.Month.ToString() + "." + x.Date.Year.ToString() + "^" + x.Arrear + "^";
+                    if (x.ServiceId == 2)
+                    {
+                        string s = x.meterInfo.Count.ToString() + "~";
+                        int j = 1;
+                        foreach (Report202.ReportData.MeterInfo mi in x.meterInfo)
+                        {
+                            s += j++ + "~" + mi.LocalRateId + "~~~6~" + mi.Value + "~";
+                        }
+                        recordStr += s + "^^^^^";
+                    }
+                    else
+                    {
+                        recordStr += "^" + x.Introdused + "^^^^^";
+                    }
+                    writer.WriteLine(recordStr);
+                }
+                writer.Close();
+                writer.Close();
+            }
+            catch(ArgumentException ex)
+            {
+                MessageBox.Show("Неверное имя файла. Проверьте пути для сохранения файлов в настройках", 
+                    "Неверное имя файла", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (IOException ex)
+            {
+                MessageBox.Show("Файл " + fileName + 
+                    ".202 не может быть сохранен. Возможно, он уже существует и открыт в другом приложении. Зактойте файл и повторите попытку.", 
+                    "Файл не может быть сохранен", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            if (CreateExcel)
+                WriteExcel(rep, fileName);
         }
 
         private static void WriteExcel(Report202 report, string fileName)
         {
             if(report.Datas.Count == 0)
             {
-                MessageBox.Show("Отчет по заданным параметрам не имеет записей! Измените параметры и повторите попытку.", "Отчет не содержит записей", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Отчет по заданным параметрам не имеет записей! Измените параметры и повторите попытку.", 
+                    "Отчет не содержит записей", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
             using (DBRepository db = new DBRepository())
@@ -120,7 +173,7 @@ namespace EMS.Desktop.Helpers
                             {
                                 s += j++ + "~" + mi.LocalRateId + "~~~6~" + mi.Value + "~";
                             }
-                            ws.Cells[i++, 7].Value = s;
+                            ws.Cells[i, 7].Value = s;
                             ws.Cells[i++, 8].Value = "^^^^";
                         }
                         else
@@ -135,12 +188,14 @@ namespace EMS.Desktop.Helpers
 
                     } catch(InvalidOperationException ex)
                     {
-                        MessageBox.Show("Файл" + fileName +" существует либо уже используется.", "Ошибка записи файла", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Файл " + fileName + 
+                            ".xlsx не может быть сохранен. Возможно, он уже существует и открыт в другом приложении. Зактойте файл и повторите попытку.", 
+                            "Файл не может быть сохранен", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                     catch(ArgumentException ex)
                     {
-                        MessageBox.Show("Неверное имя файла. Проверьте пути для сохранения файлов в настройках", "Неверное имя файла", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
+                        MessageBox.Show("Неверное имя файла. Проверьте пути для сохранения файлов в настройках", 
+                            "Неверное имя файла", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
