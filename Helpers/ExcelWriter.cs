@@ -5,6 +5,7 @@ using System.Text;
 using EMS.Desktop.Models;
 using EMS.Desktop.Services;
 using OfficeOpenXml;
+using OfficeOpenXml.Style;
 using System.Windows.Forms;
 
 namespace EMS.Desktop.Helpers
@@ -124,7 +125,7 @@ namespace EMS.Desktop.Helpers
             catch (IOException ex)
             {
                 MessageBox.Show("Файл " + fileName + 
-                    ".202 не может быть сохранен. Возможно, он уже существует и открыт в другом приложении. Зактойте файл и повторите попытку.", 
+                    ".202 не может быть сохранен. Возможно, он уже существует и открыт в другом приложении. Закройте файл и повторите попытку.", 
                     "Файл не может быть сохранен", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
@@ -189,7 +190,7 @@ namespace EMS.Desktop.Helpers
                     } catch(InvalidOperationException ex)
                     {
                         MessageBox.Show("Файл " + fileName + 
-                            ".xlsx не может быть сохранен. Возможно, он уже существует и открыт в другом приложении. Зактойте файл и повторите попытку.", 
+                            ".xlsx не может быть сохранен. Возможно, он уже существует и открыт в другом приложении. Закройте файл и повторите попытку.", 
                             "Файл не может быть сохранен", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                     catch(ArgumentException ex)
@@ -198,6 +199,98 @@ namespace EMS.Desktop.Helpers
                             "Неверное имя файла", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
+            }
+        }
+        
+        private static void WriteMonthReport(List<Report210.ReportData> datas, int month, string fileName)
+        {
+            using (ExcelPackage excel = new ExcelPackage())
+            {
+                List<string> Months = new List<string>();
+                Months.Add("Январь ");
+                Months.Add("Февраль ");
+                Months.Add("Март ");
+                Months.Add("Апрель ");
+                Months.Add("Май ");
+                Months.Add("Июнь ");
+                Months.Add("Июль ");
+                Months.Add("Август ");
+                Months.Add("Сентябрь ");
+                Months.Add("Октябрь ");
+                Months.Add("Ноябрь ");
+                Months.Add("Декабрь ");
+                var ws = excel.Workbook.Worksheets.Add("Отчёт за месяц");
+
+                ws.Cells[1, 1, 1, 11].Merge = true;
+                ws.Cells[1, 1].Value = "Ведомость";
+                ws.Cells[2, 1, 2, 11].Merge = true;
+                ws.Cells[2, 1].Value = "уплаты за электроэнергию";
+                ws.Cells[3, 1, 3, 11].Merge = true;
+                ws.Cells[3, 1].Value = "за " + Months[month - 1] + datas[0].Date.Year + "г.";
+                ws.Cells[4, 1, 4, 11].Merge = true;
+                ws.Cells[4, 1].Value = "Гос. тариф "; //+ гос. тариф (0,1192)
+                ws.Cells[5, 1, 6, 1].Merge = true;
+                ws.Cells[5, 1].Value = "№ По порядку";
+                ws.Cells[5, 2, 6, 2].Merge = true;
+                ws.Cells[5, 2].Value = "№ Участка";
+                ws.Cells[5, 3, 6, 3].Merge = true;
+                ws.Cells[5, 3].Value = "Дата оплаты";
+                ws.Cells[5, 4, 6, 4].Merge = true;
+                ws.Cells[5, 4].Value = "Внесено денег";
+                ws.Cells[5, 5, 6, 5].Merge = true;
+                ws.Cells[5, 5].Value = "Снято ЕРИПом";
+                ws.Cells[5, 6, 5, 7].Merge = true;
+                ws.Cells[5, 6].Value = "Уплачено по счётчику";
+                ws.Cells[6, 6].Value = "кВт/ч";
+                ws.Cells[6, 7].Value = "Сумма";
+                ws.Cells[5, 8].Value = "Текущие показания";
+                ws.Cells[6, 8].Value = "кВт/ч";
+                ws.Cells[5, 9, 5, 10].Merge = true;
+                ws.Cells[5, 9].Value = "Доплата за потери";
+                ws.Cells[6, 9].Value = "K=";
+                ws.Cells[6, 10].Value = "Сумма";
+                ws.Cells[5, 11, 6, 11].Merge = true;
+                ws.Cells[5, 11].Value = "Доплата по долгам";
+
+                int i = 7;
+                foreach (Report210.ReportData data in datas)
+                {
+                    ws.Cells[i, 1].Value = i - 6;
+                    ws.Cells[i, 2].Value = data.HomeSteadNumber;
+                    ws.Cells[i, 3].Value = data.Date;
+                    ws.Cells[i, 4].Value = data.Introduced;
+                    ws.Cells[i, 6].Value = data.meterInfo[0].oldValue - data.meterInfo[0].newValue;
+                    ws.Cells[i, 8].Value = data.meterInfo[0].newValue;
+                    ws.Cells[i, 9].Value = "?????"; // K=
+                    ws.Cells[i, 11].Value = "?????"; // ??
+                    ws.Cells[i, 12].Value = data.Entered;
+                    for (int j = 0; j < 11; j++)
+                        ws.Cells[i, j].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                    i++;
+                }
+
+                ws.Cells[7, 5, i - 1, 5].Formula = "D7 - L7";
+                ws.Cells[7, 7, i - 1, 7].Formula = "ROUND(F7 * $L$5, 2)";
+                ws.Cells[7, 10, i - 1, 10].Formula = "ROUND(F7 * I7 * $L$5, 2)";
+                ws.Cells[7, 14, i - 1, 14].Formula = "G7 + J7 + K7";
+                ws.Cells[i, 4, i, 5].Formula = "SUM(D7:D" + (i - 1) + ")";
+                ws.Cells[i, 7].Formula = "SUM(G7:G" + (i - 1) + ")";
+                ws.Cells[i, 10, i, 11].Formula = "SUM(J7:J" + (i - 1) + ")";
+                ws.Cells[i, 14].Formula = "SUM(N7:" + (i - 1) + ")";
+
+                ws.Cells[5, 1, 6, 11].Style.Font.Bold = true;
+                ws.Cells[5, 1, i, 11].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+                ws.Cells[i, 1, i, 11].Style.Border.Top.Style = ExcelBorderStyle.Medium;
+                ws.Cells[6, 1, 6, 11].Style.Border.Bottom.Style = ExcelBorderStyle.Medium;
+                ws.Cells[1, 1, i - 1, 11].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                ws.Cells[1, 1, i - 1, 11].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                ws.Cells[7, 12, i - 1, 12].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                ws.Cells[7, 12, i - 1, 12].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                ws.Cells[7, 14, i, 14].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                ws.Cells[7, 14, i, 14].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                ws.Cells[7, 14, i - 1, 14].Style.Font.Color.SetColor(System.Drawing.Color.Red);
+
+                excel.SaveAs(new FileInfo(ConfigAppManager.GetExcelPath() + "//" + fileName + ".xlsx"));
             }
         }
     }
