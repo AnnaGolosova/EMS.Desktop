@@ -61,7 +61,7 @@
             this.Rate});
             this.RateDGV.Dock = System.Windows.Forms.DockStyle.Fill;
             this.RateDGV.Location = new System.Drawing.Point(0, 0);
-            this.RateDGV.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.RateDGV.Margin = new System.Windows.Forms.Padding(2);
             this.RateDGV.Name = "RateDGV";
             this.RateDGV.RowTemplate.Height = 24;
             this.RateDGV.Size = new System.Drawing.Size(644, 169);
@@ -118,7 +118,7 @@
             this.RateViewDGV.DefaultCellStyle = dataGridViewCellStyle1;
             this.RateViewDGV.Dock = System.Windows.Forms.DockStyle.Top;
             this.RateViewDGV.Location = new System.Drawing.Point(0, 0);
-            this.RateViewDGV.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.RateViewDGV.Margin = new System.Windows.Forms.Padding(2);
             this.RateViewDGV.Name = "RateViewDGV";
             this.RateViewDGV.RowHeadersVisible = false;
             this.RateViewDGV.RowTemplate.Height = 24;
@@ -153,7 +153,7 @@
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
             this.splitContainer1.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(2);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -176,7 +176,7 @@
             this.ClientSize = new System.Drawing.Size(644, 448);
             this.Controls.Add(this.splitContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "RateEditForm";
             this.Text = "Редактор тарифов";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RateEditForm_FormClosing);

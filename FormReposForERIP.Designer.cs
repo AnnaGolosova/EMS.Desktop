@@ -89,7 +89,7 @@
             // 
             this.RateEdirB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.RateEdirB.Location = new System.Drawing.Point(5, 317);
-            this.RateEdirB.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.RateEdirB.Margin = new System.Windows.Forms.Padding(2);
             this.RateEdirB.Name = "RateEdirB";
             this.RateEdirB.Size = new System.Drawing.Size(124, 25);
             this.RateEdirB.TabIndex = 13;
@@ -103,9 +103,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.RateGrB.Controls.Add(this.RateDGV);
             this.RateGrB.Location = new System.Drawing.Point(6, 217);
-            this.RateGrB.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.RateGrB.Margin = new System.Windows.Forms.Padding(2);
             this.RateGrB.Name = "RateGrB";
-            this.RateGrB.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.RateGrB.Padding = new System.Windows.Forms.Padding(2);
             this.RateGrB.Size = new System.Drawing.Size(516, 95);
             this.RateGrB.TabIndex = 12;
             this.RateGrB.TabStop = false;
@@ -124,7 +124,7 @@
             this.Value});
             this.RateDGV.Dock = System.Windows.Forms.DockStyle.Fill;
             this.RateDGV.Location = new System.Drawing.Point(2, 15);
-            this.RateDGV.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.RateDGV.Margin = new System.Windows.Forms.Padding(2);
             this.RateDGV.Name = "RateDGV";
             this.RateDGV.RowHeadersVisible = false;
             this.RateDGV.RowTemplate.Height = 24;
@@ -159,9 +159,9 @@
             this.groupBox1.Controls.Add(this.Service3RB);
             this.groupBox1.Controls.Add(this.Service2RB);
             this.groupBox1.Location = new System.Drawing.Point(6, 125);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox1.Size = new System.Drawing.Size(529, 88);
             this.groupBox1.TabIndex = 10;
             this.groupBox1.TabStop = false;
@@ -171,7 +171,7 @@
             // 
             this.Service4RB.AutoSize = true;
             this.Service4RB.Location = new System.Drawing.Point(172, 55);
-            this.Service4RB.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Service4RB.Margin = new System.Windows.Forms.Padding(2);
             this.Service4RB.Name = "Service4RB";
             this.Service4RB.Size = new System.Drawing.Size(149, 17);
             this.Service4RB.TabIndex = 3;
@@ -184,7 +184,7 @@
             // 
             this.Service1RB.AutoSize = true;
             this.Service1RB.Location = new System.Drawing.Point(172, 25);
-            this.Service1RB.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Service1RB.Margin = new System.Windows.Forms.Padding(2);
             this.Service1RB.Name = "Service1RB";
             this.Service1RB.Size = new System.Drawing.Size(64, 17);
             this.Service1RB.TabIndex = 2;
@@ -197,7 +197,7 @@
             // 
             this.Service3RB.AutoSize = true;
             this.Service3RB.Location = new System.Drawing.Point(10, 55);
-            this.Service3RB.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Service3RB.Margin = new System.Windows.Forms.Padding(2);
             this.Service3RB.Name = "Service3RB";
             this.Service3RB.Size = new System.Drawing.Size(108, 17);
             this.Service3RB.TabIndex = 1;
@@ -210,7 +210,7 @@
             // 
             this.Service2RB.AutoSize = true;
             this.Service2RB.Location = new System.Drawing.Point(10, 25);
-            this.Service2RB.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Service2RB.Margin = new System.Windows.Forms.Padding(2);
             this.Service2RB.Name = "Service2RB";
             this.Service2RB.Size = new System.Drawing.Size(123, 17);
             this.Service2RB.TabIndex = 0;
@@ -313,7 +313,7 @@
             this.CreateExcelCB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.CreateExcelCB.AutoSize = true;
             this.CreateExcelCB.Location = new System.Drawing.Point(10, 382);
-            this.CreateExcelCB.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.CreateExcelCB.Margin = new System.Windows.Forms.Padding(2);
             this.CreateExcelCB.Name = "CreateExcelCB";
             this.CreateExcelCB.Size = new System.Drawing.Size(168, 17);
             this.CreateExcelCB.TabIndex = 11;
@@ -355,7 +355,7 @@
             // FileNameTB
             // 
             this.FileNameTB.Location = new System.Drawing.Point(74, 5);
-            this.FileNameTB.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.FileNameTB.Margin = new System.Windows.Forms.Padding(2);
             this.FileNameTB.Name = "FileNameTB";
             this.FileNameTB.Size = new System.Drawing.Size(162, 20);
             this.FileNameTB.TabIndex = 13;
