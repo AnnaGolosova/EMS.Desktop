@@ -218,13 +218,12 @@ namespace EMS.Desktop
                 {
                     dataGridView1.Rows.Add(s.Service.Id, s.Homestead.Number, s.Homestead.OwnerName, s.Date.Value.ToShortDateString(), s.Introduced, "0.0", s.Entered, s.MeterData.ToList()[0].Value);
                     if (s.Homestead.Meter.Count > 1)
-                    {
+                    { 
                         int n = s.Homestead.Meter.Count;
                         for (int i = 1; i < n; i++)
                         {
                             x++;
                             dataGridView1.Rows.Add("", "", "", "", "", "", "", s.MeterData.ToList()[i].Value);
-                            //dataGridView1.Rows[x].Cells[7].   //Add(new DataGridViewComboBoxColumn());
                             for (int j = 0; j < 7; j++)
                             { 
                                 dataGridView1.Rows[x].Cells[j].Style.BackColor = Color.Lavender;
