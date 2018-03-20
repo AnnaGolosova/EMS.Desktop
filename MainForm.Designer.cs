@@ -30,21 +30,20 @@
         {
             this.Menu = new System.Windows.Forms.MenuStrip();
             this.MenuFail = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripDownloadNewFile = new System.Windows.Forms.ToolStripMenuItem();
+            this.CLearFileStatesMI = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuRepos = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuReposForERIP = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuReposForExcel = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuDocuments = new System.Windows.Forms.ToolStripMenuItem();
             this.MainJournal = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuSettings = new System.Windows.Forms.ToolStripMenuItem();
-            this.SettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.SavePathTSMI = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuAboutProgram = new System.Windows.Forms.ToolStripMenuItem();
             this.MainProgressBar = new System.Windows.Forms.ProgressBar();
             this.ColorPanel = new System.Windows.Forms.Panel();
             this.LoadingLabel = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.LabelProgrBar = new System.Windows.Forms.Label();
-            this.ToolStripDownloadNewFile = new System.Windows.Forms.ToolStripMenuItem();
             this.Menu.SuspendLayout();
             this.ColorPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -62,17 +61,32 @@
             this.MenuAboutProgram});
             this.Menu.Location = new System.Drawing.Point(0, 0);
             this.Menu.Name = "Menu";
-            this.Menu.Size = new System.Drawing.Size(643, 24);
+            this.Menu.Size = new System.Drawing.Size(764, 24);
             this.Menu.TabIndex = 0;
             this.Menu.Text = "menuStrip1";
             // 
             // MenuFail
             // 
             this.MenuFail.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ToolStripDownloadNewFile});
+            this.ToolStripDownloadNewFile,
+            this.CLearFileStatesMI});
             this.MenuFail.Name = "MenuFail";
             this.MenuFail.Size = new System.Drawing.Size(48, 20);
             this.MenuFail.Text = "Файл";
+            // 
+            // ToolStripDownloadNewFile
+            // 
+            this.ToolStripDownloadNewFile.Name = "ToolStripDownloadNewFile";
+            this.ToolStripDownloadNewFile.Size = new System.Drawing.Size(232, 22);
+            this.ToolStripDownloadNewFile.Text = "Загрузка новых файлов";
+            this.ToolStripDownloadNewFile.Click += new System.EventHandler(this.ToolStripDownloadNewFile_Click);
+            // 
+            // CLearFileStatesMI
+            // 
+            this.CLearFileStatesMI.Name = "CLearFileStatesMI";
+            this.CLearFileStatesMI.Size = new System.Drawing.Size(232, 22);
+            this.CLearFileStatesMI.Text = "Сбросить состояния файлов";
+            this.CLearFileStatesMI.Click += new System.EventHandler(this.CLearFileStatesMI_Click);
             // 
             // MenuRepos
             // 
@@ -113,26 +127,10 @@
             // 
             // MenuSettings
             // 
-            this.MenuSettings.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.SettingsToolStripMenuItem,
-            this.SavePathTSMI});
             this.MenuSettings.Name = "MenuSettings";
             this.MenuSettings.Size = new System.Drawing.Size(79, 20);
             this.MenuSettings.Text = "Настройки";
-            // 
-            // SettingsToolStripMenuItem
-            // 
-            this.SettingsToolStripMenuItem.Name = "SettingsToolStripMenuItem";
-            this.SettingsToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
-            this.SettingsToolStripMenuItem.Text = "Параметры";
-            this.SettingsToolStripMenuItem.Click += new System.EventHandler(this.SettingsToolStripMenuItem_Click);
-            // 
-            // SavePathTSMI
-            // 
-            this.SavePathTSMI.Name = "SavePathTSMI";
-            this.SavePathTSMI.Size = new System.Drawing.Size(167, 22);
-            this.SavePathTSMI.Text = "Путь сохранения";
-            this.SavePathTSMI.Click += new System.EventHandler(this.SavePathTSMI_Click);
+            this.MenuSettings.Click += new System.EventHandler(this.MenuSettings_Click);
             // 
             // MenuAboutProgram
             // 
@@ -144,9 +142,9 @@
             // MainProgressBar
             // 
             this.MainProgressBar.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.MainProgressBar.Location = new System.Drawing.Point(0, 380);
+            this.MainProgressBar.Location = new System.Drawing.Point(0, 415);
             this.MainProgressBar.Name = "MainProgressBar";
-            this.MainProgressBar.Size = new System.Drawing.Size(643, 23);
+            this.MainProgressBar.Size = new System.Drawing.Size(764, 23);
             this.MainProgressBar.TabIndex = 1;
             // 
             // ColorPanel
@@ -157,7 +155,7 @@
             this.ColorPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ColorPanel.Location = new System.Drawing.Point(0, 24);
             this.ColorPanel.Name = "ColorPanel";
-            this.ColorPanel.Size = new System.Drawing.Size(643, 356);
+            this.ColorPanel.Size = new System.Drawing.Size(764, 391);
             this.ColorPanel.TabIndex = 2;
             // 
             // LoadingLabel
@@ -168,7 +166,7 @@
             this.LoadingLabel.AutoSize = true;
             this.LoadingLabel.BackColor = System.Drawing.Color.Transparent;
             this.LoadingLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.LoadingLabel.Location = new System.Drawing.Point(266, 148);
+            this.LoadingLabel.Location = new System.Drawing.Point(347, 177);
             this.LoadingLabel.Name = "LoadingLabel";
             this.LoadingLabel.Size = new System.Drawing.Size(83, 18);
             this.LoadingLabel.TabIndex = 1;
@@ -184,7 +182,7 @@
             this.dataGridView1.Margin = new System.Windows.Forms.Padding(2);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.Size = new System.Drawing.Size(643, 356);
+            this.dataGridView1.Size = new System.Drawing.Size(764, 391);
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.Visible = false;
             // 
@@ -196,32 +194,25 @@
             this.LabelProgrBar.Cursor = System.Windows.Forms.Cursors.Default;
             this.LabelProgrBar.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.LabelProgrBar.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.LabelProgrBar.Location = new System.Drawing.Point(0, 380);
+            this.LabelProgrBar.Location = new System.Drawing.Point(0, 415);
             this.LabelProgrBar.Name = "LabelProgrBar";
-            this.LabelProgrBar.Size = new System.Drawing.Size(643, 23);
+            this.LabelProgrBar.Size = new System.Drawing.Size(764, 23);
             this.LabelProgrBar.TabIndex = 0;
             this.LabelProgrBar.Text = "Файлы загружены";
             this.LabelProgrBar.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.LabelProgrBar.Visible = false;
             // 
-            // ToolStripDownloadNewFile
-            // 
-            this.ToolStripDownloadNewFile.Name = "ToolStripDownloadNewFile";
-            this.ToolStripDownloadNewFile.Size = new System.Drawing.Size(204, 22);
-            this.ToolStripDownloadNewFile.Text = "Загрузка новых файлов";
-            this.ToolStripDownloadNewFile.Click += new System.EventHandler(this.ToolStripDownloadNewFile_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(643, 403);
+            this.ClientSize = new System.Drawing.Size(764, 438);
             this.Controls.Add(this.LabelProgrBar);
             this.Controls.Add(this.ColorPanel);
             this.Controls.Add(this.MainProgressBar);
             this.Controls.Add(this.Menu);
             this.MainMenuStrip = this.Menu;
-            this.MinimumSize = new System.Drawing.Size(659, 442);
+            this.MinimumSize = new System.Drawing.Size(780, 477);
             this.Name = "MainForm";
             this.Text = "E.M.S.";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Closing_MainForm);
@@ -248,13 +239,12 @@
         private System.Windows.Forms.Panel ColorPanel;
         private System.Windows.Forms.ToolStripMenuItem MenuReposForERIP;
         private System.Windows.Forms.ToolStripMenuItem MenuReposForExcel;
-        private System.Windows.Forms.ToolStripMenuItem SettingsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem SavePathTSMI;
         public System.Windows.Forms.Label LabelProgrBar;
         public System.Windows.Forms.ProgressBar MainProgressBar;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Label LoadingLabel;
         private System.Windows.Forms.ToolStripMenuItem ToolStripDownloadNewFile;
+        private System.Windows.Forms.ToolStripMenuItem CLearFileStatesMI;
     }
 }
 

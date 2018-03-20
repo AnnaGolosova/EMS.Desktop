@@ -45,6 +45,7 @@ CREATE TABLE [dbo].[Rate] (
     [Id_Service] INT        NOT NULL,
     [Value]      FLOAT (53) NOT NULL,
     [Date]       DATE       NULL,
+    [Number]       int       NULL,
 
 	CONSTRAINT FK_Rate_ToService FOREIGN KEY (Id_Service) REFERENCES [Service](Id) 
 )
@@ -68,7 +69,8 @@ CREATE TABLE [dbo].[Meter] (
     [Id]           INT IDENTITY (1, 1) NOT NULL PRIMARY KEY,
     [Id_Homestead] INT NOT NULL,
     [Meter_Number] INT NOT NULL,
-
+	
+	CONSTRAINT FK_Meter_ToHomestead		FOREIGN KEY ([Id_Homestead])		REFERENCES Homestead(Id),
 )
 GO
 
@@ -81,6 +83,7 @@ CREATE TABLE [dbo].[Payment] (
     [Entered]       FLOAT (53) NOT NULL DEFAULT 0,
     [Date]          DATE       NULL,
 	
+	CONSTRAINT FK_Payment_ToHomestead		FOREIGN KEY ([Id_Homestead])		REFERENCES Homestead(Id),
 	CONSTRAINT FK_Payment_ToService		FOREIGN KEY ([Id_Service])		REFERENCES [Service](Id),
 	CONSTRAINT FK_Payment_ToFile		FOREIGN KEY ([Id_File])			REFERENCES [File](Id)
 )
@@ -108,7 +111,7 @@ VALUES	(1, N'Взносы'),
 GO
 
 INSERT INTO [Rate]
-VALUES	(2, 0.1246, '09/01/2017'),
-		(2, 0.1246, '09/01/2017'),
-		(2, 0.1246, '09/01/2017')
+VALUES	(2, 0.1246, '09/01/2017', 1),
+		(2, 0.1246, '09/01/2017', 1),
+		(2, 0.1246, '09/01/2017', 1)
 GO

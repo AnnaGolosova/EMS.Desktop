@@ -31,7 +31,6 @@ c:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\EntityFra
 c:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\Microsoft.WindowsAPICodePack.dll
 c:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\Microsoft.WindowsAPICodePack.Shell.dll
 c:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\EntityFramework.xml
-c:\Users\Администратор\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.FormInstallationPath.resources
 C:\Users\source\EMS.Desktop\bin\Debug\EMS.Desktop.exe.config
 C:\Users\source\EMS.Desktop\bin\Debug\EMS.Desktop.exe
 C:\Users\source\EMS.Desktop\bin\Debug\EMS.Desktop.pdb
@@ -58,3 +57,4 @@ c:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\EntityFra
 c:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\EPPlus.dll
 c:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\EntityFramework.SqlServer.xml
 c:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\EPPlus.xml
+c:\Users\Администратор\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.Forms.RateEditForm.resources
