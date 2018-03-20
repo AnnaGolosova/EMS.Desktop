@@ -33,12 +33,23 @@
             this.OkButton = new System.Windows.Forms.Button();
             this.NameLabel = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.labelGol = new System.Windows.Forms.Label();
+            this.labelDan = new System.Windows.Forms.Label();
+            this.labelSap = new System.Windows.Forms.Label();
+            this.labelSmax = new System.Windows.Forms.Label();
+            this.labelEdmail = new System.Windows.Forms.Label();
+            this.AuthorsGroupBox.SuspendLayout();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // AuthorsGroupBox
             // 
+            this.AuthorsGroupBox.Controls.Add(this.labelEdmail);
+            this.AuthorsGroupBox.Controls.Add(this.labelSmax);
+            this.AuthorsGroupBox.Controls.Add(this.labelSap);
+            this.AuthorsGroupBox.Controls.Add(this.labelDan);
+            this.AuthorsGroupBox.Controls.Add(this.labelGol);
             this.AuthorsGroupBox.Location = new System.Drawing.Point(12, 91);
             this.AuthorsGroupBox.Name = "AuthorsGroupBox";
             this.AuthorsGroupBox.Size = new System.Drawing.Size(309, 170);
@@ -74,15 +85,53 @@
             this.label1.TabIndex = 3;
             this.label1.Text = "Програмное обеспечение предназначенное для загрузки и обработки файлов ERIP";
             // 
-            // pictureBox1
+            // labelGol
             // 
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(252, 23);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(64, 64);
-            this.pictureBox1.TabIndex = 4;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
+            this.labelGol.AutoSize = true;
+            this.labelGol.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelGol.Location = new System.Drawing.Point(6, 30);
+            this.labelGol.Name = "labelGol";
+            this.labelGol.Size = new System.Drawing.Size(93, 15);
+            this.labelGol.TabIndex = 0;
+            this.labelGol.Text = "Голосова Анна";
+            // 
+            // labelDan
+            // 
+            this.labelDan.AutoSize = true;
+            this.labelDan.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelDan.Location = new System.Drawing.Point(6, 56);
+            this.labelDan.Name = "labelDan";
+            this.labelDan.Size = new System.Drawing.Size(94, 15);
+            this.labelDan.TabIndex = 1;
+            this.labelDan.Text = "Данилков Егор";
+            // 
+            // labelSap
+            // 
+            this.labelSap.AutoSize = true;
+            this.labelSap.Location = new System.Drawing.Point(6, 84);
+            this.labelSap.Name = "labelSap";
+            this.labelSap.Size = new System.Drawing.Size(90, 13);
+            this.labelSap.TabIndex = 2;
+            this.labelSap.Text = "Сапончик Артём";
+            // 
+            // labelSmax
+            // 
+            this.labelSmax.AutoSize = true;
+            this.labelSmax.Location = new System.Drawing.Point(6, 108);
+            this.labelSmax.Name = "labelSmax";
+            this.labelSmax.Size = new System.Drawing.Size(86, 13);
+            this.labelSmax.TabIndex = 3;
+            this.labelSmax.Text = "Смахтин Даник";
+            // 
+            // labelEdmail
+            // 
+            this.labelEdmail.AutoSize = true;
+            this.labelEdmail.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelEdmail.Location = new System.Drawing.Point(6, 143);
+            this.labelEdmail.Name = "labelEdmail";
+            this.labelEdmail.Size = new System.Drawing.Size(176, 15);
+            this.labelEdmail.TabIndex = 4;
+            this.labelEdmail.Text = "emsdevelopTeam@gmail.com";
             // 
             // FormAboutProgram
             // 
@@ -97,6 +146,8 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormAboutProgram";
             this.Text = "О программе";
+            this.AuthorsGroupBox.ResumeLayout(false);
+            this.AuthorsGroupBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -109,6 +160,11 @@
         private System.Windows.Forms.Button OkButton;
         private System.Windows.Forms.Label NameLabel;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label labelEdmail;
+        private System.Windows.Forms.Label labelSmax;
+        private System.Windows.Forms.Label labelSap;
+        private System.Windows.Forms.Label labelDan;
+        private System.Windows.Forms.Label labelGol;
         private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
