@@ -88,7 +88,8 @@ namespace EMS.Desktop
                             {
                                 newValue = md.Value,
                                 number = md.Meter.MeterNumber,
-                                rateId = md.Id_Rate
+                                rateId = md.Id_Rate,
+                                id = md.Id
                             });
                         }
                     }

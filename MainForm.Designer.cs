@@ -28,22 +28,27 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.Menu = new System.Windows.Forms.MenuStrip();
             this.MenuFail = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripDownloadNewFile = new System.Windows.Forms.ToolStripMenuItem();
             this.CLearFileStatesMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripDownloadNewFile = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuRepos = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuReposForERIP = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuReposForExcel = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuDocuments = new System.Windows.Forms.ToolStripMenuItem();
             this.MainJournal = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuSettings = new System.Windows.Forms.ToolStripMenuItem();
+            //this.SettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            //this.SavePathTSMI = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuAboutProgram = new System.Windows.Forms.ToolStripMenuItem();
             this.MainProgressBar = new System.Windows.Forms.ProgressBar();
             this.ColorPanel = new System.Windows.Forms.Panel();
             this.LoadingLabel = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.LabelProgrBar = new System.Windows.Forms.Label();
+            this.ToolStripDownloadNewFile = new System.Windows.Forms.ToolStripMenuItem();
             this.Menu.SuspendLayout();
             this.ColorPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -127,6 +132,9 @@
             // 
             // MenuSettings
             // 
+            /*this.MenuSettings.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {/*
+            this.SettingsToolStripMenuItem,
+            this.SavePathTSMI});*/
             this.MenuSettings.Name = "MenuSettings";
             this.MenuSettings.Size = new System.Drawing.Size(79, 20);
             this.MenuSettings.Text = "Настройки";
@@ -202,6 +210,19 @@
             this.LabelProgrBar.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.LabelProgrBar.Visible = false;
             // 
+            // ToolStripDownloadNewFile
+            // 
+            this.ToolStripDownloadNewFile.Name = "ToolStripDownloadNewFile";
+            this.ToolStripDownloadNewFile.Size = new System.Drawing.Size(204, 22);
+            this.ToolStripDownloadNewFile.Text = "Загрузка новых файлов";
+            this.ToolStripDownloadNewFile.Click += new System.EventHandler(this.ToolStripDownloadNewFile_Click);
+            // CLearFileStatesMI
+            // 
+            this.CLearFileStatesMI.Name = "CLearFileStatesMI";
+            this.CLearFileStatesMI.Size = new System.Drawing.Size(282, 26);
+            this.CLearFileStatesMI.Text = "Сбросить состояния файлов";
+            this.CLearFileStatesMI.Click += new System.EventHandler(this.CLearFileStatesMI_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -211,6 +232,7 @@
             this.Controls.Add(this.ColorPanel);
             this.Controls.Add(this.MainProgressBar);
             this.Controls.Add(this.Menu);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.Menu;
             this.MinimumSize = new System.Drawing.Size(780, 477);
             this.Name = "MainForm";
@@ -239,6 +261,8 @@
         private System.Windows.Forms.Panel ColorPanel;
         private System.Windows.Forms.ToolStripMenuItem MenuReposForERIP;
         private System.Windows.Forms.ToolStripMenuItem MenuReposForExcel;
+        private System.Windows.Forms.ToolStripMenuItem SettingsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem SavePathTSMI;
         public System.Windows.Forms.Label LabelProgrBar;
         public System.Windows.Forms.ProgressBar MainProgressBar;
         private System.Windows.Forms.DataGridView dataGridView1;

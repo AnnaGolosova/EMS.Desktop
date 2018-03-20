@@ -74,7 +74,8 @@ namespace EMS.Desktop.Forms
                     {
                         int rateId = Int32.Parse(RateDGV[3, i].Value as string);
                         rateId = db.GetLastRates().OrderBy(r => r.Id).First().Id + rateId - 1;
-                        mi.rateId = rateId;
+                        if(mi.rateId != rateId)
+                            db.ChangeMeterData((int)mi.id, rateId);
                     }
                     i++;
                 }

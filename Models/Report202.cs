@@ -31,7 +31,7 @@ namespace EMS.Desktop.Models
 
             public class MeterInfo
             {
-                public int LocalRateId;
+                public int? LocalRateId;
                 public double Value;
             }
 

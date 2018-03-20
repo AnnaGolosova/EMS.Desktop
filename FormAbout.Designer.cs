@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormAboutProgram));
             this.AuthorsGroupBox = new System.Windows.Forms.GroupBox();
             this.OkButton = new System.Windows.Forms.Button();
             this.NameLabel = new System.Windows.Forms.Label();
@@ -38,6 +39,8 @@
             this.labelSmax = new System.Windows.Forms.Label();
             this.labelEdmail = new System.Windows.Forms.Label();
             this.AuthorsGroupBox.SuspendLayout();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // AuthorsGroupBox
@@ -135,14 +138,17 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(333, 331);
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.NameLabel);
             this.Controls.Add(this.OkButton);
             this.Controls.Add(this.AuthorsGroupBox);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormAboutProgram";
             this.Text = "О программе";
             this.AuthorsGroupBox.ResumeLayout(false);
             this.AuthorsGroupBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -159,5 +165,6 @@
         private System.Windows.Forms.Label labelSap;
         private System.Windows.Forms.Label labelDan;
         private System.Windows.Forms.Label labelGol;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
