@@ -32,6 +32,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>database.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
@@ -64,6 +67,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -226,10 +230,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Resource\" />
-  </ItemGroup>
-  <ItemGroup>
+    <Content Include="database.ico" />
     <Content Include="Models\Datas.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Datas.edmx</DependentUpon>
@@ -240,6 +243,9 @@
       <DependentUpon>Datas.edmx</DependentUpon>
       <LastGenOutput>Datas.cs</LastGenOutput>
     </Content>
+    <Content Include="Resource\database %281%29.png" />
+    <Content Include="Resource\database.ico" />
+    <Content Include="Resource\gears.ico" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
