@@ -56,6 +56,13 @@ namespace EMS.Desktop.Helpers
             return mi;
         }
 
+        private enum NoRateState
+        {
+            NotAnswered = 0,
+            Yes,
+            No
+        }
+
         public static void Write202(Report210 datas, List<Rate> rates, string fileName, bool CreateExcel)
         {
             Report202 rep = new Report202();
@@ -78,9 +85,10 @@ namespace EMS.Desktop.Helpers
                 if (x.meterInfo != null)
                     rep.Datas[rep.Datas.Count - 1].meterInfo = ConvertTo202(x.meterInfo);
             }
+            NoRateState flag = NoRateState.NotAnswered;
             try
             {
-                FileStream stream = new FileStream(ConfigAppManager.GetReports202Path() + "//" + fileName, FileMode.Create);
+                FileStream stream = new FileStream(ConfigAppManager.GetReports202Path() + "//" + fileName + ".202", FileMode.Create);
                 StreamWriter writer = new StreamWriter(stream);
                 writer.WriteLine();
                 if (rep.Datas[0].ServiceId == 2)
@@ -104,7 +112,36 @@ namespace EMS.Desktop.Helpers
                         int j = 1;
                         foreach (Report202.ReportData.MeterInfo mi in x.meterInfo)
                         {
-                            s += j++ + "~" + db.GetRatePosition(mi.LocalRateId) + "~~~6~" + mi.Value + "~";
+                            string localId = "";
+                            if (mi.LocalRateId == null)
+                            {
+                                if (flag == NoRateState.Yes)
+                                {
+                                    localId = "2";
+                                }
+                                else
+                                if(flag == NoRateState.NotAnswered)
+                                {
+                                    if (MessageBox.Show("Тарифы не установлены для одного или нескольких участков. Продолжить создание отчетов? Нажмите [Да], чтобы заменать неустановленне тарифы на 2",
+                                            "Тарифы не установлены", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                                    {
+                                        flag = NoRateState.Yes;
+                                        localId = "2";
+                                    }
+                                    else
+                                    {
+                                        flag = NoRateState.No;
+                                        writer.Close();
+                                        stream.Close();
+                                        return;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                localId = db.GetRatePosition(mi.LocalRateId).ToString();
+                            }
+                            s += j++ + "~" + localId + "~~~6~" + mi.Value + "~";
                         }
                         recordStr += s + "^^^^^";
                     }
@@ -121,6 +158,7 @@ namespace EMS.Desktop.Helpers
             {
                 MessageBox.Show("Неверное имя файла. Проверьте пути для сохранения файлов в настройках", 
                     "Неверное имя файла", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
             catch (IOException ex)
             {
@@ -130,10 +168,10 @@ namespace EMS.Desktop.Helpers
                 return;
             }
             if (CreateExcel)
-                WriteExcel(rep, fileName);
+                WriteExcel(rep, fileName, flag);
         }
 
-        private static void WriteExcel(Report202 report, string fileName)
+        private static void WriteExcel(Report202 report, string fileName, NoRateState flag)
         {
             if(report.Datas.Count == 0)
             {
@@ -172,7 +210,34 @@ namespace EMS.Desktop.Helpers
                             int j = 1;
                             foreach (Report202.ReportData.MeterInfo mi in x.meterInfo)
                             {
-                                s += j++ + "~" + db.GetRatePosition(mi.LocalRateId) + "~~~6~" + mi.Value + "~";
+                                string localId = "";
+                                if (mi.LocalRateId == null)
+                                {
+                                    if (flag == NoRateState.Yes)
+                                    {
+                                        localId = "2";
+                                    }
+                                    else
+                                    if (flag == NoRateState.NotAnswered)
+                                    {
+                                        if (MessageBox.Show("Тарифы не установлены для одного или нескольких участков. Продолжить создание отчетов? Нажмите [Да], чтобы заменать неустановленне тарифы на 2",
+                                                "Тарифы не установлены", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                                        {
+                                            flag = NoRateState.Yes;
+                                            localId = "2";
+                                        }
+                                        else
+                                        {
+                                            flag = NoRateState.No;
+                                            return;
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    localId = db.GetRatePosition(mi.LocalRateId).ToString();
+                                }
+                                s += j++ + "~" + localId + "~~~6~" + mi.Value + "~";
                             }
                             ws.Cells[i, 7].Value = s;
                             ws.Cells[i++, 8].Value = "^^^^";
@@ -192,11 +257,13 @@ namespace EMS.Desktop.Helpers
                         MessageBox.Show("Файл " + fileName + 
                             ".xlsx не может быть сохранен. Возможно, он уже существует и открыт в другом приложении. Закройте файл и повторите попытку.", 
                             "Файл не может быть сохранен", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
                     }
                     catch(ArgumentException ex)
                     {
                         MessageBox.Show("Неверное имя файла. Проверьте пути для сохранения файлов в настройках", 
                             "Неверное имя файла", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
                     }
                 }
             }
