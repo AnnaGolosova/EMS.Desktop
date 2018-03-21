@@ -27,7 +27,6 @@ namespace EMS.Desktop
                 CreateExcelCB.Checked = true;
                 Service2RB.Checked = true;
                 MonthRB.Checked = true;
-                MonthTimePicker.Value = new DateTime(2017, 9, 5);
                 DBRepository db = new DBRepository();
                 int i = 1;
                 foreach (Rate rate in db.GetLastRates().OrderBy(r => r.Id))

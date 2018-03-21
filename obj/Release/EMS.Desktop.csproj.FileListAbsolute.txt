@@ -16,3 +16,8 @@ c:\Users\Администратор\Source\Repos\EMS.Desktop\obj\Release\EMS.Des
 c:\Users\Администратор\Source\Repos\EMS.Desktop\obj\Release\EMS.Desktop.exe
 c:\Users\Администратор\Source\Repos\EMS.Desktop\obj\Release\EMS.Desktop.pdb
 c:\Users\Администратор\Source\Repos\EMS.Desktop\obj\Release\EMS.Desktop.csprojResolveAssemblyReference.cache
+C:\Users\source\EMS.Desktop\bin\Release\EMS 1.0.exe.config
+C:\Users\source\EMS.Desktop\obj\Release\Interop.DSOFile.dll
+C:\Users\source\EMS.Desktop\obj\Release\EMS.Desktop.csproj.ResolveComReference.cache
+C:\Users\source\EMS.Desktop\obj\Release\EMS 1.0.exe
+C:\Users\source\EMS.Desktop\obj\Release\EMS 1.0.pdb

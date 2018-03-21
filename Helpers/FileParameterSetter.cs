@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace EMS.Desktop.Helpers
 {
@@ -61,7 +62,7 @@ namespace EMS.Desktop.Helpers
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception(ex.Message);
+                    MessageBox.Show("Файл не поддерживается.", "Неверный формат", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }  
