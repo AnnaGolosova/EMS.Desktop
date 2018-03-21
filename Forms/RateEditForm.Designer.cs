@@ -180,7 +180,6 @@
             this.Name = "RateEditForm";
             this.Text = "Редактор тарифов";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RateEditForm_FormClosing);
-            this.Load += new System.EventHandler(this.RateEditForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.RateDGV)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.RateViewDGV)).EndInit();
             this.splitContainer1.Panel1.ResumeLayout(false);

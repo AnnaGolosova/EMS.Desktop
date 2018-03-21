@@ -72,5 +72,19 @@ namespace EMS.Desktop.Helpers
             else
                 return false;
         }
+
+        public static string GetConnectionString()
+        {
+            Configuration config = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
+            return config.AppSettings.Settings["ConnectionString"].Value;
+        }
+
+        public static void SetConnectionString(string connectionString)
+        {
+            Configuration config = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
+            config.AppSettings.Settings["ConnectionString"].Value = connectionString;
+            config.Save(ConfigurationSaveMode.Modified);
+            ConfigurationManager.RefreshSection("appSettings");
+        }
     }
 }

@@ -90,19 +90,42 @@ namespace EMS.Desktop.Services
                 db.SaveChanges();
                 return file;
             }
-            
+            catch (System.Data.Entity.Core.EntityException e)
+            {
+                throw new DataBaseException(e.Message, e);
+            }
+
         }
 
         public List<File> GetFiles()
         {
-            return db.File.ToList();
+            try
+            {
+                return db.File.ToList();
+            }
+            catch(System.Data.Entity.Core.EntityException e)
+            {
+                throw new DataBaseException(e.Message, e);
+            }
         }
 
         public List<File> GetFiles(DateTime date)
         {
-            return db.File.Where(f => f.Date.Value != null &&
+            try
+            {
+                return db.File.Where(f => f.Date.Value != null &&
                                       f.Date.Value.ToLongDateString().CompareTo(date.ToShortDateString()) == 0)
                                       .ToList();
+            }
+            catch(System.Data.Entity.Core.EntityException e)
+            {
+                throw new DataBaseException(e.Message, e);
+            }
+        }
+
+        internal bool TryConnection()
+        {
+            return db.Database.Exists();
         }
 
         internal void ChangeMeterData(int id, int? rateId)
@@ -127,6 +150,10 @@ namespace EMS.Desktop.Services
             {
                 return null;
             }
+            catch (System.Data.Entity.Core.EntityException e)
+            {
+                throw new DataBaseException(e.Message, e);
+            }
         }
 
         public Homestead GetHomestead(string ownerName)
@@ -141,12 +168,27 @@ namespace EMS.Desktop.Services
             {
                 return null;
             }
+            catch (System.Data.Entity.Core.EntityException e)
+            {
+                throw new DataBaseException(e.Message, e);
+            }
         }
 
         public List<Rate> GetLastRates()
         {
-            int? lastNumber = GetLastRateNumber();
-            return db.Rate.Where(r => r.Number == lastNumber).OrderBy(r => r.Id).ToList();
+            try
+            {
+                int? lastNumber = GetLastRateNumber();
+                return db.Rate.Where(r => r.Number == lastNumber).OrderBy(r => r.Id).ToList();
+            }
+            catch(System.Data.Entity.Core.EntityException e)
+            {
+                throw new DataBaseException(e.Message);
+            }
+            catch(DataBaseException e)
+            {
+                throw new DataBaseException(e.Message);
+            }
         }
 
         public List<Meter> GetMeter()
@@ -165,6 +207,10 @@ namespace EMS.Desktop.Services
             catch (InvalidOperationException)
             {
                 return null;
+            }
+            catch (System.Data.Entity.Core.EntityException e)
+            {
+                throw new DataBaseException(e.Message, e);
             }
         }
 
@@ -215,6 +261,10 @@ namespace EMS.Desktop.Services
                 }
                 db.SaveChanges();
             }
+            catch (System.Data.Entity.Core.EntityException e)
+            {
+                throw new DataBaseException(e.Message, e);
+            }
             db.SaveChanges();
         }
 
@@ -238,11 +288,22 @@ namespace EMS.Desktop.Services
             {
                 return null;
             }
+            catch (System.Data.Entity.Core.EntityException e)
+            {
+                throw new DataBaseException(e.Message, e);
+            }
         }
 
         public List<Payment> GetPayment()
         {
-            return db.Payment.ToList();
+            try
+            {
+                return db.Payment.ToList();
+            }
+            catch(System.Data.Entity.Core.EntityException e)
+            {
+                throw new DataBaseException(e.Message, e);
+            }
         }
 
         public List<Payment> GetPayment(DateTime date)
@@ -292,11 +353,22 @@ namespace EMS.Desktop.Services
             {
                 return null;
             }
+            catch (System.Data.Entity.Core.EntityException e)
+            {
+                throw new DataBaseException(e.Message, e);
+            }
         }
 
         public int? GetLastRateNumber()
         {
-            return db.Rate.Max(r => r.Number);
+            try
+            {
+                return db.Rate.Max(r => r.Number);
+            }
+            catch(System.Data.Entity.Core.EntityException e)
+            {
+                throw new DataBaseException(e.Message);
+            }
         }
 
         public int? GetPreviousRateNumber()
@@ -326,6 +398,10 @@ namespace EMS.Desktop.Services
             {
                 return null;
             }
+            catch (System.Data.Entity.Core.EntityException e)
+            {
+                throw new DataBaseException(e.Message, e);
+            }
         }
 
         public Service GetService(string name)
@@ -339,6 +415,10 @@ namespace EMS.Desktop.Services
             catch (InvalidOperationException)
             {
                 return null;
+            }
+            catch (System.Data.Entity.Core.EntityException e)
+            {
+                throw new DataBaseException(e.Message, e);
             }
         }
         #endregion
@@ -406,6 +486,10 @@ namespace EMS.Desktop.Services
             catch(InvalidCastException ex)
             {
                 throw new DataBaseException("Упс, что-то пошло не так! Проверьте кодключение к базе данных.", ex);
+            }
+            catch (System.Data.Entity.Core.EntityException e)
+            {
+                throw new DataBaseException(e.Message, e);
             }
         }
 
