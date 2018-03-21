@@ -271,10 +271,12 @@ namespace EMS.Desktop
         {
             if(string .IsNullOrEmpty(ConfigAppManager.GetReports210Path()))
             {
-                MessageBox.Show("Путь для 201 файлов пуст. Проверьте настройки.", "Путь для 201 файлов пуст", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Путь для .210 файлов пуст. Проверьте настройки.", "Путь для .210 файлов пуст", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
             FileManager.ClearFileStates(ConfigAppManager.GetReports210Path());
+            LabelProgrBar.Visible = true;
+            LabelProgrBar.Text = "Состояния файлов очищены.";
         }
 
         private void MenuSettings_Click(object sender, EventArgs e)
