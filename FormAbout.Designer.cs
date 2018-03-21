@@ -30,16 +30,16 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormAboutProgram));
             this.AuthorsGroupBox = new System.Windows.Forms.GroupBox();
+            this.labelEdmail = new System.Windows.Forms.Label();
+            this.labelSmax = new System.Windows.Forms.Label();
+            this.labelSap = new System.Windows.Forms.Label();
+            this.labelDan = new System.Windows.Forms.Label();
+            this.labelGol = new System.Windows.Forms.Label();
             this.OkButton = new System.Windows.Forms.Button();
             this.NameLabel = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.labelGol = new System.Windows.Forms.Label();
-            this.labelDan = new System.Windows.Forms.Label();
-            this.labelSap = new System.Windows.Forms.Label();
-            this.labelSmax = new System.Windows.Forms.Label();
-            this.labelEdmail = new System.Windows.Forms.Label();
-            this.AuthorsGroupBox.SuspendLayout();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.AuthorsGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -56,6 +56,54 @@
             this.AuthorsGroupBox.TabIndex = 0;
             this.AuthorsGroupBox.TabStop = false;
             this.AuthorsGroupBox.Text = "Авторы";
+            // 
+            // labelEdmail
+            // 
+            this.labelEdmail.AutoSize = true;
+            this.labelEdmail.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelEdmail.Location = new System.Drawing.Point(6, 143);
+            this.labelEdmail.Name = "labelEdmail";
+            this.labelEdmail.Size = new System.Drawing.Size(298, 15);
+            this.labelEdmail.TabIndex = 4;
+            this.labelEdmail.Text = "Электронный адрес: emsdevelopTeam@gmail.com";
+            // 
+            // labelSmax
+            // 
+            this.labelSmax.AutoSize = true;
+            this.labelSmax.Location = new System.Drawing.Point(6, 108);
+            this.labelSmax.Name = "labelSmax";
+            this.labelSmax.Size = new System.Drawing.Size(86, 13);
+            this.labelSmax.TabIndex = 3;
+            this.labelSmax.Text = "Смахтин Даник";
+            // 
+            // labelSap
+            // 
+            this.labelSap.AutoSize = true;
+            this.labelSap.Location = new System.Drawing.Point(6, 84);
+            this.labelSap.Name = "labelSap";
+            this.labelSap.Size = new System.Drawing.Size(90, 13);
+            this.labelSap.TabIndex = 2;
+            this.labelSap.Text = "Сапончик Артём";
+            // 
+            // labelDan
+            // 
+            this.labelDan.AutoSize = true;
+            this.labelDan.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelDan.Location = new System.Drawing.Point(6, 56);
+            this.labelDan.Name = "labelDan";
+            this.labelDan.Size = new System.Drawing.Size(94, 15);
+            this.labelDan.TabIndex = 1;
+            this.labelDan.Text = "Данилков Егор";
+            // 
+            // labelGol
+            // 
+            this.labelGol.AutoSize = true;
+            this.labelGol.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelGol.Location = new System.Drawing.Point(6, 30);
+            this.labelGol.Name = "labelGol";
+            this.labelGol.Size = new System.Drawing.Size(93, 15);
+            this.labelGol.TabIndex = 0;
+            this.labelGol.Text = "Голосова Анна";
             // 
             // OkButton
             // 
@@ -85,53 +133,13 @@
             this.label1.TabIndex = 3;
             this.label1.Text = "Програмное обеспечение предназначенное для загрузки и обработки файлов ERIP";
             // 
-            // labelGol
+            // pictureBox1
             // 
-            this.labelGol.AutoSize = true;
-            this.labelGol.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelGol.Location = new System.Drawing.Point(6, 30);
-            this.labelGol.Name = "labelGol";
-            this.labelGol.Size = new System.Drawing.Size(93, 15);
-            this.labelGol.TabIndex = 0;
-            this.labelGol.Text = "Голосова Анна";
-            // 
-            // labelDan
-            // 
-            this.labelDan.AutoSize = true;
-            this.labelDan.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelDan.Location = new System.Drawing.Point(6, 56);
-            this.labelDan.Name = "labelDan";
-            this.labelDan.Size = new System.Drawing.Size(94, 15);
-            this.labelDan.TabIndex = 1;
-            this.labelDan.Text = "Данилков Егор";
-            // 
-            // labelSap
-            // 
-            this.labelSap.AutoSize = true;
-            this.labelSap.Location = new System.Drawing.Point(6, 84);
-            this.labelSap.Name = "labelSap";
-            this.labelSap.Size = new System.Drawing.Size(90, 13);
-            this.labelSap.TabIndex = 2;
-            this.labelSap.Text = "Сапончик Артём";
-            // 
-            // labelSmax
-            // 
-            this.labelSmax.AutoSize = true;
-            this.labelSmax.Location = new System.Drawing.Point(6, 108);
-            this.labelSmax.Name = "labelSmax";
-            this.labelSmax.Size = new System.Drawing.Size(86, 13);
-            this.labelSmax.TabIndex = 3;
-            this.labelSmax.Text = "Смахтин Даник";
-            // 
-            // labelEdmail
-            // 
-            this.labelEdmail.AutoSize = true;
-            this.labelEdmail.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelEdmail.Location = new System.Drawing.Point(6, 143);
-            this.labelEdmail.Name = "labelEdmail";
-            this.labelEdmail.Size = new System.Drawing.Size(176, 15);
-            this.labelEdmail.TabIndex = 4;
-            this.labelEdmail.Text = "emsdevelopTeam@gmail.com";
+            this.pictureBox1.Location = new System.Drawing.Point(235, -1);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(100, 50);
+            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.TabStop = false;
             // 
             // FormAboutProgram
             // 
