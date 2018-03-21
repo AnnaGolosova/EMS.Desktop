@@ -31,7 +31,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.Menu = new System.Windows.Forms.MenuStrip();
             this.MenuFail = new System.Windows.Forms.ToolStripMenuItem();
-            this.ToolStripDownloadNewFile = new System.Windows.Forms.ToolStripMenuItem();
             this.CLearFileStatesMI = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripDownloadNewFile = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuRepos = new System.Windows.Forms.ToolStripMenuItem();
@@ -48,7 +47,6 @@
             this.LoadingLabel = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.LabelProgrBar = new System.Windows.Forms.Label();
-            this.ToolStripDownloadNewFile = new System.Windows.Forms.ToolStripMenuItem();
             this.Menu.SuspendLayout();
             this.ColorPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -134,7 +132,7 @@
             // 
             /*this.MenuSettings.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {/*
             this.SettingsToolStripMenuItem,
-            this.SavePathTSMI});*/
+            this.SavePathTSMI}*);*/
             this.MenuSettings.Name = "MenuSettings";
             this.MenuSettings.Size = new System.Drawing.Size(79, 20);
             this.MenuSettings.Text = "Настройки";
@@ -212,16 +210,16 @@
             // 
             // ToolStripDownloadNewFile
             // 
-            this.ToolStripDownloadNewFile.Name = "ToolStripDownloadNewFile";
+            /*this.ToolStripDownloadNewFile.Name = "ToolStripDownloadNewFile";
             this.ToolStripDownloadNewFile.Size = new System.Drawing.Size(204, 22);
             this.ToolStripDownloadNewFile.Text = "Загрузка новых файлов";
-            this.ToolStripDownloadNewFile.Click += new System.EventHandler(this.ToolStripDownloadNewFile_Click);
+            this.ToolStripDownloadNewFile.Click += new System.EventHandler(this.ToolStripDownloadNewFile_Click);*/
             // CLearFileStatesMI
             // 
-            this.CLearFileStatesMI.Name = "CLearFileStatesMI";
+            /*this.CLearFileStatesMI.Name = "CLearFileStatesMI";
             this.CLearFileStatesMI.Size = new System.Drawing.Size(282, 26);
             this.CLearFileStatesMI.Text = "Сбросить состояния файлов";
-            this.CLearFileStatesMI.Click += new System.EventHandler(this.CLearFileStatesMI_Click);
+            this.CLearFileStatesMI.Click += new System.EventHandler(this.CLearFileStatesMI_Click);*/
             // 
             // MainForm
             // 
@@ -261,8 +259,8 @@
         private System.Windows.Forms.Panel ColorPanel;
         private System.Windows.Forms.ToolStripMenuItem MenuReposForERIP;
         private System.Windows.Forms.ToolStripMenuItem MenuReposForExcel;
-        private System.Windows.Forms.ToolStripMenuItem SettingsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem SavePathTSMI;
+        //private System.Windows.Forms.ToolStripMenuItem SettingsToolStripMenuItem;
+       // private System.Windows.Forms.ToolStripMenuItem SavePathTSMI;
         public System.Windows.Forms.Label LabelProgrBar;
         public System.Windows.Forms.ProgressBar MainProgressBar;
         private System.Windows.Forms.DataGridView dataGridView1;
