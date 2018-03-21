@@ -171,7 +171,7 @@ namespace EMS.Desktop.Helpers
                 WriteExcel(rep, fileName, flag);
         }
 
-        private static void WriteExcel(Report202 report, string fileName)
+        private static void WriteExcel(Report202 report, string fileName, NoRateState flag)
         {
             if(report.Datas.Count == 0)
             {
