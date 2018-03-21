@@ -7,6 +7,7 @@ using EMS.Desktop;
 using EMS.Desktop.Services;
 using System.Windows.Forms;
 using EMS.Desktop.Models;
+using EMS.Desktop.Exceptions;
 
 namespace EMS.Desktop.Helpers
 {
@@ -25,6 +26,10 @@ namespace EMS.Desktop.Helpers
                     try
                     {
                         DBRepository db = new DBRepository();
+                        if(!db.TryConnection())
+                        {
+                            throw new DataBaseException("");
+                        }
                         Report210 report = ExcelWriter.Read210(s);
                         FileManager.ChangeFileState(s, FileState.Loaded);
                         int fileId = FileManager.SetFileId(s, db.GetNextFileId());
@@ -36,9 +41,15 @@ namespace EMS.Desktop.Helpers
                         };
                         obj.Invoke(MainPrBr);
                     }
+                    catch(DataBaseException ex)
+                    {
+                        MessageBox.Show("Проблемы с базой данных. Проверьте настройки строки подключения, правильно ли указано имя сервера",
+                            "Проблемы с базой данных", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
                     catch(Exception ex)
                     {
-                        MessageBox.Show("Ошибка при загрузки файла!");
+                        MessageBox.Show(ex.StackTrace, "Ошибка при загрузки файла!");
                     }
                 }
                 Action ShowComp = () => 

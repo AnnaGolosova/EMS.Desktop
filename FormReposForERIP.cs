@@ -249,8 +249,17 @@ namespace EMS.Desktop
                 var data = BuildData();
                 if (data.Count > 0)
                 {
-                    RateEditForm rateForm = new RateEditForm(BuildData());
-                    rateForm.ShowDialog(this);
+                    try
+                    {
+                        RateEditForm rateForm = new RateEditForm(BuildData());
+                        rateForm.ShowDialog(this);
+                    }
+                    catch (System.Data.Entity.Infrastructure.DbUpdateException)
+                    {
+                        MessageBox.Show("Один или несколько тарифов указаны неверно. Неверные тарифы были отмечены красным цветом.",
+                            "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
                 }
                 else
                 {

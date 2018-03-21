@@ -23,7 +23,7 @@ namespace EMS.Desktop.Forms
             {
                 InitializeComponent();
                 this.data = data.OrderBy(d => d.Id).ToList();
-                splitContainer1.SplitterDistance= RateViewDGV.Height;
+                splitContainer1.SplitterDistance = RateViewDGV.Height;
                 RateViewDGV.Dock = DockStyle.Fill;
                 RateDGV.CellValidating += RateDGV_CellValidating;
                 DBRepository db = new DBRepository();
@@ -32,11 +32,11 @@ namespace EMS.Desktop.Forms
                 {
                     RateViewDGV.Rows.Add(i++, rate.Service.Name, rate.Value);
                 }
-                foreach(Report210.ReportData record in this.data)
+                foreach (Report210.ReportData record in this.data)
                 {
-                    foreach(Report210.ReportData.MeterInfo meter in record.meterInfo)
+                    foreach (Report210.ReportData.MeterInfo meter in record.meterInfo)
                     {
-                        if(meter.rateId == null)
+                        if (meter.rateId == null)
                         {
                             RateDGV.Rows.Add(record.HomeSteadNumber, record.OwnerName, meter.number, "");
                         }
@@ -74,7 +74,7 @@ namespace EMS.Desktop.Forms
             {
                 int i = 0;
                 DBRepository db = new DBRepository();
-                foreach(Report210.ReportData record in data)
+                foreach (Report210.ReportData record in data)
                 {
                     foreach (Report210.ReportData.MeterInfo mi in record.meterInfo)
                     {
@@ -82,7 +82,7 @@ namespace EMS.Desktop.Forms
                         {
                             int rateId = Int32.Parse(RateDGV[3, i].Value as string);
                             rateId = db.GetLastRates().OrderBy(r => r.Id).First().Id + rateId - 1;
-                            if(mi.rateId != rateId)
+                            if (mi.rateId != rateId)
                                 db.ChangeMeterData((int)mi.id, rateId);
                         }
                         i++;
@@ -90,11 +90,17 @@ namespace EMS.Desktop.Forms
                 }
                 DBRepository.db.SaveChanges();
             }
-            catch(DataBaseException)
+            catch (DataBaseException)
             {
                 MessageBox.Show("Проблемы с базой данных. Проверьте настройки строки подключения, правильно ли указано имя сервера",
                     "Проблемы с базой данных", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
+            }
+            catch (System.Data.Entity.Infrastructure.DbUpdateException)
+            {
+                MessageBox.Show("Один или несколько тарифов указаны неверно. Неверные тарифы были отмечены красным цветом.",
+                    "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
             }
         }
     }
