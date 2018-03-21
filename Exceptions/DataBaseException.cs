@@ -12,5 +12,10 @@ namespace EMS.Desktop.Exceptions
         {
 
         }
+
+        public DataBaseException(string message) : base(message)
+        {
+
+        }
     }
 }

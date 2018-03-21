@@ -1,4 +1,5 @@
-﻿using EMS.Desktop.Models;
+﻿using EMS.Desktop.Exceptions;
+using EMS.Desktop.Models;
 using EMS.Desktop.Services;
 using System;
 using System.Collections.Generic;
@@ -18,36 +19,45 @@ namespace EMS.Desktop.Forms
 
         public RateEditForm(List<Report210.ReportData> data)
         {
-            InitializeComponent();
-            this.data = data.OrderBy(d => d.Id).ToList();
-            splitContainer1.SplitterDistance= RateViewDGV.Height;
-            RateViewDGV.Dock = DockStyle.Fill;
-            RateDGV.CellValidating += RateDGV_CellValidating;
-            DBRepository db = new DBRepository();
-            int i = 1;
-            foreach (Rate rate in db.GetLastRates().OrderBy(r => r.Id))
+            try
             {
-                RateViewDGV.Rows.Add(i++, rate.Service.Name, rate.Value);
-            }
-            foreach(Report210.ReportData record in this.data)
-            {
-                foreach(Report210.ReportData.MeterInfo meter in record.meterInfo)
+                InitializeComponent();
+                this.data = data.OrderBy(d => d.Id).ToList();
+                splitContainer1.SplitterDistance= RateViewDGV.Height;
+                RateViewDGV.Dock = DockStyle.Fill;
+                RateDGV.CellValidating += RateDGV_CellValidating;
+                DBRepository db = new DBRepository();
+                int i = 1;
+                foreach (Rate rate in db.GetLastRates().OrderBy(r => r.Id))
                 {
-                    if(meter.rateId == null)
+                    RateViewDGV.Rows.Add(i++, rate.Service.Name, rate.Value);
+                }
+                foreach(Report210.ReportData record in this.data)
+                {
+                    foreach(Report210.ReportData.MeterInfo meter in record.meterInfo)
                     {
-                        RateDGV.Rows.Add(record.HomeSteadNumber, record.OwnerName, meter.number, "");
-                    }
-                    else
-                    {
-                        Rate rate = db.GetRate(null, meter.rateId);
-                        int? x = db.GetRatePosition(meter.rateId);
-                        RateDGV.Rows.Add(record.HomeSteadNumber, record.OwnerName, meter.number, rate == null ? "" : x.ToString());
+                        if(meter.rateId == null)
+                        {
+                            RateDGV.Rows.Add(record.HomeSteadNumber, record.OwnerName, meter.number, "");
+                        }
+                        else
+                        {
+                            Rate rate = db.GetRate(null, meter.rateId);
+                            int? x = db.GetRatePosition(meter.rateId);
+                            RateDGV.Rows.Add(record.HomeSteadNumber, record.OwnerName, meter.number, rate == null ? "" : x.ToString());
+                        }
                     }
                 }
-            }
 
-            RateDGV.Focus();
-            RateDGV.CurrentCell = RateDGV.Rows[0].Cells[3];
+                RateDGV.Focus();
+                RateDGV.CurrentCell = RateDGV.Rows[0].Cells[3];
+            }
+            catch (DataBaseException)
+            {
+                MessageBox.Show("Проблемы с базой данных. Проверьте настройки строки подключения, правильно ли указано имя сервера",
+                    "Проблемы с базой данных", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
         }
 
         void RateDGV_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
@@ -58,29 +68,34 @@ namespace EMS.Desktop.Forms
             else RateDGV[e.ColumnIndex, e.RowIndex].Style.BackColor = Color.White;
         }
 
-        private void RateEditForm_Load(object sender, EventArgs e)
-        {
-        }
-
         private void RateEditForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            int i = 0;
-            DBRepository db = new DBRepository();
-            foreach(Report210.ReportData record in data)
+            try
             {
-                foreach (Report210.ReportData.MeterInfo mi in record.meterInfo)
+                int i = 0;
+                DBRepository db = new DBRepository();
+                foreach(Report210.ReportData record in data)
                 {
-                    if (!string.IsNullOrEmpty(RateDGV[3, i].Value.ToString()))
+                    foreach (Report210.ReportData.MeterInfo mi in record.meterInfo)
                     {
-                        int rateId = Int32.Parse(RateDGV[3, i].Value as string);
-                        rateId = db.GetLastRates().OrderBy(r => r.Id).First().Id + rateId - 1;
-                        if(mi.rateId != rateId)
-                            db.ChangeMeterData((int)mi.id, rateId);
+                        if (!string.IsNullOrEmpty(RateDGV[3, i].Value.ToString()))
+                        {
+                            int rateId = Int32.Parse(RateDGV[3, i].Value as string);
+                            rateId = db.GetLastRates().OrderBy(r => r.Id).First().Id + rateId - 1;
+                            if(mi.rateId != rateId)
+                                db.ChangeMeterData((int)mi.id, rateId);
+                        }
+                        i++;
                     }
-                    i++;
                 }
+                DBRepository.db.SaveChanges();
             }
-            DBRepository.db.SaveChanges();
+            catch(DataBaseException)
+            {
+                MessageBox.Show("Проблемы с базой данных. Проверьте настройки строки подключения, правильно ли указано имя сервера",
+                    "Проблемы с базой данных", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using EMS.Desktop.Forms;
+﻿using EMS.Desktop.Exceptions;
+using EMS.Desktop.Forms;
 using EMS.Desktop.Helpers;
 using EMS.Desktop.Models;
 using EMS.Desktop.Services;
@@ -16,24 +17,31 @@ namespace EMS.Desktop
 {
     public partial class FormReposForERIP : Form
     {
-        int rateFlag = 0;
-
         public object RateEdirForm { get; private set; }
 
         public FormReposForERIP()
         {
-            InitializeComponent();
-            CreateExcelCB.Checked = true;
-            Service2RB.Checked = true;
-            MonthRB.Checked = true;
-            MonthTimePicker.Value = new DateTime(2017, 9, 5);
-            DBRepository db = new DBRepository();
-            int i = 1;
-            foreach(Rate rate in db.GetLastRates().OrderBy(r => r.Id))
+            try
             {
-                RateDGV.Rows.Add(i++, rate.Service.Name, rate.Value);
+                InitializeComponent();
+                CreateExcelCB.Checked = true;
+                Service2RB.Checked = true;
+                MonthRB.Checked = true;
+                MonthTimePicker.Value = new DateTime(2017, 9, 5);
+                DBRepository db = new DBRepository();
+                int i = 1;
+                foreach (Rate rate in db.GetLastRates().OrderBy(r => r.Id))
+                {
+                    RateDGV.Rows.Add(i++, rate.Service.Name, rate.Value);
+                }
+                FileNameTB.Focus();
             }
-            FileNameTB.Focus();
+            catch(DataBaseException e)
+            {
+                Hide();
+                MessageBox.Show("Проблемы с базой данных. Проверьте настройки строки подключения, правильно ли указано имя сервера",
+                    "Проблемы с базой данных", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void CancelButton_Click(object sender, EventArgs e)
@@ -139,33 +147,42 @@ namespace EMS.Desktop
 
             using (DBRepository db = new DBRepository())
             {
-                List<Rate> oldRates = db.GetLastRates();
-                List<Rate> newRates = new List<Rate>();
-                int i = 0;
-                foreach (Rate r in oldRates)
+                try
                 {
-                    string s = RateDGV[2, i++].Value.ToString().Replace('.', ',');
-                    double d;
-                    if (!Double.TryParse(s, out d))
+                    List<Rate> oldRates = db.GetLastRates();
+                    List<Rate> newRates = new List<Rate>();
+                    int i = 0;
+                    foreach (Rate r in oldRates)
                     {
-                        MessageBox.Show("Неверное значение " + s + "!");
+                        string s = RateDGV[2, i++].Value.ToString().Replace('.', ',');
+                        double d;
+                        if (!Double.TryParse(s, out d))
+                        {
+                            MessageBox.Show("Неверное значение " + s + "!");
+                            return;
+                        }
+                        newRates.Add(new Rate() { Date = r.Date, Value = d, Id = r.Id, IdService = r.IdService });
+                    }
+                    db.ChangeRate(newRates);
+                
+                    List<Report210.ReportData> list = BuildData();
+                    if(list.Count == 0)
+                    {
+                        MessageBox.Show("Отчет по заданным параметрам не имеет записей! Измените параметры и повторите попытку.",
+                            "Отчет не содержит записей", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         return;
                     }
-                    newRates.Add(new Rate() { Date = r.Date, Value = d, Id = r.Id, IdService = r.IdService });
+                    ExcelWriter.Write202(new Report210() { Datas = list }, newRates, FileNameTB.Text, CreateExcelCB.Checked);
+                    this.Close();
+                    (Owner as MainForm).LabelProgrBar.Text = "Отчет сохранен успешно!";
+                    (Owner as MainForm).LabelProgrBar.Visible = true;
                 }
-                db.ChangeRate(newRates);
-                
-                List<Report210.ReportData> list = BuildData();
-                if(list.Count == 0)
+                catch(DataBaseException)
                 {
-                    MessageBox.Show("Отчет по заданным параметрам не имеет записей! Измените параметры и повторите попытку.",
-                        "Отчет не содержит записей", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Проблемы с базой данных. Проверьте настройки строки подключения, правильно ли указано имя сервера",
+                        "Проблемы с базой данных", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
-                ExcelWriter.Write202(new Report210() { Datas = list }, newRates, FileNameTB.Text, CreateExcelCB.Checked);
-                this.Close();
-                (Owner as MainForm).LabelProgrBar.Text = "Отчет сохранен успешно!";
-                (Owner as MainForm).LabelProgrBar.Visible = true;
             }
         }
         
@@ -211,32 +228,41 @@ namespace EMS.Desktop
 
         private void RateEdirB_Click(object sender, EventArgs e)
         {
-            DBRepository db = new DBRepository();
-            List<Rate> oldRates = db.GetLastRates();
-            List<Rate> newRates = new List<Rate>();
-            int i = 0;
-            foreach (Rate r in oldRates)
+            try
             {
-                string s = RateDGV[2, i++].Value.ToString().Replace('.', ',');
-                double d;
-                if (!Double.TryParse(s, out d))
+                DBRepository db = new DBRepository();
+                List<Rate> oldRates = db.GetLastRates();
+                List<Rate> newRates = new List<Rate>();
+                int i = 0;
+                foreach (Rate r in oldRates)
                 {
-                    MessageBox.Show("Неверное значение [" + s + "]!");
-                    return;
+                    string s = RateDGV[2, i++].Value.ToString().Replace('.', ',');
+                    double d;
+                    if (!Double.TryParse(s, out d))
+                    {
+                        MessageBox.Show("Неверное значение [" + s + "]!");
+                        return;
+                    }
+                    newRates.Add(new Rate() { Date = r.Date, Value = d, Id = r.Id, IdService = r.IdService });
                 }
-                newRates.Add(new Rate() { Date = r.Date, Value = d, Id = r.Id, IdService = r.IdService });
+                db.ChangeRate(newRates);
+                var data = BuildData();
+                if (data.Count > 0)
+                {
+                    RateEditForm rateForm = new RateEditForm(BuildData());
+                    rateForm.ShowDialog(this);
+                }
+                else
+                {
+                    MessageBox.Show("Отчет по заданным параметрам не имеет записей! Измените параметры и повторите попытку.",
+                        "Отчет не содержит записей", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             }
-            db.ChangeRate(newRates);
-            var data = BuildData();
-            if(data.Count > 0)
+            catch(DataBaseException)
             {
-                RateEditForm rateForm = new RateEditForm(BuildData());
-                rateForm.ShowDialog(this);
-            }
-            else
-            {
-                MessageBox.Show("Отчет по заданным параметрам не имеет записей! Измените параметры и повторите попытку.",
-                    "Отчет не содержит записей", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Проблемы с базой данных. Проверьте настройки строки подключения, правильно ли указано имя сервера",
+                    "Проблемы с базой данных", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
         }
     }
