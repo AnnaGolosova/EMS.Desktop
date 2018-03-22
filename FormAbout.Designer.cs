@@ -52,9 +52,9 @@
             this.AuthorsGroupBox.Controls.Add(this.labelDan);
             this.AuthorsGroupBox.Controls.Add(this.labelGol);
             this.AuthorsGroupBox.Location = new System.Drawing.Point(16, 112);
-            this.AuthorsGroupBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.AuthorsGroupBox.Margin = new System.Windows.Forms.Padding(4);
             this.AuthorsGroupBox.Name = "AuthorsGroupBox";
-            this.AuthorsGroupBox.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.AuthorsGroupBox.Padding = new System.Windows.Forms.Padding(4);
             this.AuthorsGroupBox.Size = new System.Drawing.Size(412, 209);
             this.AuthorsGroupBox.TabIndex = 0;
             this.AuthorsGroupBox.TabStop = false;
@@ -116,7 +116,7 @@
             // OkButton
             // 
             this.OkButton.Location = new System.Drawing.Point(293, 359);
-            this.OkButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.OkButton.Margin = new System.Windows.Forms.Padding(4);
             this.OkButton.Name = "OkButton";
             this.OkButton.Size = new System.Drawing.Size(135, 33);
             this.OkButton.TabIndex = 1;
@@ -147,7 +147,7 @@
             // pictureBox1
             // 
             this.pictureBox1.Location = new System.Drawing.Point(313, -1);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(133, 62);
             this.pictureBox1.TabIndex = 0;
@@ -161,7 +161,7 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(80, 17);
             this.label2.TabIndex = 4;
-            this.label2.Text = "Version 1.0";
+            this.label2.Text = "Version 1.2";
             // 
             // FormAboutProgram
             // 
@@ -175,7 +175,7 @@
             this.Controls.Add(this.OkButton);
             this.Controls.Add(this.AuthorsGroupBox);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "FormAboutProgram";
             this.Text = "О программе";
             this.AuthorsGroupBox.ResumeLayout(false);

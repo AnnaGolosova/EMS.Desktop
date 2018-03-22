@@ -11,10 +11,10 @@ namespace EMS.Desktop.Services
         public static EMSEntities db;
 
         #region Getters
-        public int? GetNextFileId()
+        public int GetNextFileId()
         {
             if (db.File.ToList().Count == 0)
-                return null;
+                return 1;
             return db.File.Max(f => f.Id) + 1;
         }
 
@@ -493,6 +493,21 @@ namespace EMS.Desktop.Services
             }
         }
 
+        public File CreateFile(string path)
+        {
+            File file = new File() { Date = DateTime.Now, Path = path, Id = GetNextFileId() };
+            db.File.Add(file);
+            return file;
+        }
+
+        public void SetFileAsDownloaded(File file)
+        {
+            File f = db.File.Where(fl => fl.Id == file.Id).First();
+            string fileName = file.Path.Split('\\').Last();
+            string filePath = file.Path.Replace(fileName, "") + "Downloaded\\" + fileName;
+            f.Path = filePath;
+            db.SaveChanges();
+        }
         #endregion
     }
 }

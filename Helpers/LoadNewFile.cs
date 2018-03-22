@@ -31,15 +31,16 @@ namespace EMS.Desktop.Helpers
                             throw new DataBaseException("");
                         }
                         Report210 report = ExcelWriter.Read210(s);
-                        FileManager.ChangeFileState(s, FileState.Loaded);
-                        int fileId = FileManager.SetFileId(s, db.GetNextFileId());
-                        report.FileId = fileId;
+                        File file = db.CreateFile(s);
+                        report.FileId = file.Id;
                         db.LoadReport210(report);
                         Action MainPrBr = () =>
                         {
                             obj.MainProgressBar.Value++;
                         };
                         obj.Invoke(MainPrBr);
+                        FileManager.MoveFile(s, ConfigAppManager.GetReports210Path() + "\\Downloaded");
+                        db.SetFileAsDownloaded(file);
                     }
                     catch(DataBaseException ex)
                     {
