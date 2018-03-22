@@ -2,6 +2,10 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-.vs/EMS.Desktop/v14/
-/bin/Debug/
-/obj/Debug/
+/.vs
+/bin/Debug
+/obj/Debug
+/bin/Release
+/publish
+/obj/Release
+*.user

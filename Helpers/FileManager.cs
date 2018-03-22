@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.IO;
 using DSOFile;
 using EMS.Desktop.Services;
+using System.Windows.Forms;
 
 namespace EMS.Desktop.Helpers
 {
@@ -73,14 +74,31 @@ namespace EMS.Desktop.Helpers
                     }
                 }
             }
-
             catch (DirectoryNotFoundException dirNotFound)
             {
                 throw new DirectoryNotFoundException("Error: directory not found ", dirNotFound);
             }
         }
 
-        //Don't do it yet
+        public static void MoveFile(string path, string newDirectoryPath)
+        {
+            try
+            {
+                string fileName = path.Split('\\').Last();
+                if (!Directory.Exists(newDirectoryPath))
+                    Directory.CreateDirectory(newDirectoryPath);
+                if(File.Exists(newDirectoryPath + "\\" + fileName))
+                {
+                    File.Delete(newDirectoryPath + "\\" + fileName);
+                }
+                File.Move(path, newDirectoryPath + "\\" + fileName);
+            }
+            catch(ArgumentException)
+            {
+                MessageBox.Show("Ошибка перемещения файлов. Возможно, неверно указаны директории, к ним ограничен доступ.", "Ошибка перемещения файлов", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        
         public static void ChangeFileState(string filePath, FileState state)
         {
             using (FileParameterSetter setter = new FileParameterSetter(filePath))
@@ -127,11 +145,7 @@ namespace EMS.Desktop.Helpers
                 {
                     if (file.Name.Split('.').Last().CompareTo("210") == 0)
                     {
-                        using (FileParameterSetter setter = new FileParameterSetter(file.FullName))
-                        {
-                            if (setter.GetProperty() == FileState.New || setter.GetProperty() == FileState.None)
-                                result.Add(file.FullName);
-                        }
+                        result.Add(file.FullName);
                     }
                 }
             }
