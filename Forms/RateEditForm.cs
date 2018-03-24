@@ -32,7 +32,7 @@ namespace EMS.Desktop.Forms
                 {
                     RateViewDGV.Rows.Add(i++, rate.Service.Name, rate.Value);
                 }
-                foreach (Report210.ReportData record in this.data)
+                foreach (Report210.ReportData record in this.data.OrderBy(r => r.HomeSteadNumber))
                 {
                     foreach (Report210.ReportData.MeterInfo meter in record.meterInfo)
                     {

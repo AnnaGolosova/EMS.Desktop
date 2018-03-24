@@ -130,7 +130,7 @@ go
 
 INSERT INTO [SERVICE] 
 VALUES	(1, N'Взносы'),
-		(2, N'Электроэнергия'),
+		(2, N'Электроснабжение'),
 		(3, N'Налог на землю'),
 		(4, N'Налог на недвижимость')
 GO
@@ -139,4 +139,21 @@ INSERT INTO [Rate]
 VALUES	(2, 0.1246, '09/01/2017', 1),
 		(2, 0.1246, '09/01/2017', 1),
 		(2, 0.1246, '09/01/2017', 1)
+GO
+
+DROP FUNCTION GetAmount
+GO
+
+CREATE FUNCTION GetAmount(@Month int, @Year int)
+RETURNS float(53)
+AS
+BEGIN
+	DECLARE @res float(53) = (
+		SELECT sum(Entered) as Amount FROM [dbo].Payment
+		WHERE month([Date]) = @Month and year([Date]) = @Year
+	)
+	IF(@res IS NULL)
+		 set @res = 0
+	RETURN @res
+END
 GO

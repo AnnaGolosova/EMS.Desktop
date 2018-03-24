@@ -22,6 +22,15 @@ namespace EMS.Desktop
             connectionStringsSection.ConnectionStrings["EMSEntities"].ConnectionString = ConfigAppManager.GetConnectionString();
             config.Save();
             ConfigurationManager.RefreshSection("connectionStrings");
+            DBRepository db = new DBRepository();
+            if(!db.TryConnection())
+            {
+                AmountLabel.Visible = false;
+            }
+            else
+            {
+                AmountLabel.Text = "Сумма на р/с : " + db.GetAmount() + " BYN";
+            }
         }
 
         public void OnCreate()
