@@ -39,6 +39,20 @@ namespace EMS.Desktop.Services
             return list;
         }
 
+        public double GetAmount()
+        {
+            try
+            {
+                //var amount = db.Database.SqlQuery<int>("GetAmount", DateTime.Now.Month, DateTime.Now.Year);
+                var amount = db.Database.SqlQuery<double>($"DECLARE @s float(53) = cast(EMS.dbo.GetAmount({9}, {2017}) as float(53)) select @s").First();
+                return amount;
+            }
+            catch(InvalidOperationException)
+            {
+                return 0;
+            }
+        }
+
         public int? GetRatePosition(int? rateId)
         {
             Rate rate = GetRate(null, rateId);
@@ -135,6 +149,13 @@ namespace EMS.Desktop.Services
             db.SaveChanges();
         }
 
+        internal void SetArrear(int id, double arrear)
+        {
+            Payment pay = db.Payment.Where(p => p.Id == id).First();
+            pay.Arrear = arrear;
+            db.SaveChanges();
+        }
+
         public List<Homestead> GetHomestead()
         {
             return db.Homestead.ToList();
@@ -212,6 +233,11 @@ namespace EMS.Desktop.Services
             {
                 throw new DataBaseException(e.Message, e);
             }
+        }
+
+        public Payment GetPayment(int Id)
+        {
+            return db.Payment.Where(p => p.Id == Id).First();
         }
 
         public List<MeterData> GetMeterData()

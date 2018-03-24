@@ -22,7 +22,7 @@ namespace EMS.Desktop.Forms
             try
             {
                 InitializeComponent();
-                this.data = data.OrderBy(d => d.Id).ToList();
+                this.data = data.OrderBy(d => d.HomeSteadNumber).ToList();
                 splitContainer1.SplitterDistance = RateViewDGV.Height;
                 RateViewDGV.Dock = DockStyle.Fill;
                 RateDGV.CellValidating += RateDGV_CellValidating;
@@ -32,19 +32,20 @@ namespace EMS.Desktop.Forms
                 {
                     RateViewDGV.Rows.Add(i++, rate.Service.Name, rate.Value);
                 }
-                foreach (Report210.ReportData record in this.data)
+                foreach (Report210.ReportData record in this.data.OrderBy(r => r.HomeSteadNumber))
                 {
+
                     foreach (Report210.ReportData.MeterInfo meter in record.meterInfo)
                     {
                         if (meter.rateId == null)
                         {
-                            RateDGV.Rows.Add(record.HomeSteadNumber, record.OwnerName, meter.number, "");
+                            RateDGV.Rows.Add(record.HomeSteadNumber, record.OwnerName, meter.number, record.Arrer, "");
                         }
                         else
                         {
                             Rate rate = db.GetRate(null, meter.rateId);
                             int? x = db.GetRatePosition(meter.rateId);
-                            RateDGV.Rows.Add(record.HomeSteadNumber, record.OwnerName, meter.number, rate == null ? "" : x.ToString());
+                            RateDGV.Rows.Add(record.HomeSteadNumber, record.OwnerName, meter.number, record.Arrer, rate == null ? "" : x.ToString());
                         }
                     }
                 }
@@ -63,9 +64,22 @@ namespace EMS.Desktop.Forms
         void RateDGV_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
         {
             var dgv = sender as DataGridView;
-            if (!(new List<string>() { "1", "2", "3", "" }).Any(r => r.CompareTo(e.FormattedValue.ToString().Normalize()) == 0))
-                RateDGV[e.ColumnIndex, e.RowIndex].Style.BackColor = System.Drawing.ColorTranslator.FromHtml("#ff899e");
-            else RateDGV[e.ColumnIndex, e.RowIndex].Style.BackColor = Color.White;
+            if(e.ColumnIndex == 4)
+            {
+                if (!(new List<string>() { "1", "2", "3", "" }).Any(r => r.CompareTo(e.FormattedValue.ToString().Normalize()) == 0))
+                    RateDGV[e.ColumnIndex, e.RowIndex].Style.BackColor = System.Drawing.ColorTranslator.FromHtml("#ff899e");
+                else RateDGV[e.ColumnIndex, e.RowIndex].Style.BackColor = Color.White;
+            }
+            if(e.ColumnIndex == 3)
+            {
+                DBRepository db = new DBRepository();
+                int paymentId = db.GetPayment(data[e.RowIndex].Id).Id;
+                
+                double d;
+                if(!double.TryParse(e.FormattedValue.ToString().Replace('.', ','), out d))
+                    RateDGV[e.ColumnIndex, e.RowIndex].Style.BackColor = System.Drawing.ColorTranslator.FromHtml("#ff899e");
+                else RateDGV[e.ColumnIndex, e.RowIndex].Style.BackColor = Color.White;
+            }
         }
 
         private void RateEditForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -74,16 +88,22 @@ namespace EMS.Desktop.Forms
             {
                 int i = 0;
                 DBRepository db = new DBRepository();
-                foreach (Report210.ReportData record in data)
+                foreach (Report210.ReportData record in data.OrderBy(r => r.HomeSteadNumber))
                 {
                     foreach (Report210.ReportData.MeterInfo mi in record.meterInfo)
                     {
-                        if (!string.IsNullOrEmpty(RateDGV[3, i].Value.ToString()))
+                        if (!string.IsNullOrEmpty(RateDGV[4, i].Value.ToString()))
                         {
-                            int rateId = Int32.Parse(RateDGV[3, i].Value as string);
+                            int rateId = Int32.Parse(RateDGV[4, i].Value as string);
                             rateId = db.GetLastRates().OrderBy(r => r.Id).First().Id + rateId - 1;
                             if (mi.rateId != rateId)
                                 db.ChangeMeterData((int)mi.id, rateId);
+                        }
+                        if (!string.IsNullOrEmpty(RateDGV[3, i].Value.ToString()))
+                        {
+                            string s = RateDGV[3, i].Value.ToString().Replace('.', ',');
+                            double arrear = Double.Parse(s);
+                            db.SetArrear(record.Id, arrear);
                         }
                         i++;
                     }

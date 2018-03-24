@@ -22,6 +22,15 @@ namespace EMS.Desktop
             connectionStringsSection.ConnectionStrings["EMSEntities"].ConnectionString = ConfigAppManager.GetConnectionString();
             config.Save();
             ConfigurationManager.RefreshSection("connectionStrings");
+            DBRepository db = new DBRepository();
+            if(!db.TryConnection())
+            {
+                AmountLabel.Visible = false;
+            }
+            else
+            {
+                AmountLabel.Text = "Сумма на р/с : " + db.GetAmount() + " BYN";
+            }
         }
 
         public void OnCreate()
@@ -143,7 +152,7 @@ namespace EMS.Desktop
                     LabelProgrBar.Visible = true;
                 }
             }
-            catch(DataBaseException ex)
+            catch(DataBaseException)
             {
                 MessageBox.Show("Проблемы с базой данных. Проверьте настройки строки подключения, правильно ли указано имя сервера", 
                     "Проблемы с базой данных", MessageBoxButtons.OK, MessageBoxIcon.Error);

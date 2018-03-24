@@ -90,14 +90,20 @@ namespace EMS.Desktop.Helpers
             {
                 FileStream stream = new FileStream(ConfigAppManager.GetReports202Path() + "//" + fileName + ".202", FileMode.Create);
                 StreamWriter writer = new StreamWriter(stream);
-                writer.WriteLine();
+                int recordsCount = rep.Datas[0].ServiceId == 2 ? 3 : 0;
+                recordsCount += rep.Datas.Count;
+                writer.WriteLine("5^32402192^"+ ConfigAppManager.GetNextReportNumber() + 
+                    "^" + DateTime.Now.Year.ToString() + 
+                    (DateTime.Now.Month.ToString().Length == 1 ? "0" + DateTime.Now.Month.ToString() : DateTime.Now.Month.ToString()) +  
+                    DateTime.Now.Day.ToString() + "120000^" +
+                    recordsCount + "^400225056^661^BY49AKBB30151211600163000000^1^933^PS");
                 if (rep.Datas[0].ServiceId == 2)
                 {
                     foreach (Rate r in rep.LocalRates)
                     {
                         string rateStr = "1^" + r.Id + "^";
                         r.Service = db.GetService(r.IdService);
-                        rateStr += r.Service.Name + "^^^^^" + r.Value;
+                        rateStr += r.Service.Name + "^^^^^" + r.Value + "^";
                         writer.WriteLine(rateStr);
                     }
                 }
@@ -117,16 +123,16 @@ namespace EMS.Desktop.Helpers
                             {
                                 if (flag == NoRateState.Yes)
                                 {
-                                    localId = "2";
+                                    localId = "1";
                                 }
                                 else
                                 if(flag == NoRateState.NotAnswered)
                                 {
-                                    if (MessageBox.Show("Тарифы не установлены для одного или нескольких участков. Продолжить создание отчетов? Нажмите [Да], чтобы заменать неустановленне тарифы на 2",
+                                    if (MessageBox.Show("Тарифы не установлены для одного или нескольких участков. Продолжить создание отчетов? Нажмите [Да], чтобы заменать неустановленне тарифы на 1",
                                             "Тарифы не установлены", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
                                     {
                                         flag = NoRateState.Yes;
-                                        localId = "2";
+                                        localId = "1";
                                     }
                                     else
                                     {
@@ -143,11 +149,11 @@ namespace EMS.Desktop.Helpers
                             }
                             s += j++ + "~" + localId + "~~~6~" + mi.Value + "~";
                         }
-                        recordStr += s + "^^^^^";
+                        recordStr += s + "^^^^^^^^";
                     }
                     else
                     {
-                        recordStr += "^" + x.Introdused + "^^^^^";
+                        recordStr += "^" + x.Introdused + "^^^^^^^^^";
                     }
                     writer.WriteLine(recordStr);
                 }

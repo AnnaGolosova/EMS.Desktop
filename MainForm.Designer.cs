@@ -45,6 +45,7 @@
             this.LoadingLabel = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.LabelProgrBar = new System.Windows.Forms.Label();
+            this.AmountLabel = new System.Windows.Forms.Label();
             this.Menu.SuspendLayout();
             this.ColorPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -103,7 +104,7 @@
             // MenuReposForERIP
             // 
             this.MenuReposForERIP.Name = "MenuReposForERIP";
-            this.MenuReposForERIP.Size = new System.Drawing.Size(181, 26);
+            this.MenuReposForERIP.Size = new System.Drawing.Size(161, 26);
             this.MenuReposForERIP.Text = "Отчёт .202";
             this.MenuReposForERIP.Click += new System.EventHandler(this.MenuReposForERIP_Click);
             // 
@@ -111,7 +112,7 @@
             // 
             this.MenuReposForExcel.Enabled = false;
             this.MenuReposForExcel.Name = "MenuReposForExcel";
-            this.MenuReposForExcel.Size = new System.Drawing.Size(181, 26);
+            this.MenuReposForExcel.Size = new System.Drawing.Size(161, 26);
             this.MenuReposForExcel.Text = "Отчёт Excel";
             this.MenuReposForExcel.Click += new System.EventHandler(this.MenuReposForExcel_Click);
             // 
@@ -210,11 +211,23 @@
             this.LabelProgrBar.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.LabelProgrBar.Visible = false;
             // 
+            // AmountLabel
+            // 
+            this.AmountLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.AmountLabel.AutoSize = true;
+            this.AmountLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.AmountLabel.Location = new System.Drawing.Point(786, 7);
+            this.AmountLabel.Name = "AmountLabel";
+            this.AmountLabel.Size = new System.Drawing.Size(183, 17);
+            this.AmountLabel.TabIndex = 3;
+            this.AmountLabel.Text = "Сумма на р/с : 100 BYN";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1019, 539);
+            this.Controls.Add(this.AmountLabel);
             this.Controls.Add(this.LabelProgrBar);
             this.Controls.Add(this.ColorPanel);
             this.Controls.Add(this.MainProgressBar);
@@ -257,6 +270,7 @@
         private System.Windows.Forms.Label LoadingLabel;
         private System.Windows.Forms.ToolStripMenuItem ToolStripDownloadNewFile;
         private System.Windows.Forms.ToolStripMenuItem CLearFileStatesMI;
+        private System.Windows.Forms.Label AmountLabel;
     }
 }
 

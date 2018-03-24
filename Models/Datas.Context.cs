@@ -11,8 +11,10 @@ namespace EMS.Desktop.Models
 {
     using System;
     using System.Data.Entity;
+    using System.Data.Entity.Core.Objects;
     using System.Data.Entity.Infrastructure;
-    
+    using System.Linq;
+
     public partial class EMSEntities : DbContext
     {
         public EMSEntities()
@@ -33,5 +35,27 @@ namespace EMS.Desktop.Models
         public DbSet<Payment> Payment { get; set; }
         public DbSet<Rate> Rate { get; set; }
         public DbSet<Service> Service { get; set; }
+    
+        public virtual ObjectResult<Nullable<double>> GetAmound(Nullable<int> month)
+        {
+            var monthParameter = month.HasValue ?
+                new ObjectParameter("Month", month) :
+                new ObjectParameter("Month", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<double>>("GetAmound", monthParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<double>> GetAmount(Nullable<int> month, Nullable<int> year)
+        {
+            var monthParameter = month.HasValue ?
+                new ObjectParameter("Month", month) :
+                new ObjectParameter("Month", typeof(int));
+    
+            var yearParameter = year.HasValue ?
+                new ObjectParameter("Year", year) :
+                new ObjectParameter("Year", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<double>>("GetAmount", monthParameter, yearParameter);
+        }
     }
 }

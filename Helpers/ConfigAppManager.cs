@@ -86,5 +86,15 @@ namespace EMS.Desktop.Helpers
             config.Save(ConfigurationSaveMode.Modified);
             ConfigurationManager.RefreshSection("appSettings");
         }
+
+        public static int GetNextReportNumber()
+        {
+            Configuration config = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
+            int reportNumber = int.Parse(config.AppSettings.Settings["ReportNumber"].Value) + 1;
+            config.AppSettings.Settings["ReportNumber"].Value = reportNumber.ToString();
+            config.Save(ConfigurationSaveMode.Modified);
+            ConfigurationManager.RefreshSection("appSettings");
+            return reportNumber;
+        }
     }
 }
