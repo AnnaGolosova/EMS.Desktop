@@ -149,6 +149,13 @@ namespace EMS.Desktop.Services
             db.SaveChanges();
         }
 
+        internal void SetArrear(int id, double arrear)
+        {
+            Payment pay = db.Payment.Where(p => p.Id == id).First();
+            pay.Arrear = arrear;
+            db.SaveChanges();
+        }
+
         public List<Homestead> GetHomestead()
         {
             return db.Homestead.ToList();
@@ -226,6 +233,11 @@ namespace EMS.Desktop.Services
             {
                 throw new DataBaseException(e.Message, e);
             }
+        }
+
+        public Payment GetPayment(int Id)
+        {
+            return db.Payment.Where(p => p.Id == Id).First();
         }
 
         public List<MeterData> GetMeterData()

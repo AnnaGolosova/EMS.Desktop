@@ -152,7 +152,7 @@ namespace EMS.Desktop
                     LabelProgrBar.Visible = true;
                 }
             }
-            catch(DataBaseException ex)
+            catch(DataBaseException)
             {
                 MessageBox.Show("Проблемы с базой данных. Проверьте настройки строки подключения, правильно ли указано имя сервера", 
                     "Проблемы с базой данных", MessageBoxButtons.OK, MessageBoxIcon.Error);

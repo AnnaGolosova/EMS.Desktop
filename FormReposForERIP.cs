@@ -82,6 +82,8 @@ namespace EMS.Desktop
                     Report210.ReportData rd = new Report210.ReportData();
                     rd.Date = (DateTime)pay.Date;
                     rd.Entered = pay.Entered;
+                    rd.Id = pay.Id;
+                    rd.Arrer = pay.Arrear;
                     rd.Introduced = pay.Introduced;
                     rd.OwnerName = db.GetHomestead(pay.IdHomestead).OwnerName;
                     rd.ServiceId = pay.IdService;
