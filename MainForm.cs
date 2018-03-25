@@ -273,6 +273,7 @@ namespace EMS.Desktop
                         }
                         x++;
                     }
+                    createExcelButton.Visible = true;
                 }
                 else
                 {
@@ -334,6 +335,10 @@ namespace EMS.Desktop
             FormSettings FrSett = new FormSettings();
             FrSett.ShowDialog();
         }
-        
+
+        private void createExcelButton_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
