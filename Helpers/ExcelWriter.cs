@@ -275,7 +275,7 @@ namespace EMS.Desktop.Helpers
             }
         }
         
-        private static void WriteMonthReport(List<Report210.ReportData> datas, int month, string fileName)
+        private static void WriteMonthReport(List<Report210.ReportData> datas, int month, string fileName, int id)
         {
             using (ExcelPackage excel = new ExcelPackage())
             {
@@ -294,74 +294,192 @@ namespace EMS.Desktop.Helpers
                 Months.Add("Декабрь ");
                 var ws = excel.Workbook.Worksheets.Add("Отчёт за месяц");
 
-                ws.Cells[1, 1, 1, 11].Merge = true;
-                ws.Cells[1, 1].Value = "Ведомость";
-                ws.Cells[2, 1, 2, 11].Merge = true;
-                ws.Cells[2, 1].Value = "уплаты за электроэнергию";
-                ws.Cells[3, 1, 3, 11].Merge = true;
-                ws.Cells[3, 1].Value = "за " + Months[month - 1] + datas[0].Date.Year + "г.";
-                ws.Cells[4, 1, 4, 11].Merge = true;
-                ws.Cells[4, 1].Value = "Гос. тариф "; //+ гос. тариф (0,1192)
-                ws.Cells[5, 1, 6, 1].Merge = true;
-                ws.Cells[5, 1].Value = "№ По порядку";
-                ws.Cells[5, 2, 6, 2].Merge = true;
-                ws.Cells[5, 2].Value = "№ Участка";
-                ws.Cells[5, 3, 6, 3].Merge = true;
-                ws.Cells[5, 3].Value = "Дата оплаты";
-                ws.Cells[5, 4, 6, 4].Merge = true;
-                ws.Cells[5, 4].Value = "Внесено денег";
-                ws.Cells[5, 5, 6, 5].Merge = true;
-                ws.Cells[5, 5].Value = "Снято ЕРИПом";
-                ws.Cells[5, 6, 5, 7].Merge = true;
-                ws.Cells[5, 6].Value = "Уплачено по счётчику";
-                ws.Cells[6, 6].Value = "кВт/ч";
-                ws.Cells[6, 7].Value = "Сумма";
-                ws.Cells[5, 8].Value = "Текущие показания";
-                ws.Cells[6, 8].Value = "кВт/ч";
-                ws.Cells[5, 9, 5, 10].Merge = true;
-                ws.Cells[5, 9].Value = "Доплата за потери";
-                ws.Cells[6, 9].Value = "K=";
-                ws.Cells[6, 10].Value = "Сумма";
-                ws.Cells[5, 11, 6, 11].Merge = true;
-                ws.Cells[5, 11].Value = "Доплата по долгам";
-
-                int i = 7;
-                foreach (Report210.ReportData data in datas)
+                if (id == 1)
                 {
-                    ws.Cells[i, 1].Value = i - 6;
-                    ws.Cells[i, 2].Value = data.HomeSteadNumber;
-                    ws.Cells[i, 3].Value = data.Date;
-                    ws.Cells[i, 4].Value = data.Introduced;
-                    ws.Cells[i, 6].Value = data.meterInfo[0].oldValue - data.meterInfo[0].newValue;
-                    ws.Cells[i, 8].Value = data.meterInfo[0].newValue;
-                    ws.Cells[i, 9].Value = "?????"; // K=
-                    ws.Cells[i, 11].Value = "?????"; // ??
-                    ws.Cells[i, 12].Value = data.Entered;
-                    for (int j = 0; j < 11; j++)
-                        ws.Cells[i, j].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                    i++;
+                    ws.Cells[1, 1, 2, 7].Merge = true;
+                    ws.Cells[1, 1].Value = "Данные об уплате взносов СТ «Диколовка-1»";
+                    ws.Cells[3, 1, 3, 7].Merge = true;
+                    ws.Cells[4, 1].Value = "По состоянию на 01." + (month == 12 ? "01" : Convert.ToString(month)) + '.' + DateTime.UtcNow.Year;
+                    ws.Cells[4, 1].Value = "№ по порядку";
+                    ws.Cells[4, 2].Value = "№ участка";
+                    ws.Cells[4, 3].Value = "ФИО";
+                    ws.Cells[4, 4].Value = "Внесено денег";
+                    ws.Cells[4, 5].Value = "Снято ЕРИПом";
+                    ws.Cells[4, 6].Value = "Перечислено в банк";
+                    ws.Cells[4, 7].Value = "Дата оплаты";
+
+                    int i = 5;
+                    foreach (Report210.ReportData data in datas)
+                    {
+                        ws.Cells[i, 1].Value = i - 3;
+                        ws.Cells[i, 2].Value = data.HomeSteadNumber;
+                        ws.Cells[i, 3].Value = data.OwnerName;
+                        ws.Cells[i, 4].Value = data.Introduced;
+                        ws.Cells[i, 6].Value = data.Entered;
+                        ws.Cells[i, 7].Value = data.Code.Substring(0, 4) + '.' + data.Code.Substring(4, 2) + '.' + data.Code.Substring(6, 2);
+                        for (int j = 1; j < 8; j++)
+                            ws.Cells[i, j].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        i++;
+                    }
+
+                    ws.Cells[5, 5, i - 1, 5].Formula = "D4 - F4";
+                    ws.Cells[i, 1, i, 3].Merge = true;
+                    ws.Cells[i, 1].Value = "Итого";
+                    ws.Cells[i, 4, i, 6].Formula = "SUM(D4:D" + (i - 1) + ')';
+
+                    ws.Cells[4, 2].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                    ws.Cells[4, 4].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                    ws.Cells[4, 6].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                    ws.Cells[i, 2].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                    ws.Cells[i, 4].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                    ws.Cells[i, 6].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                    ws.Cells[4, 1, i, 7].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+                    ws.Cells[4, 1, 4, 7].Style.Border.Bottom.Style = ExcelBorderStyle.Medium;
+                    ws.Cells[i, 1, i, 7].Style.Border.Top.Style = ExcelBorderStyle.Medium;
+                    ws.Cells[1, 1, 4, 7].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Cells[1, 1, i, 7].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                    ws.Cells[3, 1, 3, 7].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                    ws.Cells[i, 1, i, 3].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Cells[1, 1, 2, 7].Style.Font.Bold = true;
+                    ws.Cells[1, 1, 2, 7].Style.Font.Italic = true;
+                    ws.Cells[3, 1, 3, 7].Style.Font.Bold = true;
                 }
+                else if (id == 2)
+                {
+                    ws.Cells[1, 1, 1, 11].Merge = true;
+                    ws.Cells[1, 1].Value = "Ведомость";
+                    ws.Cells[2, 1, 2, 11].Merge = true;
+                    ws.Cells[2, 1].Value = "уплаты за электроэнергию";
+                    ws.Cells[3, 1, 3, 11].Merge = true;
+                    ws.Cells[3, 1].Value = "за " + Months[month - 1] + datas[0].Date.Year + "г.";
+                    ws.Cells[4, 1, 4, 11].Merge = true;
+                    ws.Cells[4, 1].Value = "Гос. тариф "; //+ гос. тариф (0,1192)
+                    ws.Cells[5, 1, 6, 1].Merge = true;
+                    ws.Cells[5, 1].Value = "№ По порядку";
+                    ws.Cells[5, 2, 6, 2].Merge = true;
+                    ws.Cells[5, 2].Value = "№ Участка";
+                    ws.Cells[5, 3, 6, 3].Merge = true;
+                    ws.Cells[5, 3].Value = "Дата оплаты";
+                    ws.Cells[5, 4, 6, 4].Merge = true;
+                    ws.Cells[5, 4].Value = "Внесено денег";
+                    ws.Cells[5, 5, 6, 5].Merge = true;
+                    ws.Cells[5, 5].Value = "Снято ЕРИПом";
+                    ws.Cells[5, 6, 5, 7].Merge = true;
+                    ws.Cells[5, 6].Value = "Уплачено по счётчику";
+                    ws.Cells[6, 6].Value = "кВт/ч";
+                    ws.Cells[6, 7].Value = "Сумма";
+                    ws.Cells[5, 8].Value = "Текущие показания";
+                    ws.Cells[6, 8].Value = "кВт/ч";
+                    ws.Cells[5, 9, 5, 10].Merge = true;
+                    ws.Cells[5, 9].Value = "Доплата за потери";
+                    ws.Cells[6, 9].Value = "K=";
+                    ws.Cells[6, 10].Value = "Сумма";
+                    ws.Cells[5, 11, 6, 11].Merge = true;
+                    ws.Cells[5, 11].Value = "Доплата по долгам";
+                    // ws.Cells[5, 12].Value = 0.1192;
 
-                ws.Cells[7, 5, i - 1, 5].Formula = "D7 - L7";
-                ws.Cells[7, 7, i - 1, 7].Formula = "ROUND(F7 * $L$5, 2)";
-                ws.Cells[7, 10, i - 1, 10].Formula = "ROUND(F7 * I7 * $L$5, 2)";
-                ws.Cells[7, 14, i - 1, 14].Formula = "G7 + J7 + K7";
-                ws.Cells[i, 4, i, 5].Formula = "SUM(D7:D" + (i - 1) + ")";
-                ws.Cells[i, 7].Formula = "SUM(G7:G" + (i - 1) + ")";
-                ws.Cells[i, 10, i, 11].Formula = "SUM(J7:J" + (i - 1) + ")";
-                ws.Cells[i, 14].Formula = "SUM(N7:" + (i - 1) + ")";
+                    int i = 7;
+                    foreach (Report210.ReportData data in datas)
+                    {
+                        ws.Cells[i, 1].Value = i - 6;
+                        ws.Cells[i, 2].Value = data.HomeSteadNumber;
+                        ws.Cells[i, 3].Value = data.Date;
+                        ws.Cells[i, 4].Value = data.Introduced;
+                        ws.Cells[i, 6].Value = data.meterInfo[0].oldValue - data.meterInfo[0].newValue;
+                        ws.Cells[i, 8].Value = data.meterInfo[0].newValue;
+                        // ws.Cells[i, 9].Value = "";
+                        // ws.Cells[i, 11].Value = "";
+                        ws.Cells[i, 12].Value = data.Entered;
+                        for (int j = 1; j < 12; j++)
+                            ws.Cells[i, j].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        i++;
+                    }
 
-                ws.Cells[5, 1, 6, 11].Style.Font.Bold = true;
-                ws.Cells[5, 1, i, 11].Style.Border.BorderAround(ExcelBorderStyle.Medium);
-                ws.Cells[i, 1, i, 11].Style.Border.Top.Style = ExcelBorderStyle.Medium;
-                ws.Cells[6, 1, 6, 11].Style.Border.Bottom.Style = ExcelBorderStyle.Medium;
-                ws.Cells[1, 1, i - 1, 11].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                ws.Cells[1, 1, i - 1, 11].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-                ws.Cells[7, 12, i - 1, 12].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
-                ws.Cells[7, 12, i - 1, 12].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-                ws.Cells[7, 14, i, 14].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                ws.Cells[7, 14, i, 14].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-                ws.Cells[7, 14, i - 1, 14].Style.Font.Color.SetColor(System.Drawing.Color.Red);
+                    ws.Cells[7, 5, i - 1, 5].Formula = "D7 - L7";
+                    ws.Cells[7, 7, i - 1, 7].Formula = "ROUND(F7 * $L$5, 2)";
+                    ws.Cells[7, 10, i - 1, 10].Formula = "ROUND(F7 * I7 * $L$5, 2)";
+                    ws.Cells[7, 14, i - 1, 14].Formula = "G7 + J7 + K7";
+                    ws.Cells[i, 4, i, 5].Formula = "SUM(D7:D" + (i - 1) + ')';
+                    ws.Cells[i, 7].Formula = "SUM(G7:G" + (i - 1) + ')';
+                    ws.Cells[i, 10, i, 11].Formula = "SUM(J7:J" + (i - 1) + ')';
+                    ws.Cells[i, 14].Formula = "SUM(N7:" + (i - 1) + ')';
+
+                    ws.Cells[5, 1, 6, 11].Style.Font.Bold = true;
+                    for (i = 1; i < 12; i++) ;
+                    {
+                        ws.Cells[5, i].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        ws.Cells[6, i].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                    }
+                    ws.Cells[5, 1, i, 11].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+                    ws.Cells[i, 1, i, 11].Style.Border.Top.Style = ExcelBorderStyle.Medium;
+                    ws.Cells[6, 1, 6, 11].Style.Border.Bottom.Style = ExcelBorderStyle.Medium;
+                    ws.Cells[1, 1, i - 1, 11].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Cells[1, 1, i - 1, 11].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                    ws.Cells[7, 12, i - 1, 12].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[7, 12, i - 1, 12].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                    ws.Cells[7, 14, i, 14].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                    ws.Cells[7, 14, i, 14].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                    ws.Cells[7, 14, i - 1, 14].Style.Font.Color.SetColor(System.Drawing.Color.Red);
+                }
+                else
+                {
+                    ws.Cells[1, 1, 2, 8].Merge = true;
+                    ws.Cells[1, 1].Value = "Сводная ведомость об уплате налога на " + (id == 3 ? "Землю" : "Недвижимость") + " СТ «Диколовка-1»";
+                    ws.Cells[3, 1, 3, 8].Merge = true;
+                    ws.Cells[3, 1].Value = "По состоянию на 01." + (month == 12 ? "01" : Convert.ToString(month)) + '.' + DateTime.UtcNow.Year;
+                    ws.Cells[4, 1, 5, 1].Merge = true;
+                    ws.Cells[4, 1].Value = "№ по порядку";
+                    ws.Cells[4, 2, 5, 2].Merge = true;
+                    ws.Cells[4, 2].Value = "Номер участка";
+                    ws.Cells[4, 3, 5, 3].Merge = true;
+                    ws.Cells[4, 3].Value = "ФИО";
+                    ws.Cells[4, 4, 5, 4].Merge = true;
+                    ws.Cells[4, 4].Value = "Сумма к оплате";
+                    ws.Cells[4, 5, 4, 8].Merge = true;
+                    ws.Cells[4, 5].Value = "Сведения об оплате";
+                    ws.Cells[5, 5].Value = "Внесённая сумма";
+                    ws.Cells[5, 6].Value = "Снято ЕРИПом";
+                    ws.Cells[5, 7].Value = "Перечислено в банк";
+                    ws.Cells[5, 8].Value = "Дата оплаты";
+
+                    int i = 6;
+                    foreach (Report210.ReportData data in datas)
+                    {
+                        ws.Cells[i, 1].Value = i - 5;
+                        ws.Cells[i, 2].Value = data.HomeSteadNumber;
+                        ws.Cells[i, 3].Value = data.OwnerName;
+                        ws.Cells[i, 5].Value = data.Introduced;
+                        ws.Cells[i, 7].Value = data.Entered;
+                        ws.Cells[i, 8].Value = data.Code.Substring(0, 4) + '.' + data.Code.Substring(4, 2) + '.' + data.Code.Substring(6, 2);
+                        for (int j = 1; j < 9; j++)
+                            ws.Cells[i, j].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        i++;
+                    }
+
+                    ws.Cells[6, 6, i - 1, 6].Formula = "E6 - G6";
+                    ws.Cells[i, 1, i, 3].Merge = true;
+                    ws.Cells[i, 1].Value = "Итого";
+                    ws.Cells[i, 4, i, 7].Formula = "D6 - D" + (i - 1) + ')';
+
+                    for (int j = 1; j < 9; j++)
+                    {
+                        ws.Cells[4, j].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        ws.Cells[5, j].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                    }
+                    for (int j = 0; j < 3; j++)
+                        ws.Cells[i, j + 2, i, 7 - j].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                    ws.Cells[4, 1, i, 8].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+                    ws.Cells[4, 1, 5, 8].Style.Border.Bottom.Style = ExcelBorderStyle.Medium;
+                    ws.Cells[4, 4, i, 4].Style.Border.Right.Style = ExcelBorderStyle.Medium;
+                    ws.Cells[i, 1, i, 8].Style.Border.Top.Style = ExcelBorderStyle.Medium;
+                    ws.Cells[1, 1, i, 8].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                    ws.Cells[1, 1, 5, 8].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Cells[3, 1, 3, 8].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                    ws.Cells[6, 5, i, 8].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Cells[1, 1, 2, 8].Style.Font.Bold = true;
+                    ws.Cells[1, 1, 2, 8].Style.Font.Italic = true;
+                    ws.Cells[4, 1, 5, 8].Style.Font.Bold = true;
+                }
 
                 excel.SaveAs(new FileInfo(ConfigAppManager.GetExcelPath() + "//" + fileName + ".xlsx"));
             }
