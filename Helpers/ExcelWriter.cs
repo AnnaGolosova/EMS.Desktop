@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using EMS.Desktop.Models;
 using EMS.Desktop.Services;
@@ -92,9 +93,9 @@ namespace EMS.Desktop.Helpers
                 StreamWriter writer = new StreamWriter(stream);
                 int recordsCount = rep.Datas[0].ServiceId == 2 ? 3 : 0;
                 recordsCount += rep.Datas.Count;
-                writer.WriteLine("5^32402192^"+ ConfigAppManager.GetNextReportNumber() + 
-                    "^" + DateTime.Now.Year.ToString() + 
-                    (DateTime.Now.Month.ToString().Length == 1 ? "0" + DateTime.Now.Month.ToString() : DateTime.Now.Month.ToString()) +  
+                writer.WriteLine("5^32402192^" + ConfigAppManager.GetNextReportNumber() +
+                    "^" + DateTime.Now.Year.ToString() +
+                    (DateTime.Now.Month.ToString().Length == 1 ? "0" + DateTime.Now.Month.ToString() : DateTime.Now.Month.ToString()) +
                     DateTime.Now.Day.ToString() + "120000^" +
                     recordsCount + "^400225056^661^BY49AKBB30151211600163000000^1^933^PS");
                 if (rep.Datas[0].ServiceId == 2)
@@ -126,7 +127,7 @@ namespace EMS.Desktop.Helpers
                                     localId = "1";
                                 }
                                 else
-                                if(flag == NoRateState.NotAnswered)
+                                if (flag == NoRateState.NotAnswered)
                                 {
                                     if (MessageBox.Show("Тарифы не установлены для одного или нескольких участков. Продолжить создание отчетов? Нажмите [Да], чтобы заменать неустановленне тарифы на 1",
                                             "Тарифы не установлены", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
@@ -160,16 +161,16 @@ namespace EMS.Desktop.Helpers
                 writer.Close();
                 writer.Close();
             }
-            catch(ArgumentException)
+            catch (ArgumentException ex)
             {
-                MessageBox.Show("Неверное имя файла. Проверьте пути для сохранения файлов в настройках", 
+                MessageBox.Show("Неверное имя файла. Проверьте пути для сохранения файлов в настройках",
                     "Неверное имя файла", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            catch (IOException)
+            catch (IOException ex)
             {
-                MessageBox.Show("Файл " + fileName + 
-                    ".202 не может быть сохранен. Возможно, он уже существует и открыт в другом приложении. Закройте файл и повторите попытку.", 
+                MessageBox.Show("Файл " + fileName +
+                    ".202 не может быть сохранен. Возможно, он уже существует и открыт в другом приложении. Закройте файл и повторите попытку.",
                     "Файл не может быть сохранен", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
@@ -179,9 +180,9 @@ namespace EMS.Desktop.Helpers
 
         private static void WriteExcel(Report202 report, string fileName, NoRateState flag)
         {
-            if(report.Datas.Count == 0)
+            if (report.Datas.Count == 0)
             {
-                MessageBox.Show("Отчет по заданным параметрам не имеет записей! Измените параметры и повторите попытку.", 
+                MessageBox.Show("Отчет по заданным параметрам не имеет записей! Измените параметры и повторите попытку.",
                     "Отчет не содержит записей", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
@@ -206,8 +207,8 @@ namespace EMS.Desktop.Helpers
                     {
                         ws.Cells[i, 1].Value = "2";
                         ws.Cells[i, 2].Value = x.HomeSteadNumber;
-                        ws.Cells[i, 3].Value =  x.OwnerName;
-                        ws.Cells[i, 4].Value = "Номер участка " +x.HomeSteadNumber;
+                        ws.Cells[i, 3].Value = x.OwnerName;
+                        ws.Cells[i, 4].Value = "Номер участка " + x.HomeSteadNumber;
                         ws.Cells[i, 5].Value = x.Date.Month.ToString() + "." + x.Date.Year.ToString();
                         ws.Cells[i, 6].Value = x.Arrear;
                         if (x.ServiceId == 2)
@@ -258,23 +259,23 @@ namespace EMS.Desktop.Helpers
                     {
                         excel.SaveAs(new FileInfo(ConfigAppManager.GetExcelPath() + "//" + fileName + ".xlsx"));
 
-                    } catch(InvalidOperationException)
+                    } catch (InvalidOperationException ex)
                     {
-                        MessageBox.Show("Файл " + fileName + 
-                            ".xlsx не может быть сохранен. Возможно, он уже существует и открыт в другом приложении. Закройте файл и повторите попытку.", 
+                        MessageBox.Show("Файл " + fileName +
+                            ".xlsx не может быть сохранен. Возможно, он уже существует и открыт в другом приложении. Закройте файл и повторите попытку.",
                             "Файл не может быть сохранен", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
-                    catch(ArgumentException)
+                    catch (ArgumentException ex)
                     {
-                        MessageBox.Show("Неверное имя файла. Проверьте пути для сохранения файлов в настройках", 
+                        MessageBox.Show("Неверное имя файла. Проверьте пути для сохранения файлов в настройках",
                             "Неверное имя файла", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
                 }
             }
         }
-        
+
         private static void WriteMonthReport(List<Report210.ReportData> datas, int month, string fileName, int id)
         {
             using (ExcelPackage excel = new ExcelPackage())
@@ -481,7 +482,75 @@ namespace EMS.Desktop.Helpers
                     ws.Cells[4, 1, 5, 8].Style.Font.Bold = true;
                 }
 
-                excel.SaveAs(new FileInfo(ConfigAppManager.GetExcelPath() + "//" + fileName + ".xlsx"));
+                try
+                {
+                    excel.SaveAs(new FileInfo(ConfigAppManager.GetExcelPath() + "//" + fileName + ".xlsx"));
+
+                }
+                catch (InvalidOperationException ex)
+                {
+                    MessageBox.Show("Файл " + fileName +
+                        ".xlsx не может быть сохранен. Возможно, он уже существует и открыт в другом приложении. Закройте файл и повторите попытку.",
+                        "Файл не может быть сохранен", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                catch (ArgumentException ex)
+                {
+                    MessageBox.Show("Неверное имя файла. Проверьте пути для сохранения файлов в настройках",
+                        "Неверное имя файла", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+            }
+        }
+
+        public static void convertRepositoryDataToExcel(DBRepository repository, string fileName)
+        {
+            using (var excel = new ExcelPackage())
+            {
+                var ws = excel.Workbook.Worksheets.Add("WorkSheet1");
+                int i = 2;
+                foreach (Payment x in repository.GetPayment().OrderBy(s => s.Homestead.Number))
+                {
+                    ws.Cells[i, 1].Value = x.Service.Id;
+                    ws.Cells[i, 2].Value = x.Homestead.Number;
+                    ws.Cells[i, 3].Value = x.Homestead.OwnerName;
+                    ws.Cells[i, 4].Value = "Номер участка " + x.Homestead.Number;
+                    ws.Cells[i, 5].Value = x.Date.Value.ToShortDateString();
+                    ws.Cells[i, 6].Value = x.Arrear;
+                    if (x.Service.Id == 2)
+                    {
+                        string s = x.MeterData.Count.ToString() + "~";
+                        for (int j = 0; j < x.MeterData.Count; j++)
+                        {
+                            s = s + (j + 1) + '~' + x.MeterData.ElementAt(j).Rate + "~~~6~" + x.MeterData.ElementAt(j).Value;
+                        }
+                        ws.Cells[i, 7].Value = s;
+                        ws.Cells[i++, 8].Value = "^^^^";
+                    }
+                    else
+                    {
+                        ws.Cells[i, 8].Value = x.Introduced;
+                        ws.Cells[i++, 9].Value = "^^^^";
+                    }
+                }
+                try
+                {
+                    excel.SaveAs(new FileInfo(ConfigAppManager.GetExcelPath() + "//" + fileName + ".xlsx"));
+
+                }
+                catch (InvalidOperationException ex)
+                {
+                    MessageBox.Show("Файл " + fileName +
+                        ".xlsx не может быть сохранен. Возможно, он уже существует и открыт в другом приложении. Закройте файл и повторите попытку.",
+                        "Файл не может быть сохранен", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                catch (ArgumentException ex)
+                {
+                    MessageBox.Show("Неверное имя файла. Проверьте пути для сохранения файлов в настройках",
+                        "Неверное имя файла", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
             }
         }
     }

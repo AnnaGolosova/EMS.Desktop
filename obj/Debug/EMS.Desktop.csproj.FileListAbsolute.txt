@@ -58,3 +58,7 @@ c:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\EPPlus.dl
 c:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\EntityFramework.SqlServer.xml
 c:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\EPPlus.xml
 c:\Users\Администратор\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.Forms.RateEditForm.resources
+C:\Users\Fazz\Source\Repos\EMS.Desktop\bin\Debug\EMS 1.2.exe.config
+C:\Users\Fazz\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.csproj.ResolveComReference.cache
+C:\Users\Fazz\Source\Repos\EMS.Desktop\obj\Debug\EMS 1.2.exe
+C:\Users\Fazz\Source\Repos\EMS.Desktop\obj\Debug\EMS 1.2.pdb
