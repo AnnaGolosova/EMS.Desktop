@@ -522,7 +522,7 @@ namespace EMS.Desktop.Helpers
                         string s = x.MeterData.Count.ToString() + "~";
                         for (int j = 0; j < x.MeterData.Count; j++)
                         {
-                            s = s + (j + 1) + '~' + x.MeterData.ElementAt(j).Rate + "~~~6~" + x.MeterData.ElementAt(j).Value;
+                            s = s + (j + 1) + '~' + x.MeterData.ElementAt(j).Rate.IdService + "~~~6~" + x.MeterData.ElementAt(j).Value;
                         }
                         ws.Cells[i, 7].Value = s;
                         ws.Cells[i++, 8].Value = "^^^^";
