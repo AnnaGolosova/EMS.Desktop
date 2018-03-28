@@ -9,21 +9,19 @@ using System.Windows.Forms;
 using System.Threading;
 using EMS.Desktop.Exceptions;
 using System.Configuration;
+using EMS.Desktop.Models;
 
 namespace EMS.Desktop
 {
     public partial class MainForm : Form
     {
-        public MainForm()
+        private delegate void LoadDelegate();
+        private List<Payment> data;
+
+        private void ShowAmount()
         {
-            InitializeComponent();
-            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            var connectionStringsSection = (ConnectionStringsSection)config.GetSection("connectionStrings");
-            connectionStringsSection.ConnectionStrings["EMSEntities"].ConnectionString = ConfigAppManager.GetConnectionString();
-            config.Save();
-            ConfigurationManager.RefreshSection("connectionStrings");
             DBRepository db = new DBRepository();
-            if(!db.TryConnection())
+            if (!db.TryConnection())
             {
                 AmountLabel.Visible = false;
             }
@@ -33,10 +31,49 @@ namespace EMS.Desktop
             }
         }
 
+        public MainForm()
+        {
+            InitializeComponent();
+            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            var connectionStringsSection = (ConnectionStringsSection)config.GetSection("connectionStrings");
+            connectionStringsSection.ConnectionStrings["EMSEntities"].ConnectionString = ConfigAppManager.GetConnectionString();
+            config.Save();
+            ConfigurationManager.RefreshSection("connectionStrings");
+            ShowAmount();
+        }
+
+        private void LoadingComplete(IAsyncResult result)
+        {
+             BeginInvoke(new LoadDelegate(ShowAmount));
+            BeginInvoke(new LoadDelegate(ShowArrearDrid));
+        }
+
+        void ShowArrearDrid()
+        {
+            data = DBRepository.GetLastPayment();
+            ArrearEditDGV.Rows.Clear();
+            foreach (Payment p in data)
+            {
+                if(p.Service.Id == 2)
+                {
+                    ArrearEditDGV.Rows.Add(p.Id, p.Service.Id, p.Homestead.Number, p.Homestead.OwnerName,
+                        p.Introduced, p.Arrear,
+                        p.MeterData.OrderBy(md => md.Meter.MeterNumber).First().NewValue - p.MeterData.OrderBy(md => md.Meter.MeterNumber).First().OldValue,
+                        p.MeterData.OrderBy(md => md.Meter.MeterNumber).First().NewValue);
+                }
+                else
+                    ArrearEditDGV.Rows.Add(p.Id, p.Service.Id, p.Homestead.Number, p.Homestead.OwnerName,
+                        p.Introduced, p.Arrear);
+
+            }
+            ArrearGB.Visible = true;
+        }
+
         public void OnCreate()
         {
             LoadNewFile.LoadFile(this);
         }
+
         private void MenuAboutProgram_Click(object sender, EventArgs e)
         {
             FormAboutProgram FrAbPr = new FormAboutProgram();
@@ -65,8 +102,8 @@ namespace EMS.Desktop
         {
             if (FileManager.GetNewFilesCount(ConfigAppManager.GetReports210Path()) != 0)
             {
-                Thread NewFile = new Thread(OnCreate);
-                NewFile.Start();
+                LoadDelegate loadDelegate = OnCreate;
+                IAsyncResult result = loadDelegate.BeginInvoke(new AsyncCallback(LoadingComplete), null);
             }
             else
             {
@@ -100,6 +137,8 @@ namespace EMS.Desktop
             try
             {
                 LoadingLabel.Visible = true;
+                ArrearGB.Visible = false;
+
                 DBRepository dbrepository = new DBRepository();
                 if(!dbrepository.TryConnection())
                 {
@@ -165,6 +204,7 @@ namespace EMS.Desktop
             try
             {
                 LoadingLabel.Visible = true;
+                ArrearGB.Visible = false;
                 DBRepository repository = new DBRepository();
                 if (repository.GetFiles().Count != 0)
                 {
@@ -227,10 +267,16 @@ namespace EMS.Desktop
                     column7.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
 
                     var column8 = new DataGridViewColumn();
-                    column8.HeaderText = "Значение счётчика";
-                    column8.Name = "MeterData";
+                    column8.HeaderText = "Разность";
+                    column8.Name = "Difference";
                     //column8.MinimumWidth = 20;
                     column8.CellTemplate = new DataGridViewTextBoxCell();
+
+                    var column9 = new DataGridViewColumn();
+                    column9.HeaderText = "Значение счётчика";
+                    column9.Name = "MeterData";
+                    //column8.MinimumWidth = 20;
+                    column9.CellTemplate = new DataGridViewTextBoxCell();
 
                     dataGridView1.Columns.Add(column1);
                     dataGridView1.Columns.Add(column2);
@@ -244,21 +290,23 @@ namespace EMS.Desktop
 
                     dataGridView1.AllowUserToAddRows = false;
 
-                    List<Models.Payment> listdbr = repository.GetPayment();
+                    List<Payment> listdbr = repository.GetPayment();
                     listdbr.OrderBy(s => s.Date);
                     int x = 0;
-                    foreach (Models.Payment s in listdbr)
+                    foreach (Payment s in listdbr)
                     {
                         if (s.IdService == 2)
                         {
-                            dataGridView1.Rows.Add(s.Service.Id, s.Homestead.Number, s.Homestead.OwnerName, s.Date.Value.ToShortDateString(), s.Introduced, "0.0", s.Entered, s.MeterData.ToList()[0].Value);
+                            dataGridView1.Rows.Add(s.Service.Id, s.Homestead.Number, s.Homestead.OwnerName, s.Date.Value.ToShortDateString(), s.Introduced, s.Arrear, s.Entered, 
+                                s.MeterData.ToList()[0].NewValue - s.MeterData.ToList()[0].OldValue, s.MeterData.ToList()[0].NewValue);
                             if (s.Homestead.Meter.Count > 1)
                             {
                                 int n = s.Homestead.Meter.Count;
                                 for (int i = 1; i < n; i++)
                                 {
                                     x++;
-                                    dataGridView1.Rows.Add("", "", "", "", "", "", "", s.MeterData.ToList()[i].Value);
+                                    dataGridView1.Rows.Add("", "", "", "", "", "", "",
+                                        s.MeterData.ToList()[0].NewValue - s.MeterData.ToList()[0].OldValue, s.MeterData.ToList()[0].NewValue);
                                     for (int j = 0; j < 7; j++)
                                     {
                                         dataGridView1.Rows[x].Cells[j].Style.BackColor = Color.Lavender;
@@ -268,7 +316,7 @@ namespace EMS.Desktop
                         }
                         else
                         {
-                            dataGridView1.Rows.Add(s.Service.Id, s.Homestead.Number, s.Homestead.OwnerName, s.Date.Value.ToShortDateString(), s.Introduced, "0.0", s.Entered, "");
+                            dataGridView1.Rows.Add(s.Service.Id, s.Homestead.Number, s.Homestead.OwnerName, s.Date.Value.ToShortDateString(), s.Introduced, s.Arrear, s.Entered, "");
                             dataGridView1.Rows[x].Cells[7].Style.BackColor = Color.Lavender;
                         }
                         x++;
@@ -290,25 +338,14 @@ namespace EMS.Desktop
             
         }
 
-       /* bool IsTheSameCellValue(int column, int row)
-        {
-            DataGridViewCell cell1 = dataGridView1[column, row];
-            DataGridViewCell cell2 = dataGridView1[column, row - 1];
-            if (cell1.Value == null || cell2.Value == null)
-            {
-                return false;
-            }
-            return cell1.Value.ToString() == cell2.Value.ToString();
-        }*/
-
         private void ToolStripDownloadNewFile_Click(object sender, EventArgs e)
         {
             MainProgressBar.Value = 0;
             LabelProgrBar.Visible = false;
             if (FileManager.GetNewFilesCount(ConfigAppManager.GetReports210Path()) != 0)
             {
-                Thread NewFile = new Thread(OnCreate);
-                NewFile.Start();
+                LoadDelegate loadDelegate = OnCreate;
+                IAsyncResult result = loadDelegate.BeginInvoke(new AsyncCallback(LoadingComplete), null);
             }
             else
             {
@@ -334,6 +371,41 @@ namespace EMS.Desktop
             FormSettings FrSett = new FormSettings();
             FrSett.ShowDialog();
         }
-        
+
+        private void ArrearConfirmB_Click(object sender, EventArgs e)
+        {
+            int i = 0;
+            foreach(Payment p in data)
+            {
+                if (double.Parse(ArrearEditDGV.Rows[i].Cells[5].Value.ToString().Replace('.', ',')) != 0)
+                {
+                    DBRepository.ChangeArrear(int.Parse(ArrearEditDGV.Rows[i].Cells[0].Value.ToString()), 
+                        double.Parse(ArrearEditDGV.Rows[i].Cells[5].Value.ToString().Replace('.', ',')));
+                }
+                i++;
+            }
+
+            ArrearGB.Visible = false;
+        }
+
+        private void ArrearEditDGV_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void ArrearEditDGV_Leave(object sender, EventArgs e)
+        {
+        }
+
+        private void ArrearEditDGV_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+        {
+            double d;
+            if(e.ColumnIndex == 5)
+            {
+                if (!double.TryParse(e.FormattedValue.ToString().Replace('.',','), out d))
+                    ArrearEditDGV.Rows[e.RowIndex].Cells[e.ColumnIndex].Style.BackColor = ColorTranslator.FromHtml("#ff899e");
+                else ArrearEditDGV.Rows[e.RowIndex].Cells[e.ColumnIndex].Style.BackColor = Color.White;
+            }
+        }
     }
 }
