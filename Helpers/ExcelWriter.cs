@@ -508,9 +508,23 @@ namespace EMS.Desktop.Helpers
             using (var excel = new ExcelPackage())
             {
                 var ws = excel.Workbook.Worksheets.Add("WorkSheet1");
-                int i = 2;
+
+                ws.Cells[2, 1].Value = "Услуга";
+                ws.Cells[2, 2].Value = "Номер участка";
+                ws.Cells[2, 3].Value = "ФИО";
+                ws.Cells[2, 4].Value = "Номер участка";
+                ws.Cells[2, 5].Value = "Дата";
+                ws.Cells[2, 6].Value = "Задолженность";
+                ws.Cells[2, 7].Value = "Значения счётчиков";
+                ws.Cells[2, 8].Value = "Внесено";
+                for (int j = 1; j < 10; j++)
+                    ws.Cells[2, j].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                int i = 3;
                 foreach (Payment x in repository.GetPayment().OrderBy(s => s.Homestead.Number))
                 {
+                    for (int j = 1; j < 10; j++)
+                        ws.Cells[i, j].Style.Border.BorderAround(ExcelBorderStyle.Thin);
                     ws.Cells[i, 1].Value = x.Service.Id;
                     ws.Cells[i, 2].Value = x.Homestead.Number;
                     ws.Cells[i, 3].Value = x.Homestead.OwnerName;
@@ -522,7 +536,7 @@ namespace EMS.Desktop.Helpers
                         string s = x.MeterData.Count.ToString() + "~";
                         for (int j = 0; j < x.MeterData.Count; j++)
                         {
-                            s = s + (j + 1) + '~' + x.MeterData.ElementAt(j).Rate.IdService + "~~~6~" + x.MeterData.ElementAt(j).Value;
+                            s = s + x.MeterData.ElementAt(j).Rate.Id + '~' + x.MeterData.ElementAt(j).Rate.IdService + "~~~6~" + x.MeterData.ElementAt(j).Value;
                         }
                         ws.Cells[i, 7].Value = s;
                         ws.Cells[i++, 8].Value = "^^^^";
@@ -533,6 +547,11 @@ namespace EMS.Desktop.Helpers
                         ws.Cells[i++, 9].Value = "^^^^";
                     }
                 }
+                
+                ws.Cells[2, 1, 2, 9].Style.Font.Bold = true;
+                ws.Cells[2, 1, i - 1, 9].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+                ws.Cells[2, 1, 2, 9].Style.Border.Bottom.Style = ExcelBorderStyle.Medium);
+
                 try
                 {
                     excel.SaveAs(new FileInfo(ConfigAppManager.GetExcelPath() + "//" + fileName + ".xlsx"));
