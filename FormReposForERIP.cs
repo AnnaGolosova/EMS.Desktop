@@ -29,13 +29,14 @@ namespace EMS.Desktop
                 MonthRB.Checked = true;
                 DBRepository db = new DBRepository();
                 int i = 1;
+                RateDGV.Rows.Clear();
                 foreach (Rate rate in db.GetLastRates().OrderBy(r => r.Id))
                 {
                     RateDGV.Rows.Add(i++, rate.Service.Name, rate.Value);
                 }
                 FileNameTB.Focus();
             }
-            catch(DataBaseException e)
+            catch(DataBaseException)
             {
                 Hide();
                 MessageBox.Show("Проблемы с базой данных. Проверьте настройки строки подключения, правильно ли указано имя сервера",
@@ -85,9 +86,9 @@ namespace EMS.Desktop
                     rd.Id = pay.Id;
                     rd.Arrer = pay.Arrear;
                     rd.Introduced = pay.Introduced;
-                    rd.OwnerName = db.GetHomestead(pay.IdHomestead).OwnerName;
+                    rd.OwnerName = db.GetHomestead((int)pay.Homestead.Number).OwnerName;
                     rd.ServiceId = pay.IdService;
-                    rd.HomeSteadNumber = (int)db.GetHomestead(pay.IdHomestead).Number;
+                    rd.HomeSteadNumber = (int)db.GetHomestead((int)pay.Homestead.Number).Number;
                     if (pay.MeterData.Count != 0)
                     {
                         rd.meterInfo = new List<Report210.ReportData.MeterInfo>();
@@ -95,7 +96,8 @@ namespace EMS.Desktop
                         {
                             rd.meterInfo.Add(new Report210.ReportData.MeterInfo()
                             {
-                                newValue = md.Value,
+                                newValue = md.NewValue,
+                                oldValue = md.OldValue,
                                 number = md.Meter.MeterNumber,
                                 rateId = md.Id_Rate,
                                 id = md.Id

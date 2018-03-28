@@ -160,13 +160,13 @@ namespace EMS.Desktop.Helpers
                 writer.Close();
                 writer.Close();
             }
-            catch(ArgumentException ex)
+            catch(ArgumentException)
             {
                 MessageBox.Show("Неверное имя файла. Проверьте пути для сохранения файлов в настройках", 
                     "Неверное имя файла", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            catch (IOException ex)
+            catch (IOException)
             {
                 MessageBox.Show("Файл " + fileName + 
                     ".202 не может быть сохранен. Возможно, он уже существует и открыт в другом приложении. Закройте файл и повторите попытку.", 
@@ -258,14 +258,14 @@ namespace EMS.Desktop.Helpers
                     {
                         excel.SaveAs(new FileInfo(ConfigAppManager.GetExcelPath() + "//" + fileName + ".xlsx"));
 
-                    } catch(InvalidOperationException ex)
+                    } catch(InvalidOperationException)
                     {
                         MessageBox.Show("Файл " + fileName + 
                             ".xlsx не может быть сохранен. Возможно, он уже существует и открыт в другом приложении. Закройте файл и повторите попытку.", 
                             "Файл не может быть сохранен", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
-                    catch(ArgumentException ex)
+                    catch(ArgumentException)
                     {
                         MessageBox.Show("Неверное имя файла. Проверьте пути для сохранения файлов в настройках", 
                             "Неверное имя файла", MessageBoxButtons.OK, MessageBoxIcon.Error);

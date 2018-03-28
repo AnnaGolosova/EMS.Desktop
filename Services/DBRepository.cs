@@ -13,7 +13,7 @@ namespace EMS.Desktop.Services
         #region Getters
         public int GetNextFileId()
         {
-            if (db.File.ToList().Count == 0)
+            if (db.File.Count() == 0)
                 return 1;
             return db.File.Max(f => f.Id) + 1;
         }
@@ -70,10 +70,6 @@ namespace EMS.Desktop.Services
                     return;
                 }
                 db.Dispose();
-            }
-            catch(Exception ex)
-            {
-
             }
             finally
             {
@@ -161,11 +157,11 @@ namespace EMS.Desktop.Services
             return db.Homestead.ToList();
         }
 
-        public Homestead GetHomestead(int Id)
+        public Homestead GetHomestead(int HomesteadNumber)
         {
             try
             {
-                return db.Homestead.Where(h => h.Id == Id).First();
+                return db.Homestead.Where(h => h.Number == HomesteadNumber).First();
             }
             catch (InvalidOperationException)
             {
@@ -447,14 +443,33 @@ namespace EMS.Desktop.Services
                 throw new DataBaseException(e.Message, e);
             }
         }
+
+        public static List<Payment> GetLastPayment()
+        {
+            int maxPackageNumber = db.Payment.Max(p => p.PackageNumber);
+            return db.Payment.Where(p => p.PackageNumber == maxPackageNumber).OrderBy(p => p.Homestead.Number).OrderBy(p => p.Service.Id).ToList();
+        }
+
+        public static void ChangeArrear(int paymentId, double Arrear)
+        {
+            Payment payment = db.Payment.Where(p => p.Id == paymentId).First();
+            payment.Arrear = Arrear;
+            db.SaveChanges();
+        }
+
         #endregion
 
         #region Setters
+        public static int GetNextPackageNumber()
+        {
+            return db.Database.SqlQuery<int>("DECLARE	@return_value Int  = [dbo].[GetNextPackageNumber]() SELECT	@return_value").First();
+        }
 
         public void LoadReport210(Report210 report)
         {
             try
             {
+                int packageNumber = report.PackageNumber;
                 foreach(Report210.ReportData data in report.Datas)
                 {
                     Payment currentPayment = new Payment();
@@ -473,6 +488,7 @@ namespace EMS.Desktop.Services
                     currentPayment.Entered = data.Entered;
                     currentPayment.IdService = data.ServiceId;
                     currentPayment.IdFile = report.FileId;
+                    currentPayment.PackageNumber = packageNumber;
                     db.Payment.Add(currentPayment);
                     db.SaveChanges();
                     if (data.meterInfo != null || data.meterInfo.Count != 0)
@@ -500,7 +516,8 @@ namespace EMS.Desktop.Services
                             }
 
                             meterData.IdMeter = meter.Id;
-                            meterData.Value = info.newValue;
+                            meterData.NewValue = info.newValue;
+                            meterData.OldValue = info.oldValue;
                             meterData.Date = data.Date;
                             meterData.Id_Payment = currentPayment.Id;
                             db.MeterData.Add(meterData);

@@ -67,7 +67,7 @@ namespace EMS.Desktop.Forms
             if(e.ColumnIndex == 4)
             {
                 if (!(new List<string>() { "1", "2", "3", "" }).Any(r => r.CompareTo(e.FormattedValue.ToString().Normalize()) == 0))
-                    RateDGV[e.ColumnIndex, e.RowIndex].Style.BackColor = System.Drawing.ColorTranslator.FromHtml("#ff899e");
+                    RateDGV[e.ColumnIndex, e.RowIndex].Style.BackColor = ColorTranslator.FromHtml("#ff899e");
                 else RateDGV[e.ColumnIndex, e.RowIndex].Style.BackColor = Color.White;
             }
             if(e.ColumnIndex == 3)
