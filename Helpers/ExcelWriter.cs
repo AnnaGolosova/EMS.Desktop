@@ -406,7 +406,7 @@ namespace EMS.Desktop.Helpers
                     ws.Cells[i, 14].Formula = "SUM(N7:" + (i - 1) + ')';
 
                     ws.Cells[5, 1, 6, 11].Style.Font.Bold = true;
-                    for (i = 1; i < 12; i++) ;
+                    for (i = 1; i < 12; i++)
                     {
                         ws.Cells[5, i].Style.Border.BorderAround(ExcelBorderStyle.Thin);
                         ws.Cells[6, i].Style.Border.BorderAround(ExcelBorderStyle.Thin);
@@ -515,7 +515,7 @@ namespace EMS.Desktop.Helpers
                 ws.Cells[2, 4].Value = "Номер участка";
                 ws.Cells[2, 5].Value = "Дата";
                 ws.Cells[2, 6].Value = "Задолженность";
-                ws.Cells[2, 7].Value = "Значения счётчиков";
+                ws.Cells[2, 7].Value = "Значение счётчика";
                 ws.Cells[2, 8].Value = "Внесено";
                 for (int j = 1; j < 10; j++)
                     ws.Cells[2, j].Style.Border.BorderAround(ExcelBorderStyle.Thin);
@@ -533,11 +533,19 @@ namespace EMS.Desktop.Helpers
                     ws.Cells[i, 6].Value = x.Arrear;
                     if (x.Service.Id == 2)
                     {
-                        string s = x.MeterData.Count.ToString() + "~";
                         for (int j = 0; j < x.MeterData.Count; j++)
-                            s = s + (j + 1) + '~' + x.MeterData.ElementAt(0).ToString() + "~~~6~" + x.MeterData.ElementAt(j).Value;
-                        ws.Cells[i, 7].Value = s;
+                            ws.Cells[i + j, 7].Value = x.MeterData.ElementAt(j).Value;
                         ws.Cells[i++, 8].Value = "^^^^";
+                        if (x.MeterData.Count > 1)
+                        {
+                            for (int j = 1; j < 7; j++)
+                                ws.Cells[i, j, i + x.MeterData.Count - 1, j].Merge = true;
+                            ws.Cells[i, 8, i + x.MeterData.Count - 1, 8].Merge = true;
+                            ws.Cells[i, 9, i + x.MeterData.Count - 1, 9].Merge = true;
+                            for (int j0 = 1; j0 < x.MeterData.Count; j0++)
+                                for (int j = 1; j < 10; j++)
+                                    ws.Cells[j0, j].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        }
                     }
                     else
                     {
