@@ -18,11 +18,6 @@ namespace EMS.Desktop.Forms
             InitializeComponent();
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void cancel_Click(object sender, EventArgs e)
         {
             Hide();
@@ -41,6 +36,11 @@ namespace EMS.Desktop.Forms
                 Helpers.ExcelWriter.convertRepositoryDataToExcel(new Services.DBRepository(), FileNameTB.Text);
                 Hide();
             }
+        }
+
+        private void CreateExcel_Shown(object sender, EventArgs e)
+        {
+            FileNameTB.Focus();
         }
     }
 }

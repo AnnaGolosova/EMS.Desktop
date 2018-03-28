@@ -110,7 +110,7 @@ namespace EMS.Desktop
                     dataGridView1.Columns.Clear();
                     dataGridView1.Rows.Clear();
                     dataGridView1.Visible = true;
-                    createExcelButton.Visible = false;
+                    createExcelButton.Hide();
 
                     var column1 = new DataGridViewColumn();
                     column1.HeaderText = "Количество платежей";
@@ -274,7 +274,7 @@ namespace EMS.Desktop
                         }
                         x++;
                     }
-                    createExcelButton.Visible = true;
+                    createExcelButton.Show();
                 }
                 else
                 {
