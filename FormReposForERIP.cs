@@ -32,7 +32,7 @@ namespace EMS.Desktop
                 RateDGV.Rows.Clear();
                 foreach (Rate rate in db.GetLastRates().OrderBy(r => r.Id))
                 {
-                    RateDGV.Rows.Add(i++, rate.Service.Name, rate.Value);
+                    RateDGV.Rows.Add(i++, rate.Service.Name, rate.Value, ConfigAppManager.GetTariff(), rate.Value * ConfigAppManager.GetTariff());
                 }
                 FileNameTB.Focus();
             }
@@ -275,6 +275,22 @@ namespace EMS.Desktop
                 MessageBox.Show("Проблемы с базой данных. Проверьте настройки строки подключения, правильно ли указано имя сервера",
                     "Проблемы с базой данных", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
+            }
+        }
+
+        private void RateDGV_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+        {
+            if(e.ColumnIndex == 2)
+            {
+                double d;
+                if (!double.TryParse(e.FormattedValue.ToString().Replace('.', ','), out d))
+                {
+                    RateDGV.Rows[e.RowIndex].Cells[e.ColumnIndex].Style.BackColor = ColorTranslator.FromHtml("#ff899e");
+                } else
+                {
+                    RateDGV.Rows[e.RowIndex].Cells[e.ColumnIndex].Style.BackColor = Color.White;
+                    RateDGV.Rows[e.RowIndex].Cells[e.ColumnIndex + 2].Value = ConfigAppManager.GetTariff() * double.Parse(e.FormattedValue.ToString().Replace('.',','));
+                }
             }
         }
     }
