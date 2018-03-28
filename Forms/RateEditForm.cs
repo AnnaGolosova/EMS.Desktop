@@ -1,4 +1,5 @@
 ﻿using EMS.Desktop.Exceptions;
+using EMS.Desktop.Helpers;
 using EMS.Desktop.Models;
 using EMS.Desktop.Services;
 using System;
@@ -30,7 +31,7 @@ namespace EMS.Desktop.Forms
                 int i = 1;
                 foreach (Rate rate in db.GetLastRates().OrderBy(r => r.Id))
                 {
-                    RateViewDGV.Rows.Add(i++, rate.Service.Name, rate.Value);
+                    RateViewDGV.Rows.Add(i++, rate.Service.Name, rate.Value, ConfigAppManager.GetTariff(), ConfigAppManager.GetTariff() * rate.Value);
                 }
                 foreach (Report210.ReportData record in this.data.OrderBy(r => r.HomeSteadNumber))
                 {

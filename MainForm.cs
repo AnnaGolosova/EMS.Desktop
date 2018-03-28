@@ -388,15 +388,6 @@ namespace EMS.Desktop
             ArrearGB.Visible = false;
         }
 
-        private void ArrearEditDGV_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-        private void ArrearEditDGV_Leave(object sender, EventArgs e)
-        {
-        }
-
         private void ArrearEditDGV_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
         {
             double d;

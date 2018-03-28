@@ -243,7 +243,6 @@
             this.ArrearEditDGV.Size = new System.Drawing.Size(1013, 462);
             this.ArrearEditDGV.TabIndex = 2;
             this.ArrearEditDGV.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.ArrearEditDGV_CellValidating);
-            this.ArrearEditDGV.Leave += new System.EventHandler(this.ArrearEditDGV_Leave);
             // 
             // Id
             // 

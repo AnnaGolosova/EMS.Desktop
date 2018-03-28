@@ -41,12 +41,14 @@
             this.PathExcelTextBox = new System.Windows.Forms.TextBox();
             this.PathExcelLabel = new System.Windows.Forms.Label();
             this.ServerTab = new System.Windows.Forms.TabPage();
+            this.label3 = new System.Windows.Forms.Label();
             this.ServerNameTB = new System.Windows.Forms.TextBox();
             this.ConnectionStringTB = new System.Windows.Forms.RichTextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.OkButton = new System.Windows.Forms.Button();
-            this.label3 = new System.Windows.Forms.Label();
+            this.TariffTB = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.TabControl.SuspendLayout();
             this.PathesTab.SuspendLayout();
             this.ServerTab.SuspendLayout();
@@ -68,6 +70,8 @@
             // 
             // PathesTab
             // 
+            this.PathesTab.Controls.Add(this.TariffTB);
+            this.PathesTab.Controls.Add(this.label4);
             this.PathesTab.Controls.Add(this.OverView210Button);
             this.PathesTab.Controls.Add(this.Path210TextBox);
             this.PathesTab.Controls.Add(this.Path210Label);
@@ -83,7 +87,7 @@
             this.PathesTab.Padding = new System.Windows.Forms.Padding(4);
             this.PathesTab.Size = new System.Drawing.Size(559, 364);
             this.PathesTab.TabIndex = 0;
-            this.PathesTab.Text = "Пути сохранения";
+            this.PathesTab.Text = "Основные";
             this.PathesTab.UseVisualStyleBackColor = true;
             // 
             // OverView210Button
@@ -190,6 +194,16 @@
             this.ServerTab.Text = "Настройки сервера";
             this.ServerTab.UseVisualStyleBackColor = true;
             // 
+            // label3
+            // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(16, 333);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(403, 17);
+            this.label3.TabIndex = 4;
+            this.label3.Text = "Изменения вступят в силу после перезагрузки приложения";
+            // 
             // ServerNameTB
             // 
             this.ServerNameTB.Location = new System.Drawing.Point(19, 153);
@@ -237,15 +251,25 @@
             this.OkButton.UseVisualStyleBackColor = true;
             this.OkButton.Click += new System.EventHandler(this.OkButton_Click);
             // 
-            // label3
+            // TariffTB
             // 
-            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(16, 333);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(403, 17);
-            this.label3.TabIndex = 4;
-            this.label3.Text = "Изменения вступят в силу после перезагрузки приложения";
+            this.TariffTB.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.TariffTB.Location = new System.Drawing.Point(11, 239);
+            this.TariffTB.Margin = new System.Windows.Forms.Padding(4);
+            this.TariffTB.Name = "TariffTB";
+            this.TariffTB.Size = new System.Drawing.Size(419, 22);
+            this.TariffTB.TabIndex = 21;
+            this.TariffTB.TextChanged += new System.EventHandler(this.TariffTB_TextChanged);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(11, 219);
+            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(171, 17);
+            this.label4.TabIndex = 20;
+            this.label4.Text = "Государственный тариф";
             // 
             // FormSettings
             // 
@@ -289,5 +313,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox TariffTB;
+        private System.Windows.Forms.Label label4;
     }
 }

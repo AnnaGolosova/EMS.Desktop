@@ -20,9 +20,10 @@ namespace EMS.Desktop
         {
             InitializeComponent();
             Configuration config = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
-            PathExcelTextBox.Text = config.AppSettings.Settings["ExcelPath"].Value;
-            Path202TextBox.Text = config.AppSettings.Settings["Reports202Path"].Value;
-            Path210TextBox.Text = config.AppSettings.Settings["Reports210Path"].Value;
+            PathExcelTextBox.Text = ConfigAppManager.GetExcelPath();
+            Path202TextBox.Text = ConfigAppManager.GetReports202Path();
+            Path210TextBox.Text = ConfigAppManager.GetReports210Path();
+            TariffTB.Text = ConfigAppManager.GetTariff().ToString();
 
             FillConnectionPart();
         }
@@ -113,6 +114,11 @@ namespace EMS.Desktop
             string s = new string(serverName.Take(endIndex).ToArray());
             connectionString = connectionString.Replace(s, ServerNameTB.Text);
             ConnectionStringTB.Text = connectionString;
+        }
+
+        private void TariffTB_TextChanged(object sender, EventArgs e)
+        {
+            ConfigAppManager.SetTariff(TariffTB.Text);
         }
     }
 }
