@@ -89,7 +89,6 @@
             this.MaximumSize = new System.Drawing.Size(300, 129);
             this.MinimumSize = new System.Drawing.Size(300, 129);
             this.Name = "CreateExcel";
-            this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Создать Excel";
             this.Shown += new System.EventHandler(this.CreateExcel_Shown);
