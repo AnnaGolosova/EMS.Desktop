@@ -376,6 +376,20 @@
             this.AmountLabel.TabIndex = 3;
             this.AmountLabel.Text = "Сумма на р/с : 100 BYN";
             // 
+            // createExcelButton
+            // 
+            this.createExcelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.createExcelButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.createExcelButton.Location = new System.Drawing.Point(679, 415);
+            this.createExcelButton.Margin = new System.Windows.Forms.Padding(0, 0, 10, 10);
+            this.createExcelButton.Name = "createExcelButton";
+            this.createExcelButton.Size = new System.Drawing.Size(85, 23);
+            this.createExcelButton.TabIndex = 2;
+            this.createExcelButton.Text = "Создать Excel";
+            this.createExcelButton.UseVisualStyleBackColor = true;
+            this.createExcelButton.Visible = false;
+            this.createExcelButton.Click += new System.EventHandler(this.createExcelButton_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);

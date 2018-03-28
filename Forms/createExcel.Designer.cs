@@ -37,6 +37,7 @@
             // 
             // cancel
             // 
+            this.cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.cancel.Location = new System.Drawing.Point(152, 58);
             this.cancel.Name = "cancel";
             this.cancel.Size = new System.Drawing.Size(120, 25);
@@ -61,7 +62,6 @@
             this.FileNameTB.Name = "FileNameTB";
             this.FileNameTB.Size = new System.Drawing.Size(260, 20);
             this.FileNameTB.TabIndex = 2;
-            this.FileNameTB.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // label1
             // 
@@ -75,16 +75,24 @@
             // 
             // CreateExcel
             // 
+            this.AcceptButton = this.confirm;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.cancel;
             this.ClientSize = new System.Drawing.Size(284, 90);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.FileNameTB);
             this.Controls.Add(this.confirm);
             this.Controls.Add(this.cancel);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(300, 129);
+            this.MinimumSize = new System.Drawing.Size(300, 129);
             this.Name = "CreateExcel";
+            this.ShowIcon = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Создать Excel";
+            this.Shown += new System.EventHandler(this.CreateExcel_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();
 
