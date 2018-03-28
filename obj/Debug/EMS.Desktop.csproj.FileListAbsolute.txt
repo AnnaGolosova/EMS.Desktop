@@ -72,3 +72,23 @@ C:\Users\Fazz\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.FormReposForExcel.r
 C:\Users\Fazz\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.FormSettings.resources
 C:\Users\Fazz\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.Properties.Resources.resources
 C:\Users\Fazz\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.csproj.GenerateResource.Cache
+C:\Users\Fazz\Source\Repos\EMS.Desktop\bin\Debug\EMS 1.2.exe.manifest
+C:\Users\Fazz\Source\Repos\EMS.Desktop\bin\Debug\EMS 1.2.application
+C:\Users\Fazz\Source\Repos\EMS.Desktop\bin\Debug\EMS 1.2.exe
+C:\Users\Fazz\Source\Repos\EMS.Desktop\bin\Debug\EMS 1.2.pdb
+C:\Users\Fazz\Source\Repos\EMS.Desktop\bin\Debug\EntityFramework.dll
+C:\Users\Fazz\Source\Repos\EMS.Desktop\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Fazz\Source\Repos\EMS.Desktop\bin\Debug\EPPlus.dll
+C:\Users\Fazz\Source\Repos\EMS.Desktop\bin\Debug\Microsoft.VisualStudio.OLE.Interop.dll
+C:\Users\Fazz\Source\Repos\EMS.Desktop\bin\Debug\Microsoft.VisualStudio.Shell.Interop.dll
+C:\Users\Fazz\Source\Repos\EMS.Desktop\bin\Debug\Microsoft.VisualStudio.TextManager.Interop.dll
+C:\Users\Fazz\Source\Repos\EMS.Desktop\bin\Debug\Microsoft.WindowsAPICodePack.dll
+C:\Users\Fazz\Source\Repos\EMS.Desktop\bin\Debug\Microsoft.WindowsAPICodePack.Shell.dll
+C:\Users\Fazz\Source\Repos\EMS.Desktop\bin\Debug\EntityFramework.xml
+C:\Users\Fazz\Source\Repos\EMS.Desktop\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Fazz\Source\Repos\EMS.Desktop\bin\Debug\EPPlus.xml
+C:\Users\Fazz\Source\Repos\EMS.Desktop\bin\Debug\Microsoft.VisualStudio.OLE.Interop.xml
+C:\Users\Fazz\Source\Repos\EMS.Desktop\bin\Debug\Microsoft.VisualStudio.Shell.Interop.xml
+C:\Users\Fazz\Source\Repos\EMS.Desktop\bin\Debug\Microsoft.VisualStudio.TextManager.Interop.xml
+C:\Users\Fazz\Source\Repos\EMS.Desktop\obj\Debug\EMS 1.2.exe.manifest
+C:\Users\Fazz\Source\Repos\EMS.Desktop\obj\Debug\EMS 1.2.application
