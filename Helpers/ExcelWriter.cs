@@ -161,13 +161,13 @@ namespace EMS.Desktop.Helpers
                 writer.Close();
                 writer.Close();
             }
-            catch (ArgumentException ex)
+            catch (ArgumentException)
             {
                 MessageBox.Show("Неверное имя файла. Проверьте пути для сохранения файлов в настройках",
                     "Неверное имя файла", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            catch (IOException ex)
+            catch (IOException)
             {
                 MessageBox.Show("Файл " + fileName +
                     ".202 не может быть сохранен. Возможно, он уже существует и открыт в другом приложении. Закройте файл и повторите попытку.",
@@ -259,14 +259,15 @@ namespace EMS.Desktop.Helpers
                     {
                         excel.SaveAs(new FileInfo(ConfigAppManager.GetExcelPath() + "//" + fileName + ".xlsx"));
 
-                    } catch (InvalidOperationException ex)
+                    }
+                    catch (InvalidOperationException)
                     {
                         MessageBox.Show("Файл " + fileName +
                             ".xlsx не может быть сохранен. Возможно, он уже существует и открыт в другом приложении. Закройте файл и повторите попытку.",
                             "Файл не может быть сохранен", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
-                    catch (ArgumentException ex)
+                    catch (ArgumentException)
                     {
                         MessageBox.Show("Неверное имя файла. Проверьте пути для сохранения файлов в настройках",
                             "Неверное имя файла", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -487,14 +488,14 @@ namespace EMS.Desktop.Helpers
                     excel.SaveAs(new FileInfo(ConfigAppManager.GetExcelPath() + "//" + fileName + ".xlsx"));
 
                 }
-                catch (InvalidOperationException ex)
+                catch (InvalidOperationException)
                 {
                     MessageBox.Show("Файл " + fileName +
                         ".xlsx не может быть сохранен. Возможно, он уже существует и открыт в другом приложении. Закройте файл и повторите попытку.",
                         "Файл не может быть сохранен", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
-                catch (ArgumentException ex)
+                catch (ArgumentException)
                 {
                     MessageBox.Show("Неверное имя файла. Проверьте пути для сохранения файлов в настройках",
                         "Неверное имя файла", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -515,7 +516,7 @@ namespace EMS.Desktop.Helpers
                 ws.Cells[2, 4].Value = "Номер участка";
                 ws.Cells[2, 5].Value = "Дата";
                 ws.Cells[2, 6].Value = "Задолженность";
-                ws.Cells[2, 7].Value = "Значение счётчика";
+                ws.Cells[2, 7].Value = "Новые показания";
                 ws.Cells[2, 8].Value = "Внесено";
                 for (int j = 1; j < 10; j++)
                     ws.Cells[2, j].Style.Border.BorderAround(ExcelBorderStyle.Thin);
@@ -534,7 +535,7 @@ namespace EMS.Desktop.Helpers
                     if (x.Service.Id == 2)
                     {
                         for (int j = 0; j < x.MeterData.Count; j++)
-                            ws.Cells[i + j, 7].Value = x.MeterData.ElementAt(j).Value;
+                            ws.Cells[i + j, 7].Value = x.MeterData.ElementAt(j).NewValue;
                         ws.Cells[i++, 8].Value = "^^^^";
                         if (x.MeterData.Count > 1)
                         {
@@ -553,7 +554,7 @@ namespace EMS.Desktop.Helpers
                         ws.Cells[i++, 9].Value = "^^^^";
                     }
                 }
-                
+
                 ws.Cells[2, 1, 2, 9].Style.Font.Bold = true;
                 ws.Cells[2, 1, i - 1, 9].Style.Border.BorderAround(ExcelBorderStyle.Medium);
                 ws.Cells[2, 1, 2, 9].Style.Border.Bottom.Style = ExcelBorderStyle.Medium;
@@ -562,14 +563,14 @@ namespace EMS.Desktop.Helpers
                 {
                     excel.SaveAs(new FileInfo(ConfigAppManager.GetExcelPath() + "//" + fileName + ".xlsx"));
                 }
-                catch (InvalidOperationException ex)
+                catch (InvalidOperationException)
                 {
                     MessageBox.Show("Файл " + fileName +
                         ".xlsx не может быть сохранен. Возможно, он уже существует и открыт в другом приложении. Закройте файл и повторите попытку.",
                         "Файл не может быть сохранен", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
-                catch (ArgumentException ex)
+                catch (ArgumentException)
                 {
                     MessageBox.Show("Неверное имя файла. Проверьте пути для сохранения файлов в настройках",
                         "Неверное имя файла", MessageBoxButtons.OK, MessageBoxIcon.Error);
