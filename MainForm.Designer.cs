@@ -65,6 +65,7 @@
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.LabelProgrBar = new System.Windows.Forms.Label();
             this.AmountLabel = new System.Windows.Forms.Label();
+            this.createExcelButton = new System.Windows.Forms.Button();
             this.Menu.SuspendLayout();
             this.ColorPanel.SuspendLayout();
             this.ArrearGB.SuspendLayout();
@@ -125,15 +126,14 @@
             // MenuReposForERIP
             // 
             this.MenuReposForERIP.Name = "MenuReposForERIP";
-            this.MenuReposForERIP.Size = new System.Drawing.Size(161, 26);
+            this.MenuReposForERIP.Size = new System.Drawing.Size(181, 26);
             this.MenuReposForERIP.Text = "Отчёт .202";
             this.MenuReposForERIP.Click += new System.EventHandler(this.MenuReposForERIP_Click);
             // 
             // MenuReposForExcel
             // 
-            this.MenuReposForExcel.Enabled = false;
             this.MenuReposForExcel.Name = "MenuReposForExcel";
-            this.MenuReposForExcel.Size = new System.Drawing.Size(161, 26);
+            this.MenuReposForExcel.Size = new System.Drawing.Size(181, 26);
             this.MenuReposForExcel.Text = "Отчёт Excel";
             this.MenuReposForExcel.Click += new System.EventHandler(this.MenuReposForExcel_Click);
             // 
@@ -379,13 +379,11 @@
             // createExcelButton
             // 
             this.createExcelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.createExcelButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.createExcelButton.Location = new System.Drawing.Point(679, 415);
-            this.createExcelButton.Margin = new System.Windows.Forms.Padding(0, 0, 10, 10);
+            this.createExcelButton.Location = new System.Drawing.Point(850, 511);
             this.createExcelButton.Name = "createExcelButton";
-            this.createExcelButton.Size = new System.Drawing.Size(85, 23);
-            this.createExcelButton.TabIndex = 2;
-            this.createExcelButton.Text = "Создать Excel";
+            this.createExcelButton.Size = new System.Drawing.Size(169, 28);
+            this.createExcelButton.TabIndex = 4;
+            this.createExcelButton.Text = "Сохранить в Excel";
             this.createExcelButton.UseVisualStyleBackColor = true;
             this.createExcelButton.Visible = false;
             this.createExcelButton.Click += new System.EventHandler(this.createExcelButton_Click);
@@ -395,6 +393,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1019, 539);
+            this.Controls.Add(this.createExcelButton);
             this.Controls.Add(this.AmountLabel);
             this.Controls.Add(this.LabelProgrBar);
             this.Controls.Add(this.ColorPanel);
@@ -452,6 +451,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Arrear;
         private System.Windows.Forms.DataGridViewTextBoxColumn Difference;
         private System.Windows.Forms.DataGridViewTextBoxColumn Value;
+        private System.Windows.Forms.Button createExcelButton;
     }
 }
 

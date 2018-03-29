@@ -276,7 +276,7 @@ namespace EMS.Desktop.Helpers
             }
         }
 
-        private static void WriteMonthReport(List<Report210.ReportData> datas, int month, string fileName, int id)
+        private static void WriteMonthReport(List<Payment> datas, int month, string fileName, int id)
         {
             using (ExcelPackage excel = new ExcelPackage())
             {
@@ -310,14 +310,14 @@ namespace EMS.Desktop.Helpers
                     ws.Cells[4, 7].Value = "Дата оплаты";
 
                     int i = 5;
-                    foreach (Report210.ReportData data in datas)
+                    foreach (Payment data in datas)
                     {
                         ws.Cells[i, 1].Value = i - 3;
-                        ws.Cells[i, 2].Value = data.HomeSteadNumber;
-                        ws.Cells[i, 3].Value = data.OwnerName;
+                        ws.Cells[i, 2].Value = data.Homestead.Number;
+                        ws.Cells[i, 3].Value = data.Homestead.OwnerName;
                         ws.Cells[i, 4].Value = data.Introduced;
                         ws.Cells[i, 6].Value = data.Entered;
-                        ws.Cells[i, 7].Value = data.Code.Substring(0, 4) + '.' + data.Code.Substring(4, 2) + '.' + data.Code.Substring(6, 2);
+                        ws.Cells[i, 7].Value = data.Date.+ '.' + data.Code.Substring(4, 2) + '.' + data.Code.Substring(6, 2);
                         for (int j = 1; j < 8; j++)
                             ws.Cells[i, j].Style.Border.BorderAround(ExcelBorderStyle.Thin);
                         i++;
@@ -503,10 +503,11 @@ namespace EMS.Desktop.Helpers
             }
         }
 
-        public static void convertRepositoryDataToExcel(DBRepository repository, string fileName)
+        public static void convertRepositoryDataToExcel(List<Payment> data, string fileName)
         {
             using (var excel = new ExcelPackage())
             {
+                DBRepository repository = new DBRepository();
                 var ws = excel.Workbook.Worksheets.Add("WorkSheet1");
 
                 ws.Cells[2, 1].Value = "Услуга";
@@ -534,7 +535,7 @@ namespace EMS.Desktop.Helpers
                     if (x.Service.Id == 2)
                     {
                         for (int j = 0; j < x.MeterData.Count; j++)
-                            ws.Cells[i + j, 7].Value = x.MeterData.ElementAt(j).Value;
+                            ws.Cells[i + j, 7].Value = x.MeterData.ElementAt(j).NewValue;
                         ws.Cells[i++, 8].Value = "^^^^";
                         if (x.MeterData.Count > 1)
                         {

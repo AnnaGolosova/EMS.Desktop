@@ -20,7 +20,6 @@ namespace EMS.Desktop
         private void MonthRB_CheckedChanged(object sender, EventArgs e)
         {
             MonthTimePicker.Enabled = true;
-            QuarterTimePicker.Enabled = false;
             ToDatePicker.Enabled = false;
             FromDatePicker.Enabled = false;
         }
@@ -28,7 +27,6 @@ namespace EMS.Desktop
         private void QuarterRB_CheckedChanged(object sender, EventArgs e)
         {
             MonthTimePicker.Enabled = false;
-            QuarterTimePicker.Enabled = true;
             ToDatePicker.Enabled = false;
             FromDatePicker.Enabled = false;
         }
@@ -36,7 +34,6 @@ namespace EMS.Desktop
         private void DuringTimeRB_CheckedChanged(object sender, EventArgs e)
         {
             MonthTimePicker.Enabled = false;
-            QuarterTimePicker.Enabled = false;
             ToDatePicker.Enabled = true;
             FromDatePicker.Enabled = true;
         }
@@ -44,6 +41,16 @@ namespace EMS.Desktop
         private void CancelButton_Click(object sender, EventArgs e)
         {
             Hide();
+        }
+
+        private void CreateReportButton_Click(object sender, EventArgs e)
+        {
+            if(string.IsNullOrEmpty( FileNameTB.Text) || string.IsNullOrWhiteSpace(FileNameTB.Text))
+            {
+                MessageBox.Show("Введите имя файла!", "", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                FileNameTB.Focus();
+            }
+            0
         }
     }
 }
