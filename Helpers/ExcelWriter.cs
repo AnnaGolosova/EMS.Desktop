@@ -355,7 +355,7 @@ namespace EMS.Desktop.Helpers
                     ws.Cells[3, 1, 3, 11].Merge = true;
                     ws.Cells[3, 1].Value = "за " + Months[month - 1] + datas[0].Date.Year + "г.";
                     ws.Cells[4, 1, 4, 11].Merge = true;
-                    ws.Cells[4, 1].Value = "Гос. тариф "; //+ гос. тариф (0,1192)
+                    ws.Cells[4, 1].Value = "Гос. тариф " + ConfigAppManager.GetTariff();
                     ws.Cells[5, 1, 6, 1].Merge = true;
                     ws.Cells[5, 1].Value = "№ По порядку";
                     ws.Cells[5, 2, 6, 2].Merge = true;
@@ -378,7 +378,7 @@ namespace EMS.Desktop.Helpers
                     ws.Cells[6, 10].Value = "Сумма";
                     ws.Cells[5, 11, 6, 11].Merge = true;
                     ws.Cells[5, 11].Value = "Доплата по долгам";
-                    // ws.Cells[5, 12].Value = 0.1192;
+                    ws.Cells[5, 12].Value = ConfigAppManager.GetTariff();
 
                     int i = 7;
                     foreach (Report210.ReportData data in datas)

@@ -179,6 +179,7 @@
             this.ColorPanel.Controls.Add(this.ArrearGB);
             this.ColorPanel.Controls.Add(this.LoadingLabel);
             this.ColorPanel.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.createExcelButton);
             this.ColorPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ColorPanel.Location = new System.Drawing.Point(0, 24);
             this.ColorPanel.Name = "ColorPanel";
@@ -444,7 +445,6 @@
         private System.Windows.Forms.DataGridView ArrearEditDGV;
         private System.Windows.Forms.GroupBox ArrearGB;
         private System.Windows.Forms.Button ArrearConfirmB;
-        private System.Windows.Forms.Button createExcelButton;
         private System.Windows.Forms.DataGridViewTextBoxColumn Id;
         private System.Windows.Forms.DataGridViewTextBoxColumn ServiceId;
         private System.Windows.Forms.DataGridViewTextBoxColumn HomesteadNumber;
@@ -453,6 +453,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Arrear;
         private System.Windows.Forms.DataGridViewTextBoxColumn Difference;
         private System.Windows.Forms.DataGridViewTextBoxColumn Value;
+        private System.Windows.Forms.Button createExcelButton;
     }
 }
 
