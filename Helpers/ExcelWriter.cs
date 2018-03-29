@@ -161,13 +161,13 @@ namespace EMS.Desktop.Helpers
                 writer.Close();
                 writer.Close();
             }
-            catch (ArgumentException ex)
+            catch (ArgumentException)
             {
                 MessageBox.Show("Неверное имя файла. Проверьте пути для сохранения файлов в настройках",
                     "Неверное имя файла", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            catch (IOException ex)
+            catch (IOException)
             {
                 MessageBox.Show("Файл " + fileName +
                     ".202 не может быть сохранен. Возможно, он уже существует и открыт в другом приложении. Закройте файл и повторите попытку.",
@@ -259,14 +259,15 @@ namespace EMS.Desktop.Helpers
                     {
                         excel.SaveAs(new FileInfo(ConfigAppManager.GetExcelPath() + "//" + fileName + ".xlsx"));
 
-                    } catch (InvalidOperationException ex)
+                    }
+                    catch (InvalidOperationException)
                     {
                         MessageBox.Show("Файл " + fileName +
                             ".xlsx не может быть сохранен. Возможно, он уже существует и открыт в другом приложении. Закройте файл и повторите попытку.",
                             "Файл не может быть сохранен", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
-                    catch (ArgumentException ex)
+                    catch (ArgumentException)
                     {
                         MessageBox.Show("Неверное имя файла. Проверьте пути для сохранения файлов в настройках",
                             "Неверное имя файла", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -276,8 +277,15 @@ namespace EMS.Desktop.Helpers
             }
         }
 
-        private static void WriteMonthReport(List<Report210.ReportData> datas, int month, string fileName, int id)
+        public static void WriteMonthReport(int month, string fileName, int serviceId)
         {
+            DBRepository db = new DBRepository();
+            List<Payment> datas = db.GetPaymentByMonth(month);
+            if(datas.Count == 0)
+            {
+                MessageBox.Show("Отчет по заданным параметрам не имеет записей!", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
             using (ExcelPackage excel = new ExcelPackage())
             {
                 List<string> Months = new List<string>();
@@ -295,7 +303,7 @@ namespace EMS.Desktop.Helpers
                 Months.Add("Декабрь ");
                 var ws = excel.Workbook.Worksheets.Add("Отчёт за месяц");
 
-                if (id == 1)
+                if (serviceId == 1)
                 {
                     ws.Cells[1, 1, 2, 7].Merge = true;
                     ws.Cells[1, 1].Value = "Данные об уплате взносов СТ «Диколовка-1»";
@@ -310,14 +318,15 @@ namespace EMS.Desktop.Helpers
                     ws.Cells[4, 7].Value = "Дата оплаты";
 
                     int i = 5;
-                    foreach (Report210.ReportData data in datas)
+                    foreach (Payment data in datas)
                     {
                         ws.Cells[i, 1].Value = i - 3;
-                        ws.Cells[i, 2].Value = data.HomeSteadNumber;
-                        ws.Cells[i, 3].Value = data.OwnerName;
+                        ws.Cells[i, 2].Value = data.Homestead.Number;
+                        ws.Cells[i, 3].Value = data.Homestead.OwnerName;
                         ws.Cells[i, 4].Value = data.Introduced;
                         ws.Cells[i, 6].Value = data.Entered;
-                        ws.Cells[i, 7].Value = data.Code.Substring(0, 4) + '.' + data.Code.Substring(4, 2) + '.' + data.Code.Substring(6, 2);
+                        ws.Cells[i, 7].Value = data.Date.Value.Year+ '.' + data.Date.Value.Month + '.' + 
+                            data.Date.Value.Day.ToString().Count() == 1 ? "0" + data.Date.Value.Day.ToString() : data.Date.Value.Day.ToString();
                         for (int j = 1; j < 8; j++)
                             ws.Cells[i, j].Style.Border.BorderAround(ExcelBorderStyle.Thin);
                         i++;
@@ -345,16 +354,16 @@ namespace EMS.Desktop.Helpers
                     ws.Cells[1, 1, 2, 7].Style.Font.Italic = true;
                     ws.Cells[3, 1, 3, 7].Style.Font.Bold = true;
                 }
-                else if (id == 2)
+                else if (serviceId == 2)
                 {
                     ws.Cells[1, 1, 1, 11].Merge = true;
                     ws.Cells[1, 1].Value = "Ведомость";
                     ws.Cells[2, 1, 2, 11].Merge = true;
                     ws.Cells[2, 1].Value = "уплаты за электроэнергию";
                     ws.Cells[3, 1, 3, 11].Merge = true;
-                    ws.Cells[3, 1].Value = "за " + Months[month - 1] + datas[0].Date.Year + "г.";
+                    ws.Cells[3, 1].Value = "за " + Months[month - 1] + datas[0].Date.Value.Year + "г.";
                     ws.Cells[4, 1, 4, 11].Merge = true;
-                    ws.Cells[4, 1].Value = "Гос. тариф "; //+ гос. тариф (0,1192)
+                    ws.Cells[4, 1].Value = "Гос. тариф " + ConfigAppManager.GetTariff();
                     ws.Cells[5, 1, 6, 1].Merge = true;
                     ws.Cells[5, 1].Value = "№ По порядку";
                     ws.Cells[5, 2, 6, 2].Merge = true;
@@ -377,23 +386,26 @@ namespace EMS.Desktop.Helpers
                     ws.Cells[6, 10].Value = "Сумма";
                     ws.Cells[5, 11, 6, 11].Merge = true;
                     ws.Cells[5, 11].Value = "Доплата по долгам";
-                    // ws.Cells[5, 12].Value = 0.1192;
+                    ws.Cells[5, 12].Value = ConfigAppManager.GetTariff();
 
                     int i = 7;
-                    foreach (Report210.ReportData data in datas)
+                    foreach (Payment data in datas)
                     {
-                        ws.Cells[i, 1].Value = i - 6;
-                        ws.Cells[i, 2].Value = data.HomeSteadNumber;
-                        ws.Cells[i, 3].Value = data.Date;
-                        ws.Cells[i, 4].Value = data.Introduced;
-                        ws.Cells[i, 6].Value = data.meterInfo[0].oldValue - data.meterInfo[0].newValue;
-                        ws.Cells[i, 8].Value = data.meterInfo[0].newValue;
-                        // ws.Cells[i, 9].Value = "";
-                        // ws.Cells[i, 11].Value = "";
-                        ws.Cells[i, 12].Value = data.Entered;
-                        for (int j = 1; j < 12; j++)
-                            ws.Cells[i, j].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                        i++;
+                        foreach(MeterData md in data.MeterData)
+                        {
+                            ws.Cells[i, 1].Value = i - 6;
+                            ws.Cells[i, 2].Value = data.Homestead.Number;
+                            ws.Cells[i, 3].Value = data.Date;
+                            ws.Cells[i, 4].Value = data.Introduced;
+                            ws.Cells[i, 6].Value = md.NewValue - md.OldValue;
+                            ws.Cells[i, 8].Value = md.NewValue;
+                            // ws.Cells[i, 9].Value = "";
+                            // ws.Cells[i, 11].Value = "";
+                            ws.Cells[i, 12].Value = data.Entered;
+                            for (int j = 1; j < 12; j++)
+                                ws.Cells[i, j].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                            i++;
+                        }
                     }
 
                     ws.Cells[7, 5, i - 1, 5].Formula = "D7 - L7";
@@ -425,7 +437,7 @@ namespace EMS.Desktop.Helpers
                 else
                 {
                     ws.Cells[1, 1, 2, 8].Merge = true;
-                    ws.Cells[1, 1].Value = "Сводная ведомость об уплате налога на " + (id == 3 ? "Землю" : "Недвижимость") + " СТ «Диколовка-1»";
+                    ws.Cells[1, 1].Value = "Сводная ведомость об уплате налога на " + (serviceId == 3 ? "Землю" : "Недвижимость") + " СТ «Диколовка-1»";
                     ws.Cells[3, 1, 3, 8].Merge = true;
                     ws.Cells[3, 1].Value = "По состоянию на 01." + (month == 12 ? "01" : Convert.ToString(month)) + '.' + DateTime.UtcNow.Year;
                     ws.Cells[4, 1, 5, 1].Merge = true;
@@ -444,14 +456,15 @@ namespace EMS.Desktop.Helpers
                     ws.Cells[5, 8].Value = "Дата оплаты";
 
                     int i = 6;
-                    foreach (Report210.ReportData data in datas)
+                    foreach (Payment data in datas)
                     {
                         ws.Cells[i, 1].Value = i - 5;
-                        ws.Cells[i, 2].Value = data.HomeSteadNumber;
-                        ws.Cells[i, 3].Value = data.OwnerName;
+                        ws.Cells[i, 2].Value = data.Homestead.Number;
+                        ws.Cells[i, 3].Value = data.Homestead.OwnerName;
                         ws.Cells[i, 5].Value = data.Introduced;
                         ws.Cells[i, 7].Value = data.Entered;
-                        ws.Cells[i, 8].Value = data.Code.Substring(0, 4) + '.' + data.Code.Substring(4, 2) + '.' + data.Code.Substring(6, 2);
+                        ws.Cells[i, 8].Value = data.Date.Value.Year + '.' + data.Date.Value.Month + '.' +
+                            data.Date.Value.Day.ToString().Count() == 1 ? "0" + data.Date.Value.Day.ToString() : data.Date.Value.Day.ToString();
                         for (int j = 1; j < 9; j++)
                             ws.Cells[i, j].Style.Border.BorderAround(ExcelBorderStyle.Thin);
                         i++;
@@ -487,14 +500,14 @@ namespace EMS.Desktop.Helpers
                     excel.SaveAs(new FileInfo(ConfigAppManager.GetExcelPath() + "//" + fileName + ".xlsx"));
 
                 }
-                catch (InvalidOperationException ex)
+                catch (InvalidOperationException)
                 {
                     MessageBox.Show("Файл " + fileName +
                         ".xlsx не может быть сохранен. Возможно, он уже существует и открыт в другом приложении. Закройте файл и повторите попытку.",
                         "Файл не может быть сохранен", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
-                catch (ArgumentException ex)
+                catch (ArgumentException)
                 {
                     MessageBox.Show("Неверное имя файла. Проверьте пути для сохранения файлов в настройках",
                         "Неверное имя файла", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -503,10 +516,11 @@ namespace EMS.Desktop.Helpers
             }
         }
 
-        public static void convertRepositoryDataToExcel(DBRepository repository, string fileName)
+        public static void convertRepositoryDataToExcel(List<Payment> data, string fileName)
         {
             using (var excel = new ExcelPackage())
             {
+                DBRepository repository = new DBRepository();
                 var ws = excel.Workbook.Worksheets.Add("WorkSheet1");
 
                 ws.Cells[2, 1].Value = "Услуга";
@@ -515,7 +529,7 @@ namespace EMS.Desktop.Helpers
                 ws.Cells[2, 4].Value = "Номер участка";
                 ws.Cells[2, 5].Value = "Дата";
                 ws.Cells[2, 6].Value = "Задолженность";
-                ws.Cells[2, 7].Value = "Значение счётчика";
+                ws.Cells[2, 7].Value = "Новые показания";
                 ws.Cells[2, 8].Value = "Внесено";
                 for (int j = 1; j < 10; j++)
                     ws.Cells[2, j].Style.Border.BorderAround(ExcelBorderStyle.Thin);
@@ -534,7 +548,7 @@ namespace EMS.Desktop.Helpers
                     if (x.Service.Id == 2)
                     {
                         for (int j = 0; j < x.MeterData.Count; j++)
-                            ws.Cells[i + j, 7].Value = x.MeterData.ElementAt(j).Value;
+                            ws.Cells[i + j, 7].Value = x.MeterData.ElementAt(j).NewValue;
                         ws.Cells[i++, 8].Value = "^^^^";
                         if (x.MeterData.Count > 1)
                         {
@@ -553,7 +567,7 @@ namespace EMS.Desktop.Helpers
                         ws.Cells[i++, 9].Value = "^^^^";
                     }
                 }
-                
+
                 ws.Cells[2, 1, 2, 9].Style.Font.Bold = true;
                 ws.Cells[2, 1, i - 1, 9].Style.Border.BorderAround(ExcelBorderStyle.Medium);
                 ws.Cells[2, 1, 2, 9].Style.Border.Bottom.Style = ExcelBorderStyle.Medium;
@@ -562,14 +576,14 @@ namespace EMS.Desktop.Helpers
                 {
                     excel.SaveAs(new FileInfo(ConfigAppManager.GetExcelPath() + "//" + fileName + ".xlsx"));
                 }
-                catch (InvalidOperationException ex)
+                catch (InvalidOperationException)
                 {
                     MessageBox.Show("Файл " + fileName +
                         ".xlsx не может быть сохранен. Возможно, он уже существует и открыт в другом приложении. Закройте файл и повторите попытку.",
                         "Файл не может быть сохранен", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
-                catch (ArgumentException ex)
+                catch (ArgumentException)
                 {
                     MessageBox.Show("Неверное имя файла. Проверьте пути для сохранения файлов в настройках",
                         "Неверное имя файла", MessageBoxButtons.OK, MessageBoxIcon.Error);

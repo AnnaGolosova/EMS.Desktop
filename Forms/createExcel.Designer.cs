@@ -38,9 +38,10 @@
             // cancel
             // 
             this.cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancel.Location = new System.Drawing.Point(152, 58);
+            this.cancel.Location = new System.Drawing.Point(198, 60);
+            this.cancel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.cancel.Name = "cancel";
-            this.cancel.Size = new System.Drawing.Size(120, 25);
+            this.cancel.Size = new System.Drawing.Size(160, 31);
             this.cancel.TabIndex = 0;
             this.cancel.Text = "Отмена";
             this.cancel.UseVisualStyleBackColor = true;
@@ -48,9 +49,10 @@
             // 
             // confirm
             // 
-            this.confirm.Location = new System.Drawing.Point(12, 58);
+            this.confirm.Location = new System.Drawing.Point(13, 60);
+            this.confirm.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.confirm.Name = "confirm";
-            this.confirm.Size = new System.Drawing.Size(120, 25);
+            this.confirm.Size = new System.Drawing.Size(160, 31);
             this.confirm.TabIndex = 1;
             this.confirm.Text = "Подтвердить";
             this.confirm.UseVisualStyleBackColor = true;
@@ -58,39 +60,40 @@
             // 
             // FileNameTB
             // 
-            this.FileNameTB.Location = new System.Drawing.Point(12, 32);
+            this.FileNameTB.Location = new System.Drawing.Point(13, 30);
+            this.FileNameTB.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.FileNameTB.Name = "FileNameTB";
-            this.FileNameTB.Size = new System.Drawing.Size(260, 20);
+            this.FileNameTB.Size = new System.Drawing.Size(345, 22);
             this.FileNameTB.TabIndex = 2;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(59, 9);
+            this.label1.Location = new System.Drawing.Point(12, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(165, 20);
+            this.label1.Size = new System.Drawing.Size(139, 17);
             this.label1.TabIndex = 3;
             this.label1.Text = "Введите имя файла";
             // 
             // CreateExcel
             // 
             this.AcceptButton = this.confirm;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
             this.CancelButton = this.cancel;
-            this.ClientSize = new System.Drawing.Size(284, 90);
+            this.ClientSize = new System.Drawing.Size(376, 104);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.FileNameTB);
             this.Controls.Add(this.confirm);
             this.Controls.Add(this.cancel);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(300, 129);
-            this.MinimumSize = new System.Drawing.Size(300, 129);
+            this.MaximumSize = new System.Drawing.Size(1000, 1000);
+            this.MinimumSize = new System.Drawing.Size(394, 148);
             this.Name = "CreateExcel";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Создать Excel";
             this.Shown += new System.EventHandler(this.CreateExcel_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();

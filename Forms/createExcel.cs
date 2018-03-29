@@ -8,13 +8,16 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using EMS.Desktop;
+using EMS.Desktop.Models;
 
 namespace EMS.Desktop.Forms
 {
     public partial class CreateExcel : Form
     {
-        public CreateExcel()
+        public List<Payment> data;
+        public CreateExcel(List<Payment> data)
         {
+            this.data = data;
             InitializeComponent();
         }
 
@@ -33,7 +36,7 @@ namespace EMS.Desktop.Forms
             }
             else
             {
-                Helpers.ExcelWriter.convertRepositoryDataToExcel(new Services.DBRepository(), FileNameTB.Text);
+                Helpers.ExcelWriter.convertRepositoryDataToExcel(data, FileNameTB.Text);
                 Hide();
             }
         }

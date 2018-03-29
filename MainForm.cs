@@ -322,7 +322,7 @@ namespace EMS.Desktop
                         }
                         x++;
                     }
-                    createExcelButton.Show();
+                    createExcelButton.Visible = true;
                 }
                 else
                 {
@@ -410,7 +410,7 @@ namespace EMS.Desktop
             }
             if (dbrepository.GetFiles().Count != 0)
             {
-                new Forms.CreateExcel().ShowDialog();
+                new Forms.CreateExcel(data).ShowDialog();
             }
         }
     }
