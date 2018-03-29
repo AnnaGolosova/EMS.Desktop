@@ -536,6 +536,11 @@ namespace EMS.Desktop.Services
             }
         }
 
+        public List<Payment> GetPaymentByMonth(int month)
+        {
+            return db.Payment.Where(p => p.Date.Value.Month == month).ToList();
+        }
+
         public File CreateFile(string path)
         {
             File file = new File() { Date = DateTime.Now, Path = path, Id = GetNextFileId() };

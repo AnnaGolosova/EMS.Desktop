@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EMS.Desktop.Helpers;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -20,22 +21,16 @@ namespace EMS.Desktop
         private void MonthRB_CheckedChanged(object sender, EventArgs e)
         {
             MonthTimePicker.Enabled = true;
-            ToDatePicker.Enabled = false;
-            FromDatePicker.Enabled = false;
         }
 
         private void QuarterRB_CheckedChanged(object sender, EventArgs e)
         {
             MonthTimePicker.Enabled = false;
-            ToDatePicker.Enabled = false;
-            FromDatePicker.Enabled = false;
         }
 
         private void DuringTimeRB_CheckedChanged(object sender, EventArgs e)
         {
             MonthTimePicker.Enabled = false;
-            ToDatePicker.Enabled = true;
-            FromDatePicker.Enabled = true;
         }
 
         private void CancelButton_Click(object sender, EventArgs e)
@@ -49,8 +44,16 @@ namespace EMS.Desktop
             {
                 MessageBox.Show("Введите имя файла!", "", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 FileNameTB.Focus();
+                return;
             }
-            0
+            int serviceId = 0;
+            if (Service1RB.Checked) serviceId = 1;
+            if (Service2RB.Checked) serviceId = 2;
+            if (Service3RB.Checked) serviceId = 3;
+            if (Service4RB.Checked) serviceId = 4;
+            ExcelWriter.WriteMonthReport(MonthTimePicker.Value.Month, FileNameTB.Text, serviceId);
+
+            Hide();
         }
     }
 }
