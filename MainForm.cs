@@ -149,6 +149,7 @@ namespace EMS.Desktop
                     dataGridView1.Columns.Clear();
                     dataGridView1.Rows.Clear();
                     dataGridView1.Visible = true;
+                    createExcelButton.Hide();
 
                     var column1 = new DataGridViewColumn();
                     column1.HeaderText = "Количество платежей";
@@ -321,6 +322,7 @@ namespace EMS.Desktop
                         }
                         x++;
                     }
+                    createExcelButton.Show();
                 }
                 else
                 {
@@ -396,6 +398,19 @@ namespace EMS.Desktop
                 if (!double.TryParse(e.FormattedValue.ToString().Replace('.',','), out d))
                     ArrearEditDGV.Rows[e.RowIndex].Cells[e.ColumnIndex].Style.BackColor = ColorTranslator.FromHtml("#ff899e");
                 else ArrearEditDGV.Rows[e.RowIndex].Cells[e.ColumnIndex].Style.BackColor = Color.White;
+            }
+        }
+
+        private void createExcelButton_Click(object sender, EventArgs e)
+        {
+            DBRepository dbrepository = new DBRepository();
+            if (!dbrepository.TryConnection())
+            {
+                throw new DataBaseException("");
+            }
+            if (dbrepository.GetFiles().Count != 0)
+            {
+                new Forms.CreateExcel().ShowDialog();
             }
         }
     }
