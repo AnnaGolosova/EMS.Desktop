@@ -443,7 +443,7 @@ namespace EMS.Desktop.Helpers
                     ws.Cells[1, 1, 2, 8].Merge = true;
                     ws.Cells[1, 1].Value = "Сводная ведомость об уплате налога на " + (serviceId == 3 ? "Землю" : "Недвижимость") + " СТ «Диколовка-1»";
                     ws.Cells[3, 1, 3, 8].Merge = true;
-                    ws.Cells[3, 1].Value = "По состоянию на 01." + (month == 12 ? "01" : month  > 9 ? Convert.ToString(month) : ('0' + Convert.ToString(month))) + '.' + DateTime.UtcNow.Year;
+                    ws.Cells[3, 1].Value = "По состоянию на 01." + (month == 12 ? "01" : month  > 8 ? Convert.ToString(month + 1) : ('0' + Convert.ToString(month + 1))) + '.' + DateTime.UtcNow.Year;
                     ws.Cells[4, 1, 5, 1].Merge = true;
                     ws.Cells[4, 1].Value = "№ по порядку";
                     ws.Cells[4, 2, 5, 2].Merge = true;
