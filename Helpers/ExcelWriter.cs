@@ -308,7 +308,7 @@ namespace EMS.Desktop.Helpers
                     ws.Cells[1, 1, 2, 7].Merge = true;
                     ws.Cells[1, 1].Value = "Данные об уплате взносов СТ «Диколовка-1»";
                     ws.Cells[3, 1, 3, 7].Merge = true;
-                    ws.Cells[4, 1].Value = "По состоянию на 01." + (month == 12 ? "01" : Convert.ToString(month)) + '.' + DateTime.UtcNow.Year;
+                    ws.Cells[4, 1].Value = "По состоянию на 01." + (month == 12 ? "01" : Convert.ToString(month + 1)) + '.' + DateTime.UtcNow.Year;
                     ws.Cells[4, 1].Value = "№ по порядку";
                     ws.Cells[4, 2].Value = "№ участка";
                     ws.Cells[4, 3].Value = "ФИО";
@@ -325,17 +325,18 @@ namespace EMS.Desktop.Helpers
                         ws.Cells[i, 3].Value = data.Homestead.OwnerName;
                         ws.Cells[i, 4].Value = data.Introduced;
                         ws.Cells[i, 6].Value = data.Entered;
-                        ws.Cells[i, 7].Value = data.Date.Value.Year+ '.' + data.Date.Value.Month + '.' + 
-                            data.Date.Value.Day.ToString().Count() == 1 ? "0" + data.Date.Value.Day.ToString() : data.Date.Value.Day.ToString();
+                        ws.Cells[i, 7].Value = "" + data.Date.Value.Year + '.' +
+                            (data.Date.Value.Month < 10 ? ('0' + data.Date.Value.Month.ToString()) : data.Date.Value.Month.ToString()) +
+                            '.' + (data.Date.Value.Day < 10 ? ('0' + data.Date.Value.Day.ToString()) : data.Date.Value.Day.ToString());
                         for (int j = 1; j < 8; j++)
                             ws.Cells[i, j].Style.Border.BorderAround(ExcelBorderStyle.Thin);
                         i++;
                     }
 
-                    ws.Cells[5, 5, i - 1, 5].Formula = "D4 - F4";
+                    ws.Cells[5, 5, i - 1, 5].Formula = "D5 - F5";
                     ws.Cells[i, 1, i, 3].Merge = true;
                     ws.Cells[i, 1].Value = "Итого";
-                    ws.Cells[i, 4, i, 6].Formula = "SUM(D4:D" + (i - 1) + ')';
+                    ws.Cells[i, 4, i, 6].Formula = "SUM(D5:D" + (i - 1) + ')';
 
                     ws.Cells[4, 2].Style.Border.BorderAround(ExcelBorderStyle.Thin);
                     ws.Cells[4, 4].Style.Border.BorderAround(ExcelBorderStyle.Thin);
@@ -395,7 +396,9 @@ namespace EMS.Desktop.Helpers
                         {
                             ws.Cells[i, 1].Value = i - 6;
                             ws.Cells[i, 2].Value = data.Homestead.Number;
-                            ws.Cells[i, 3].Value = data.Date;
+                            ws.Cells[i, 3].Value = "" + data.Date.Value.Year + '.' +
+                                (data.Date.Value.Month < 10 ? ('0' + data.Date.Value.Month.ToString()) : data.Date.Value.Month.ToString()) +
+                                '.' + (data.Date.Value.Day < 10 ? ('0' + data.Date.Value.Day.ToString()) : data.Date.Value.Day.ToString());
                             ws.Cells[i, 4].Value = data.Introduced;
                             ws.Cells[i, 6].Value = md.NewValue - md.OldValue;
                             ws.Cells[i, 8].Value = md.NewValue;
@@ -415,13 +418,14 @@ namespace EMS.Desktop.Helpers
                     ws.Cells[i, 4, i, 5].Formula = "SUM(D7:D" + (i - 1) + ')';
                     ws.Cells[i, 7].Formula = "SUM(G7:G" + (i - 1) + ')';
                     ws.Cells[i, 10, i, 11].Formula = "SUM(J7:J" + (i - 1) + ')';
-                    ws.Cells[i, 14].Formula = "SUM(N7:" + (i - 1) + ')';
+                    ws.Cells[i, 14].Formula = "SUM(N7:N" + (i - 1) + ')';
 
                     ws.Cells[5, 1, 6, 11].Style.Font.Bold = true;
-                    for (i = 1; i < 12; i++)
+                    for (int j = 1; j < 12; j++)
                     {
-                        ws.Cells[5, i].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                        ws.Cells[6, i].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        ws.Cells[5, j].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        ws.Cells[6, j].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        ws.Cells[i, j].Style.Border.BorderAround(ExcelBorderStyle.Thin);
                     }
                     ws.Cells[5, 1, i, 11].Style.Border.BorderAround(ExcelBorderStyle.Medium);
                     ws.Cells[i, 1, i, 11].Style.Border.Top.Style = ExcelBorderStyle.Medium;
@@ -439,7 +443,7 @@ namespace EMS.Desktop.Helpers
                     ws.Cells[1, 1, 2, 8].Merge = true;
                     ws.Cells[1, 1].Value = "Сводная ведомость об уплате налога на " + (serviceId == 3 ? "Землю" : "Недвижимость") + " СТ «Диколовка-1»";
                     ws.Cells[3, 1, 3, 8].Merge = true;
-                    ws.Cells[3, 1].Value = "По состоянию на 01." + (month == 12 ? "01" : Convert.ToString(month)) + '.' + DateTime.UtcNow.Year;
+                    ws.Cells[3, 1].Value = "По состоянию на 01." + (month == 12 ? "01" : month  > 8 ? Convert.ToString(month + 1) : ('0' + Convert.ToString(month + 1))) + '.' + DateTime.UtcNow.Year;
                     ws.Cells[4, 1, 5, 1].Merge = true;
                     ws.Cells[4, 1].Value = "№ по порядку";
                     ws.Cells[4, 2, 5, 2].Merge = true;
@@ -463,8 +467,9 @@ namespace EMS.Desktop.Helpers
                         ws.Cells[i, 3].Value = data.Homestead.OwnerName;
                         ws.Cells[i, 5].Value = data.Introduced;
                         ws.Cells[i, 7].Value = data.Entered;
-                        ws.Cells[i, 8].Value = data.Date.Value.Year + '.' + data.Date.Value.Month + '.' +
-                            data.Date.Value.Day.ToString().Count() == 1 ? "0" + data.Date.Value.Day.ToString() : data.Date.Value.Day.ToString();
+                        ws.Cells[i, 8].Value = "" + data.Date.Value.Year + '.' +
+                            (data.Date.Value.Month < 10 ? ('0' + data.Date.Value.Month.ToString()) : data.Date.Value.Month.ToString()) +
+                            '.' + (data.Date.Value.Day < 10 ? ('0' + data.Date.Value.Day.ToString()) : data.Date.Value.Day.ToString());
                         for (int j = 1; j < 9; j++)
                             ws.Cells[i, j].Style.Border.BorderAround(ExcelBorderStyle.Thin);
                         i++;
@@ -473,7 +478,7 @@ namespace EMS.Desktop.Helpers
                     ws.Cells[6, 6, i - 1, 6].Formula = "E6 - G6";
                     ws.Cells[i, 1, i, 3].Merge = true;
                     ws.Cells[i, 1].Value = "Итого";
-                    ws.Cells[i, 4, i, 7].Formula = "D6 - D" + (i - 1) + ')';
+                    ws.Cells[i, 4, i, 7].Formula = "SUM(D6:D" + (i - 1) + ')';
 
                     for (int j = 1; j < 9; j++)
                     {
