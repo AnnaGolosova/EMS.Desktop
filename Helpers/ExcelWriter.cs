@@ -409,18 +409,14 @@ namespace EMS.Desktop.Helpers
                         }
                         if (data.MeterData.Count > 1)
                         {
-                            int c = data.MeterData.Count;
-                            ws.Cells[i - c + 1, 1, i, 1].Merge = true;
-                            ws.Cells[i - c + 1, 2, i, 2].Merge = true;
-                            ws.Cells[i - c + 1, 3, i, 3].Merge = true;
-                            foreach (MeterData md in data.MeterData)
+                            int c = data.MeterData.Count - 1;
+                            ws.Cells[i - c, 1, i, 1].Merge = true;
+                            ws.Cells[i - c, 2, i, 2].Merge = true;
+                            ws.Cells[i - c, 3, i, 3].Merge = true;
+                            for (int j = c; j > 0; j--)
                             {
-                                if (md.NewValue - md.OldValue == 0)
-                                {
-                                    ws.Cells[i - c + 1, 4].Value = 0;
-                                    ws.Cells[i - c + 1, 12].Value = 0;
-                                }
-                                c--;
+                                    ws.Cells[i - j, 4].Value = 0;
+                                    ws.Cells[i - j, 12].Value = 0;
                             }
                         }
                     }
@@ -574,9 +570,9 @@ namespace EMS.Desktop.Helpers
                         if (x.MeterData.Count > 1)
                         {
                             for (int j = 1; j < 7; j++)
-                                ws.Cells[i, j, i + x.MeterData.Count - 1, j].Merge = true;
-                            ws.Cells[i, 8, i + x.MeterData.Count - 1, 8].Merge = true;
-                            ws.Cells[i, 9, i + x.MeterData.Count - 1, 9].Merge = true;
+                                ws.Cells[i - x.MeterData.Count + 1, j, i, j].Merge = true;
+                            ws.Cells[i - x.MeterData.Count + 1, 8, i, 8].Merge = true;
+                            ws.Cells[i - x.MeterData.Count + 1, 9, i, 9].Merge = true;
                             for (int j0 = 1; j0 < x.MeterData.Count; j0++)
                                 for (int j = 1; j < 10; j++)
                                     ws.Cells[j0, j].Style.Border.BorderAround(ExcelBorderStyle.Thin);
@@ -590,8 +586,10 @@ namespace EMS.Desktop.Helpers
                 }
 
                 ws.Cells[2, 1, 2, 9].Style.Font.Bold = true;
+                ws.Cells[2, 1, 2, 9].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 ws.Cells[2, 1, i - 1, 9].Style.Border.BorderAround(ExcelBorderStyle.Medium);
                 ws.Cells[2, 1, 2, 9].Style.Border.Bottom.Style = ExcelBorderStyle.Medium;
+                ws.Cells[2, 1, i - 1, 9].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
 
                 try
                 {
