@@ -41,7 +41,55 @@ namespace EMS.Desktop.Helpers
                             obj.MainProgressBar.Value++;
                         };
                         obj.Invoke(MainPrBr);
-                        FileManager.MoveFile(s, ConfigAppManager.GetReports210Path() + "\\Downloaded");
+
+                        DateTime date1 = new DateTime();
+                        date1 = DateTime.Now;
+                        int dateM = date1.Month;
+                        string dateMonth = "";
+                        string dateYear = date1.Year.ToString();
+                        switch (dateM)
+                        {
+                            case 1:
+                                dateMonth = "Январь";
+                                break;
+                            case 2:
+                                dateMonth = "Февраль";
+                                break;
+                            case 3:
+                                dateMonth = "Март";
+                                break;
+                            case 4:
+                                dateMonth = "Апрель";
+                                break;
+                            case 5:
+                                dateMonth = "Май";
+                                break;
+                            case 6:
+                                dateMonth = "Июнь";
+                                break;
+                            case 7:
+                                dateMonth = "Июль";
+                                break;
+                            case 8:
+                                dateMonth = "Август";
+                                break;
+                            case 9:
+                                dateMonth = "Сентябрь";
+                                break;
+                            case 10:
+                                dateMonth = "Октябрь";
+                                break;
+                            case 11:
+                                dateMonth = "Ноябрь";
+                                break;
+                            case 12:
+                                dateMonth = "Декабрь";
+                                break;
+                            default:
+                                break;
+                        }
+                        FileManager.MoveFile(s, ConfigAppManager.GetReports210Path() + $"\\Downloaded\\{dateMonth}{dateYear}");
+
                         db.SetFileAsDownloaded(file);
                     }
                     catch(DataBaseException)
