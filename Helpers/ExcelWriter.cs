@@ -457,7 +457,7 @@ namespace EMS.Desktop.Helpers
                 else
                 {
                     ws.Cells[1, 1, 2, 8].Merge = true;
-                    ws.Cells[1, 1].Value = "Сводная ведомость об уплате налога на " + (serviceId == 3 ? "Землю" : "Недвижимость") + " СТ «Диколовка-1»";
+                    ws.Cells[1, 1].Value = "Данные об уплате налога на " + (serviceId == 3 ? "Землю" : "Недвижимость") + " СТ «Диколовка-1»";
                     ws.Cells[3, 1, 3, 8].Merge = true;
                     ws.Cells[3, 1].Value = "По состоянию на 01." + (month == 12 ? "01" : month  > 8 ? Convert.ToString(month + 1) : ('0' + Convert.ToString(month + 1))) + '.' + DateTime.UtcNow.Year;
                     ws.Cells[4, 1, 5, 1].Merge = true;
@@ -550,7 +550,7 @@ namespace EMS.Desktop.Helpers
                 ws.Cells[2, 4].Value = "Номер участка";
                 ws.Cells[2, 5].Value = "Дата";
                 ws.Cells[2, 6].Value = "Задолженность";
-                ws.Cells[2, 7].Value = "Новые показания";
+                ws.Cells[2, 7].Value = "Последние показания";
                 ws.Cells[2, 8].Value = "Внесено";
                 for (int j = 1; j < 10; j++)
                     ws.Cells[2, j].Style.Border.BorderAround(ExcelBorderStyle.Thin);
