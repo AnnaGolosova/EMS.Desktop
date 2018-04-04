@@ -52,7 +52,6 @@ namespace EMS.Desktop
         private void MonthRB_CheckedChanged(object sender, EventArgs e)
         {
             MonthTimePicker.Enabled = true;
-            QuarterTimePicker.Enabled = false;
             ToDatePicker.Enabled = false;
             FromDatePicker.Enabled = false;
         }
@@ -60,53 +59,21 @@ namespace EMS.Desktop
         private void DuringTimeRB_CheckedChanged(object sender, EventArgs e)
         {
             MonthTimePicker.Enabled = false;
-            QuarterTimePicker.Enabled = false;
             ToDatePicker.Enabled = true;
             FromDatePicker.Enabled = true;
-        }
-
-        private void QuarterRB_CheckedChanged(object sender, EventArgs e)
-        {
-            MonthTimePicker.Enabled = false;
-            QuarterTimePicker.Enabled = true;
-            ToDatePicker.Enabled = false;
-            FromDatePicker.Enabled = false;
         }
 
         private List<Report210.ReportData> BuildData()
         {
             using (DBRepository db = new DBRepository())
             {
+                FilterParams param = BuildParams();
                 List<Report210.ReportData> list = new List<Report210.ReportData>();
-                foreach (Payment pay in db.GetPayment())
+                foreach (int i in param.ServiceId)
                 {
-                    Report210.ReportData rd = new Report210.ReportData();
-                    rd.Date = (DateTime)pay.Date;
-                    rd.Entered = pay.Entered;
-                    rd.Id = pay.Id;
-                    rd.Arrer = pay.Arrear;
-                    rd.Introduced = pay.Introduced;
-                    rd.OwnerName = db.GetHomestead((int)pay.Homestead.Number).OwnerName;
-                    rd.ServiceId = pay.IdService;
-                    rd.HomeSteadNumber = (int)db.GetHomestead((int)pay.Homestead.Number).Number;
-                    if (pay.MeterData.Count != 0)
-                    {
-                        rd.meterInfo = new List<Report210.ReportData.MeterInfo>();
-                        foreach (MeterData md in pay.MeterData)
-                        {
-                            rd.meterInfo.Add(new Report210.ReportData.MeterInfo()
-                            {
-                                newValue = md.NewValue,
-                                oldValue = md.OldValue,
-                                number = md.Meter.MeterNumber,
-                                rateId = md.Id_Rate,
-                                id = md.Id
-                            });
-                        }
-                    }
-                    list.Add(rd);
+                    list.AddRange( DBRepository.Convert(DBRepository.GetMonthData(param.ToDate, i)));
                 }
-                list = db.FilterParams(list, BuildParams());
+                list = db.FilterParams(list, param, false);
                 return list;
             }
         }
@@ -118,10 +85,6 @@ namespace EMS.Desktop
             {
                 param.FromDate = MonthTimePicker.Value.Date.AddDays(MonthTimePicker.Value.Day * (-1) + 1);
                 param.ToDate = MonthTimePicker.Value.Date.AddMonths(1).AddDays(MonthTimePicker.Value.Day * (-1));
-            }
-            if (QuarterRB.Checked)
-            {
-                throw new NotImplementedException();
             }
             if (DuringTimeRB.Checked)
             {

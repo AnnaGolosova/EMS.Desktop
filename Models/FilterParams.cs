@@ -10,13 +10,13 @@ namespace EMS.Desktop.Models
     {
         public DateTime FromDate;
         public DateTime ToDate;
-        public List<int?> ServiceId;
-        public List<int?> HomesteadId;
+        public List<int> ServiceId;
+        public List<int> HomesteadId;
 
         public FilterParams()
         {
-            ServiceId = new List<int?>();
-            HomesteadId = new List<int?>();
+            ServiceId = new List<int>();
+            HomesteadId = new List<int>();
         }
     }
 }

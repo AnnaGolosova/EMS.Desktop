@@ -76,6 +76,7 @@ namespace EMS.Desktop
 
         private void MenuAboutProgram_Click(object sender, EventArgs e)
         {
+            var l = DBRepository.GetMonthData(new DateTime(2017, 9, 1), 4);
             FormAboutProgram FrAbPr = new FormAboutProgram();
             FrAbPr.ShowDialog();
         }
