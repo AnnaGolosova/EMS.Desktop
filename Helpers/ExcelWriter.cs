@@ -389,13 +389,12 @@ namespace EMS.Desktop.Helpers
                     ws.Cells[5, 11].Value = "Доплата по долгам";
                     ws.Cells[5, 12].Value = ConfigAppManager.GetTariff();
 
-                    int i = 7;
-                    foreach (Payment data in datas)
+                    int i = 6;
+                    foreach (Payment data in datas.OrderBy(x => x.Homestead.Number))
                     {
                         foreach(MeterData md in data.MeterData)
                         {
-                            ws.Cells[i, 1].Value = i - 6;
-                            ws.Cells[i, 2].Value = data.Homestead.Number;
+                            ws.Cells[++i, 2].Value = data.Homestead.Number;
                             ws.Cells[i, 3].Value = "" + data.Date.Value.Year + '.' +
                                 (data.Date.Value.Month < 10 ? ('0' + data.Date.Value.Month.ToString()) : data.Date.Value.Month.ToString()) +
                                 '.' + (data.Date.Value.Day < 10 ? ('0' + data.Date.Value.Day.ToString()) : data.Date.Value.Day.ToString());
@@ -407,18 +406,35 @@ namespace EMS.Desktop.Helpers
                             ws.Cells[i, 12].Value = data.Entered;
                             for (int j = 1; j < 12; j++)
                                 ws.Cells[i, j].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                            i++;
+                        }
+                        if (data.MeterData.Count > 1)
+                        {
+                            int c = data.MeterData.Count;
+                            ws.Cells[i - c + 1, 1, i, 1].Merge = true;
+                            ws.Cells[i - c + 1, 2, i, 2].Merge = true;
+                            ws.Cells[i - c + 1, 3, i, 3].Merge = true;
+                            foreach (MeterData md in data.MeterData)
+                            {
+                                if (md.NewValue - md.OldValue == 0)
+                                {
+                                    ws.Cells[i - c + 1, 4].Value = 0;
+                                    ws.Cells[i - c + 1, 12].Value = 0;
+                                }
+                                c--;
+                            }
                         }
                     }
 
-                    ws.Cells[7, 5, i - 1, 5].Formula = "D7 - L7";
-                    ws.Cells[7, 7, i - 1, 7].Formula = "ROUND(F7 * $L$5, 2)";
-                    ws.Cells[7, 10, i - 1, 10].Formula = "ROUND(F7 * I7 * $L$5, 2)";
-                    ws.Cells[7, 14, i - 1, 14].Formula = "G7 + J7 + K7";
-                    ws.Cells[i, 4, i, 5].Formula = "SUM(D7:D" + (i - 1) + ')';
-                    ws.Cells[i, 7].Formula = "SUM(G7:G" + (i - 1) + ')';
-                    ws.Cells[i, 10, i, 11].Formula = "SUM(J7:J" + (i - 1) + ')';
-                    ws.Cells[i, 14].Formula = "SUM(N7:N" + (i - 1) + ')';
+                    ws.Cells[7, 1].Value = 1;
+                    ws.Cells[8, 1, i, 1].Formula = "A7 + 1";
+                    ws.Cells[7, 5, i, 5].Formula = "D7 - L7";
+                    ws.Cells[7, 7, i, 7].Formula = "ROUND(F7 * $L$5, 2)";
+                    ws.Cells[7, 10, i, 10].Formula = "ROUND(F7 * I7 * $L$5, 2)";
+                    ws.Cells[7, 14, i, 14].Formula = "G7 + J7 + K7";
+                    ws.Cells[i + 1, 4, i + 1, 5].Formula = "SUM(D7:D" + i + ')';
+                    ws.Cells[i + 1, 7].Formula = "SUM(G7:G" + i + ')';
+                    ws.Cells[i + 1, 10, i + 1, 11].Formula = "SUM(J7:J" + i + ')';
+                    ws.Cells[i + 1, 14].Formula = "SUM(N7:N" + i + ')';
 
                     ws.Cells[5, 1, 6, 11].Style.Font.Bold = true;
                     for (int j = 1; j < 12; j++)
@@ -427,16 +443,16 @@ namespace EMS.Desktop.Helpers
                         ws.Cells[6, j].Style.Border.BorderAround(ExcelBorderStyle.Thin);
                         ws.Cells[i, j].Style.Border.BorderAround(ExcelBorderStyle.Thin);
                     }
-                    ws.Cells[5, 1, i, 11].Style.Border.BorderAround(ExcelBorderStyle.Medium);
-                    ws.Cells[i, 1, i, 11].Style.Border.Top.Style = ExcelBorderStyle.Medium;
+                    ws.Cells[5, 1, i + 1, 11].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+                    ws.Cells[i + 1, 1, i + 1, 11].Style.Border.Top.Style = ExcelBorderStyle.Medium;
                     ws.Cells[6, 1, 6, 11].Style.Border.Bottom.Style = ExcelBorderStyle.Medium;
-                    ws.Cells[1, 1, i - 1, 11].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                    ws.Cells[1, 1, i - 1, 11].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-                    ws.Cells[7, 12, i - 1, 12].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
-                    ws.Cells[7, 12, i - 1, 12].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-                    ws.Cells[7, 14, i, 14].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                    ws.Cells[7, 14, i, 14].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-                    ws.Cells[7, 14, i - 1, 14].Style.Font.Color.SetColor(System.Drawing.Color.Red);
+                    ws.Cells[1, 1, i, 11].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Cells[1, 1, i, 11].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                    ws.Cells[7, 12, i, 12].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[7, 12, i, 12].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                    ws.Cells[7, 14, i + 1, 14].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                    ws.Cells[7, 14, i + 1, 14].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                    ws.Cells[7, 14, i, 14].Style.Font.Color.SetColor(System.Drawing.Color.Red);
                 }
                 else
                 {
