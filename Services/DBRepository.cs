@@ -6,7 +6,7 @@ using EMS.Desktop.Exceptions;
 
 namespace EMS.Desktop.Services
 {
-    public class DBRepository :/* IRepository, */IDisposable
+    public class DBRepository : IDisposable
     {
         public static EMSEntities db;
 
@@ -18,9 +18,9 @@ namespace EMS.Desktop.Services
             return db.File.Max(f => f.Id) + 1;
         }
 
-        public List<Report210.ReportData> FilterParams(List<Report210.ReportData> list, FilterParams _params)
+        public List<Report210.ReportData> FilterParams(List<Report210.ReportData> list, FilterParams _params, bool useDate = true)
         {
-            if(_params.HomesteadId != null && _params.HomesteadId.Count != 0)
+            if (_params.HomesteadId != null && _params.HomesteadId.Count != 0)
             {
                 list = list.Where(r => _params.HomesteadId.Any(h => h == r.Id)).ToList();
             }
@@ -28,12 +28,34 @@ namespace EMS.Desktop.Services
             {
                 list = list.Where(r => _params.ServiceId.Any(s => s == r.ServiceId)).ToList();
             }
-            if(_params.FromDate != null && _params.ToDate != null)
+            if(useDate && _params.FromDate != null && _params.ToDate != null)
             {
                 if(_params.FromDate.Date <= _params.ToDate.Date)
                 {
                     list = list.Where(r => r.Date.Date >= _params.FromDate.Date &&
                                            r.Date.Date <= _params.ToDate.Date).ToList();
+                }
+            }
+            return list;
+        }
+
+        public List<Payment> FilterParams(List<Payment> list, FilterParams _params)
+        {
+
+            if (_params.HomesteadId != null && _params.HomesteadId.Count != 0)
+            {
+                list = list.Where(r => _params.HomesteadId.Any(h => h == r.Id)).ToList();
+            }
+            if (_params.ServiceId != null && _params.ServiceId.Count != 0)
+            {
+                list = list.Where(r => _params.ServiceId.Any(s => s == r.IdService)).ToList();
+            }
+            if (_params.FromDate != null && _params.ToDate != null)
+            {
+                if (_params.FromDate.Date <= _params.ToDate.Date)
+                {
+                    list = list.Where(r => r.Date.Value.Date >= _params.FromDate.Date &&
+                                           r.Date.Value.Date <= _params.ToDate.Date).ToList();
                 }
             }
             return list;
@@ -157,7 +179,7 @@ namespace EMS.Desktop.Services
             return db.Homestead.ToList();
         }
 
-        public Homestead GetHomestead(int HomesteadNumber)
+        public static Homestead GetHomestead(int HomesteadNumber)
         {
             try
             {
@@ -534,6 +556,60 @@ namespace EMS.Desktop.Services
             {
                 throw new DataBaseException(e.Message, e);
             }
+        }
+
+
+        public static List<Payment> GetMonthData(DateTime date, int serviceId)
+        {
+            List<Payment> list = new List<Payment>();
+            foreach(Homestead h in db.Homestead)
+            {
+                try
+                {
+                    list.Add(db.Payment.Where( p => p.IdService == serviceId)
+                        .Where(p => p.IdHomestead == h.Id)
+                        .Where(p => p.Date.Value <= date)
+                        .OrderByDescending(p => p.Date.Value).First());
+                }
+                catch (InvalidOperationException)
+                {
+                }
+            }
+            return list;
+        }
+
+        public static List<Report210.ReportData> Convert(List<Payment> data)
+        {
+            List<Report210.ReportData> list = new List<Report210.ReportData>();
+            foreach (Payment pay in data)
+            {
+                Report210.ReportData rd = new Report210.ReportData();
+                rd.Date = (DateTime)pay.Date;
+                rd.Entered = pay.Entered;
+                rd.Id = pay.Id;
+                rd.Arrer = pay.Arrear;
+                rd.Introduced = pay.Introduced;
+                rd.OwnerName = GetHomestead((int)pay.Homestead.Number).OwnerName;
+                rd.ServiceId = pay.IdService;
+                rd.HomeSteadNumber = (int)GetHomestead((int)pay.Homestead.Number).Number;
+                if (pay.MeterData.Count != 0)
+                {
+                    rd.meterInfo = new List<Report210.ReportData.MeterInfo>();
+                    foreach (MeterData md in pay.MeterData)
+                    {
+                        rd.meterInfo.Add(new Report210.ReportData.MeterInfo()
+                        {
+                            newValue = md.NewValue,
+                            oldValue = md.OldValue,
+                            number = md.Meter.MeterNumber,
+                            rateId = md.Id_Rate,
+                            id = md.Id
+                        });
+                    }
+                }
+                list.Add(rd);
+            }
+            return list;
         }
 
         public List<Payment> GetPaymentByMonth(int month)
