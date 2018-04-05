@@ -110,6 +110,32 @@ namespace EMS.Desktop
             {
                 LabelProgrBar.Visible = true;
                 LabelProgrBar.Text = "Новых файлов нет";
+                if (ConfigAppManager.GetReportDay() < 10)
+                    if (DateTime.Now.Day == ConfigAppManager.GetReportDay())
+                    {
+                        if (DateTime.Now.Month == 1)
+                        {
+                            ExcelWriter.WriteMonthReport(12, "Взносы " + DateTime.Now.ToShortDateString(), 1);
+                            ExcelWriter.WriteMonthReport(12, "Электроэнергия " + DateTime.Now.ToShortDateString(), 2);
+                            ExcelWriter.WriteMonthReport(12, "Налог на землю " + DateTime.Now.ToShortDateString(), 3);
+                            ExcelWriter.WriteMonthReport(12, "Налог на недвижимость " + DateTime.Now.ToShortDateString(), 4);
+                        }
+                        else
+                        {
+                            ExcelWriter.WriteMonthReport(DateTime.Now.Month - 1, "Взносы " + DateTime.Now.ToShortDateString(), 1);
+                            ExcelWriter.WriteMonthReport(DateTime.Now.Month - 1, "Электроэнергия " + DateTime.Now.ToShortDateString(), 2);
+                            ExcelWriter.WriteMonthReport(DateTime.Now.Month - 1, "Налог на землю " + DateTime.Now.ToShortDateString(), 3);
+                            ExcelWriter.WriteMonthReport(DateTime.Now.Month - 1, "Налог на недвижимость " + DateTime.Now.ToShortDateString(), 4);
+                        }
+                    }
+                    else
+                        if (DateTime.Now.Day == ConfigAppManager.GetReportDay() || DateTime.Now.Day.Equals(DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month)))
+                        {
+                            ExcelWriter.WriteMonthReport(DateTime.Now.Month, "Взносы " + DateTime.Now.ToShortDateString(), 1);
+                            ExcelWriter.WriteMonthReport(DateTime.Now.Month, "Электроэнергия " + DateTime.Now.ToShortDateString(), 2);
+                            ExcelWriter.WriteMonthReport(DateTime.Now.Month, "Налог на землю " + DateTime.Now.ToShortDateString(), 3);
+                            ExcelWriter.WriteMonthReport(DateTime.Now.Month, "Налог на недвижимость " + DateTime.Now.ToShortDateString(), 4);
+                        }
             }
         }
 
@@ -389,6 +415,33 @@ namespace EMS.Desktop
             }
 
             ArrearGB.Visible = false;
+
+            if (ConfigAppManager.GetReportDay() < 10)
+                if (DateTime.Now.Day == ConfigAppManager.GetReportDay())
+                {
+                    if (DateTime.Now.Month == 1)
+                    {
+                        ExcelWriter.WriteMonthReport(12, "Взносы " + DateTime.Now.ToShortDateString(), 1);
+                        ExcelWriter.WriteMonthReport(12, "Электроэнергия " + DateTime.Now.ToShortDateString(), 2);
+                        ExcelWriter.WriteMonthReport(12, "Налог на землю " + DateTime.Now.ToShortDateString(), 3);
+                        ExcelWriter.WriteMonthReport(12, "Налог на недвижимость " + DateTime.Now.ToShortDateString(), 4);
+                    }
+                    else
+                    {
+                        ExcelWriter.WriteMonthReport(DateTime.Now.Month - 1, "Взносы " + DateTime.Now.ToShortDateString(), 1);
+                        ExcelWriter.WriteMonthReport(DateTime.Now.Month - 1, "Электроэнергия " + DateTime.Now.ToShortDateString(), 2);
+                        ExcelWriter.WriteMonthReport(DateTime.Now.Month - 1, "Налог на землю " + DateTime.Now.ToShortDateString(), 3);
+                        ExcelWriter.WriteMonthReport(DateTime.Now.Month - 1, "Налог на недвижимость " + DateTime.Now.ToShortDateString(), 4);
+                    }
+                }
+                else
+                    if (DateTime.Now.Day == ConfigAppManager.GetReportDay() || DateTime.Now.Day.Equals(DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month)))
+                    {
+                        ExcelWriter.WriteMonthReport(DateTime.Now.Month, "Взносы " + DateTime.Now.ToShortDateString(), 1);
+                        ExcelWriter.WriteMonthReport(DateTime.Now.Month, "Электроэнергия " + DateTime.Now.ToShortDateString(), 2);
+                        ExcelWriter.WriteMonthReport(DateTime.Now.Month, "Налог на землю " + DateTime.Now.ToShortDateString(), 3);
+                        ExcelWriter.WriteMonthReport(DateTime.Now.Month, "Налог на недвижимость " + DateTime.Now.ToShortDateString(), 4);
+                    }
         }
 
         private void ArrearEditDGV_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
