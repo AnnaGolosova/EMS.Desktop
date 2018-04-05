@@ -23,14 +23,14 @@ namespace EMS.Desktop.Helpers
             {
                 string[] str = file210[i].Split('^');
                 datas.Datas.Add(new Report210.ReportData());
-                datas.Datas[i - 1].Id = Convert.ToInt32(str[0]);
-                datas.Datas[i - 1].ServiceId = Convert.ToInt32(str[1]);
-                datas.Datas[i - 1].HomeSteadNumber = Convert.ToInt32(str[2]);
+                datas.Datas[i - 1].Id = int.Parse(str[0]);
+                datas.Datas[i - 1].ServiceId = int.Parse(str[1]);
+                datas.Datas[i - 1].HomeSteadNumber = int.Parse(str[2]);
                 datas.Datas[i - 1].OwnerName = str[3];
-                datas.Datas[i - 1].Date = new DateTime(Convert.ToInt32(str[5].Split('.')[1]), Convert.ToInt32(str[5].Split('.')[0]), 1);
-                datas.Datas[i - 1].Introduced = Convert.ToDouble(str[6].Replace(".", ","));
-                datas.Datas[i - 1].Arrer = Convert.ToDouble(str[7].Replace(".", ","));
-                datas.Datas[i - 1].Entered = Convert.ToDouble(str[8].Replace(".", ","));
+                datas.Datas[i - 1].Date = new DateTime(int.Parse(str[5].Split('.')[1]), int.Parse(str[5].Split('.')[0]), 1);
+                datas.Datas[i - 1].Introduced = double.Parse(str[6].Replace(".", ","));
+                datas.Datas[i - 1].Arrer = double.Parse(str[7].Replace(".", ","));
+                datas.Datas[i - 1].Entered = double.Parse(str[8].Replace(".", ","));
                 datas.Datas[i - 1].Code = str[9] + "^" + str[10] + "^" + str[11] + "^" + str[12] + "^" + str[13] + "^" + str[14] + "^" + str[15] + "^" + str[16] + "^" + str[17] + "^" + str[18] + "^" + str[19];
                 datas.Datas[i - 1].meterInfo = new List<Report210.ReportData.MeterInfo>();
                 if (datas.Datas[i - 1].ServiceId == 2)
@@ -39,8 +39,8 @@ namespace EMS.Desktop.Helpers
                     for (int j = 0; j < countOfMeters; j++)
                         datas.Datas[i - 1].meterInfo.Add(new Report210.ReportData.MeterInfo()
                         {
-                            oldValue = Convert.ToInt32(str[10].Split('~')[6 + 5 * j]),
-                            newValue = Convert.ToInt32(str[10].Split('~')[8 + 5 * j]),
+                            oldValue = int.Parse(str[10].Split('~')[6 + 5 * j]),
+                            newValue = int.Parse(str[10].Split('~')[8 + 5 * j]),
                             number = j + 1
                         });
                 }

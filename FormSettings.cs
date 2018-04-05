@@ -120,5 +120,10 @@ namespace EMS.Desktop
         {
             ConfigAppManager.SetTariff(TariffTB.Text);
         }
+
+        private void ReportDayPicker_ValueChanged(object sender, EventArgs e)
+        {
+            ConfigAppManager.SetReportDay(ReportDayPicker.Value.Day.ToString());
+        }
     }
 }
