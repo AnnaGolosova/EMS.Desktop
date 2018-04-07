@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using System.Threading;
 using EMS.Desktop.Exceptions;
 using System.Configuration;
+using EMS.Desktop.Models;
 
 namespace EMS.Desktop
 {
@@ -28,6 +29,7 @@ namespace EMS.Desktop
         {
             LoadNewFile.LoadFile(this);
         }
+
         private void MenuAboutProgram_Click(object sender, EventArgs e)
         {
             FormAboutProgram FrAbPr = new FormAboutProgram();
@@ -153,6 +155,12 @@ namespace EMS.Desktop
 
         private void MenuDocuments_Click(object sender, EventArgs e)
         {
+            FilterViewDataForm Flt = new FilterViewDataForm(this);
+            Flt.Show();
+        }
+
+        public void LoadDataGridView(FilterParams param)
+        {
             try
             {
                 LoadingLabel.Visible = true;
@@ -161,6 +169,208 @@ namespace EMS.Desktop
                 {
                     if (!repository.TryConnection())
                     {
+                        throw new DataBaseException("");
+                    }
+                    LoadingLabel.Visible = true;
+                    dataGridView1.Columns.Clear();
+                    dataGridView1.Rows.Clear();
+                    dataGridView1.Visible = true;
+
+                    var column1 = new DataGridViewColumn();
+                    column1.HeaderText = "Услуга";
+                    column1.Name = "Servise";
+                    //column1.MinimumWidth = 20;
+                    column1.CellTemplate = new DataGridViewTextBoxCell();
+                    column1.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                    column1.SortMode = DataGridViewColumnSortMode.Automatic;
+
+                    var column2 = new DataGridViewColumn();
+                    column2.HeaderText = "Н/у";
+                    column2.Name = "HomeStead";
+                    //column2.MinimumWidth = 20;
+                    column2.Width = 20;
+                    column2.CellTemplate = new DataGridViewTextBoxCell();
+                    column2.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                    column2.SortMode = DataGridViewColumnSortMode.Automatic;
+
+                    var column3 = new DataGridViewColumn();
+                    column3.HeaderText = "Ф.И.О.";
+                    column3.Name = "OwnerName";
+                    //column3.MinimumWidth = 20;
+                    column3.CellTemplate = new DataGridViewTextBoxCell();
+                    column3.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                    column3.SortMode = DataGridViewColumnSortMode.Automatic;
+
+                    var column4 = new DataGridViewColumn();
+                    column4.HeaderText = "Дата оплаты";
+                    column4.Name = "Date";
+                    //column4.MinimumWidth = 20;
+                    column4.CellTemplate = new DataGridViewTextBoxCell();
+                    column4.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                    column4.SortMode = DataGridViewColumnSortMode.Automatic;
+
+                    var column5 = new DataGridViewColumn();
+                    column5.HeaderText = "Внесено";
+                    column5.Name = "Introdused";
+                    // column5.MinimumWidth = 20;
+                    column5.CellTemplate = new DataGridViewTextBoxCell();
+                    column5.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                    column5.SortMode = DataGridViewColumnSortMode.Automatic;
+
+                    var column6 = new DataGridViewColumn();
+                    column6.HeaderText = "Задолженность";
+                    column6.Name = "Arrear";
+                    //column6.Width = 20;
+                    column6.CellTemplate = new DataGridViewTextBoxCell();
+                    column6.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                    column6.SortMode = DataGridViewColumnSortMode.Automatic;
+
+                    var column7 = new DataGridViewColumn();
+                    column7.HeaderText = "Поступило";
+                    column7.Name = "Entered";
+                    //column7.MinimumWidth = 20;
+                    column7.CellTemplate = new DataGridViewTextBoxCell();
+                    column7.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                    column7.SortMode = DataGridViewColumnSortMode.Automatic;
+
+                    var column8 = new DataGridViewColumn();
+                    column8.HeaderText = "Значение счётчика";
+                    column8.Name = "MeterData";
+                    column8.Width = 20;
+                    column8.CellTemplate = new DataGridViewTextBoxCell();
+                    column8.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                    //column8.SortMode = DataGridViewColumnSortMode.Automatic;
+
+                    var column9 = new DataGridViewColumn();
+                    column9.HeaderText = "Путь к файлу";
+                    column9.Name = "Path";
+                    //column8.MinimumWidth = 20;
+                    column9.CellTemplate = new DataGridViewTextBoxCell();
+                    column9.SortMode = DataGridViewColumnSortMode.Automatic;
+
+                    dataGridView1.Columns.Add(column1);
+                    dataGridView1.Columns.Add(column2);
+                    dataGridView1.Columns.Add(column3);
+                    dataGridView1.Columns.Add(column4);
+                    dataGridView1.Columns.Add(column5);
+                    dataGridView1.Columns.Add(column6);
+                    dataGridView1.Columns.Add(column7);
+                    dataGridView1.Columns.Add(column8);
+                    dataGridView1.Columns.Add(column9);
+                    LoadingLabel.Visible = false;
+
+                    dataGridView1.AllowUserToAddRows = false;
+
+                    List<Models.Payment> listdbr = repository.GetPayment();
+                    listdbr.OrderBy(s => s.Date);
+                    int x = 0;
+                    if(param.ServicId != 0)
+                        listdbr = listdbr.Where(c => c.IdService == param.ServicId).ToList();
+                    if(param.HomesteadNumbr != 0)
+                        listdbr = listdbr.Where(c => c.Homestead.Number == param.HomesteadNumbr).ToList();
+                    if (param.HomesteadOwnerName != null)
+                        listdbr = listdbr.Where(c => c.Homestead.OwnerName == param.HomesteadOwnerName).ToList();
+                    if (param.FromDate.Year != 1)
+                        listdbr = listdbr.Where(c => c.Date >= param.FromDate && c.Date <= param.ToDate).ToList();
+                    foreach (Models.Payment s in listdbr)
+                    {
+                        if (s.IdService == 2)
+                        {
+                            dataGridView1.Rows.Add(s.Service.Id, s.Homestead.Number, s.Homestead.OwnerName, s.Date.Value.ToShortDateString(), s.Introduced, "0.0", s.Entered, s.MeterData.ToList()[0].Value, s.File.Path);
+                            if (s.Homestead.Meter.Count > 1)
+                            {
+                                int n = s.Homestead.Meter.Count;
+                                for (int i = 1; i < n; i++)
+                                {
+                                    x++;
+                                    dataGridView1.Rows.Add(s.Service.Id, s.Homestead.Number, s.Homestead.OwnerName, s.Date.Value.ToShortDateString(), s.Introduced, "0.0", s.Entered, s.MeterData.ToList()[i].Value + "(" + (i + 1) +  " счётчик)", s.File.Path);
+                                    for (int j = 0; j < 7; j++)
+                                    {
+                                        dataGridView1.Rows[x].Cells[j].Style.BackColor = Color.Lavender;
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            dataGridView1.Rows.Add(s.Service.Id, s.Homestead.Number, s.Homestead.OwnerName, s.Date.Value.ToShortDateString(), s.Introduced, "0.0", s.Entered, "", s.File.Path);
+                            dataGridView1.Rows[x].Cells[7].Style.BackColor = Color.Lavender;
+                        }
+                        x++;
+                    }
+                }
+                else
+                {
+                    LoadingLabel.Visible = false;
+                    LabelProgrBar.Text = "Нет файлов для просмотра файлов";
+                    LabelProgrBar.Visible = true;
+                }
+                dataGridView1.BorderStyle = BorderStyle.None;
+                dataGridView1.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(238, 239, 249);
+                dataGridView1.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+                dataGridView1.DefaultCellStyle.SelectionBackColor = Color.DarkTurquoise;
+                dataGridView1.DefaultCellStyle.SelectionForeColor = Color.WhiteSmoke;
+                dataGridView1.BackgroundColor = Color.White;
+
+                dataGridView1.EnableHeadersVisualStyles = false;
+                dataGridView1.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+                dataGridView1.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(20, 25, 72);
+                dataGridView1.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            }
+            catch (DataBaseException)
+            {
+                MessageBox.Show("Проблемы с базой данных. Проверьте настройки строки подключения, правильно ли указано имя сервера",
+                    "Проблемы с базой данных", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+        }
+
+        private void ToolStripDownloadNewFile_Click(object sender, EventArgs e)
+        {
+            MainProgressBar.Value = 0;
+            LabelProgrBar.Visible = false;
+            if (FileManager.GetNewFilesCount(ConfigAppManager.GetReports210Path()) != 0)
+            {
+                Thread NewFile = new Thread(OnCreate);
+                NewFile.Start();
+            }
+            else
+            {
+                LabelProgrBar.Visible = true;
+                LabelProgrBar.Text = "Новых файлов нет";
+            }
+        }
+
+        private void CLearFileStatesMI_Click(object sender, EventArgs e)
+        {
+            if(string .IsNullOrEmpty(ConfigAppManager.GetReports210Path()))
+            {
+                MessageBox.Show("Путь для .210 файлов пуст. Проверьте настройки.", "Путь для .210 файлов пуст", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+            FileManager.ClearFileStates(ConfigAppManager.GetReports210Path());
+            LabelProgrBar.Visible = true;
+            LabelProgrBar.Text = "Состояния файлов очищены.";
+        }
+
+        private void MenuSettings_Click(object sender, EventArgs e)
+        {
+            FormSettings FrSett = new FormSettings();
+            FrSett.ShowDialog();
+        }
+
+        private void DebtorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                LoadingLabel.Visible = true;
+                DBRepository repository = new DBRepository();
+                List<Models.Payment> listdbr = repository.GetPayment();
+                if(listdbr.Max(s => s.Arrear) > 0.0)
+                {
+                    if (!repository.TryConnection())
+                    {
+                        LoadingLabel.Visible = false;
                         throw new DataBaseException("");
                     }
                     LoadingLabel.Visible = true;
@@ -235,96 +445,56 @@ namespace EMS.Desktop
 
                     dataGridView1.AllowUserToAddRows = false;
 
-                    List<Models.Payment> listdbr = repository.GetPayment();
+                    //List<Models.Payment> listdbr = repository.GetPayment();
                     listdbr.OrderBy(s => s.Date);
                     int x = 0;
+                    FilterParams param = new FilterParams();
                     foreach (Models.Payment s in listdbr)
                     {
-                        if (s.IdService == 2)
-                        {
-                            dataGridView1.Rows.Add(s.Service.Id, s.Homestead.Number, s.Homestead.OwnerName, s.Date.Value.ToShortDateString(), s.Introduced, "0.0", s.Entered, s.MeterData.ToList()[0].Value);
-                            if (s.Homestead.Meter.Count > 1)
+                         if(s.Arrear != 0.0)
+                         {
+                            if (s.IdService == 2)
                             {
-                                int n = s.Homestead.Meter.Count;
-                                for (int i = 1; i < n; i++)
+                                dataGridView1.Rows.Add(s.Service.Id, s.Homestead.Number, s.Homestead.OwnerName, s.Date.Value.ToShortDateString(), s.Introduced, "0.0", s.Entered, s.MeterData.ToList()[0].Value);
+                                if (s.Homestead.Meter.Count > 1)
                                 {
-                                    x++;
-                                    dataGridView1.Rows.Add("", "", "", "", "", "", "", s.MeterData.ToList()[i].Value);
-                                    for (int j = 0; j < 7; j++)
+                                    int n = s.Homestead.Meter.Count;
+                                    for (int i = 1; i < n; i++)
                                     {
-                                        dataGridView1.Rows[x].Cells[j].Style.BackColor = Color.Lavender;
+                                        x++;
+                                        dataGridView1.Rows.Add("", "", "", "", "", "", "", s.MeterData.ToList()[i].Value);
+                                        for (int j = 0; j < 7; j++)
+                                        {
+                                            dataGridView1.Rows[x].Cells[j].Style.BackColor = Color.Lavender;
+                                        }
                                     }
                                 }
                             }
-                        }
-                        else
-                        {
-                            dataGridView1.Rows.Add(s.Service.Id, s.Homestead.Number, s.Homestead.OwnerName, s.Date.Value.ToShortDateString(), s.Introduced, "0.0", s.Entered, "");
-                            dataGridView1.Rows[x].Cells[7].Style.BackColor = Color.Lavender;
-                        }
-                        x++;
+                            else
+                            {
+                                dataGridView1.Rows.Add(s.Service.Id, s.Homestead.Number, s.Homestead.OwnerName, s.Date.Value.ToShortDateString(), s.Introduced, "0.0", s.Entered, "");
+                                dataGridView1.Rows[x].Cells[7].Style.BackColor = Color.Lavender;
+                            }
+                            x++;
+                       }
                     }
+                    
                 }
                 else
                 {
                     LoadingLabel.Visible = false;
-                    LabelProgrBar.Text = "Нет файлов для просмотра файлов";
+                    LabelProgrBar.Text = "Должники не найдены";
                     LabelProgrBar.Visible = true;
                 }
             }
-            catch(DataBaseException)
+            catch (DataBaseException)
             {
+                LoadingLabel.Visible = false;
                 MessageBox.Show("Проблемы с базой данных. Проверьте настройки строки подключения, правильно ли указано имя сервера",
                     "Проблемы с базой данных", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            
-        }
 
-       /* bool IsTheSameCellValue(int column, int row)
-        {
-            DataGridViewCell cell1 = dataGridView1[column, row];
-            DataGridViewCell cell2 = dataGridView1[column, row - 1];
-            if (cell1.Value == null || cell2.Value == null)
-            {
-                return false;
-            }
-            return cell1.Value.ToString() == cell2.Value.ToString();
-        }*/
-
-        private void ToolStripDownloadNewFile_Click(object sender, EventArgs e)
-        {
-            MainProgressBar.Value = 0;
-            LabelProgrBar.Visible = false;
-            if (FileManager.GetNewFilesCount(ConfigAppManager.GetReports210Path()) != 0)
-            {
-                Thread NewFile = new Thread(OnCreate);
-                NewFile.Start();
-            }
-            else
-            {
-                LabelProgrBar.Visible = true;
-                LabelProgrBar.Text = "Новых файлов нет";
-            }
         }
-
-        private void CLearFileStatesMI_Click(object sender, EventArgs e)
-        {
-            if(string .IsNullOrEmpty(ConfigAppManager.GetReports210Path()))
-            {
-                MessageBox.Show("Путь для .210 файлов пуст. Проверьте настройки.", "Путь для .210 файлов пуст", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
-            FileManager.ClearFileStates(ConfigAppManager.GetReports210Path());
-            LabelProgrBar.Visible = true;
-            LabelProgrBar.Text = "Состояния файлов очищены.";
-        }
-
-        private void MenuSettings_Click(object sender, EventArgs e)
-        {
-            FormSettings FrSett = new FormSettings();
-            FrSett.ShowDialog();
-        }
-        
     }
 }

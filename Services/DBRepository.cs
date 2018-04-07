@@ -39,6 +39,27 @@ namespace EMS.Desktop.Services
             return list;
         }
 
+        public List<Report210.ReportData> FilterPayment(List<Report210.ReportData> list, FilterParams _params)
+        {
+            if (_params.HomesteadId != null && _params.HomesteadId.Count != 0)
+            {
+                list = list.Where(r => _params.HomesteadId.Any(h => h == r.Id)).ToList();
+            }
+            if (_params.ServiceId != null && _params.ServiceId.Count != 0)
+            {
+                list = list.Where(r => _params.ServiceId.Any(s => s == r.ServiceId)).ToList();
+            }
+            if (_params.FromDate != null && _params.ToDate != null)
+            {
+                if (_params.FromDate.Date <= _params.ToDate.Date)
+                {
+                    list = list.Where(r => r.Date.Date >= _params.FromDate.Date &&
+                                           r.Date.Date <= _params.ToDate.Date).ToList();
+                }
+            }
+            return list;
+        }
+        
         public int? GetRatePosition(int? rateId)
         {
             Rate rate = GetRate(null, rateId);
