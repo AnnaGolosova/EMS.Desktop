@@ -110,32 +110,68 @@ namespace EMS.Desktop
             {
                 LabelProgrBar.Visible = true;
                 LabelProgrBar.Text = "Новых файлов нет";
+
                 if (ConfigAppManager.GetReportDay() < 10)
                     if (DateTime.Now.Day == ConfigAppManager.GetReportDay())
                     {
+                        string[] ServiceName = { "Взносы ", "Электроэнергия ", "Налог на землю ", "Налог на недвижимость " };
                         if (DateTime.Now.Month == 1)
                         {
-                            ExcelWriter.WriteMonthReport(12, "Взносы " + DateTime.Now.ToShortDateString(), 1);
-                            ExcelWriter.WriteMonthReport(12, "Электроэнергия " + DateTime.Now.ToShortDateString(), 2);
-                            ExcelWriter.WriteMonthReport(12, "Налог на землю " + DateTime.Now.ToShortDateString(), 3);
-                            ExcelWriter.WriteMonthReport(12, "Налог на недвижимость " + DateTime.Now.ToShortDateString(), 4);
+                            ExcelWriter.WriteMonthReport(DateTime.Now.Month, ServiceName[0] + DateTime.Now.ToShortDateString(), 1);
+                            ExcelWriter.WriteMonthReport(DateTime.Now.Month, ServiceName[1] + DateTime.Now.ToShortDateString(), 2);
+                            ExcelWriter.WriteMonthReport(DateTime.Now.Month, ServiceName[2] + DateTime.Now.ToShortDateString(), 3);
+                            ExcelWriter.WriteMonthReport(DateTime.Now.Month, ServiceName[3] + DateTime.Now.ToShortDateString(), 4);
+                            for (int j = 1; j < 5; j++)
+                            {
+                                FilterParams param = new FilterParams();
+                                List<Report210.ReportData> list = new List<Report210.ReportData>();
+                                param.FromDate = new DateTime(DateTime.Now.Year - 1, 12, 1);
+                                param.ToDate = new DateTime(DateTime.Now.Year - 1, 12, 31);
+                                param.ServiceId.Add(j);
+                                list.AddRange(DBRepository.Convert(DBRepository.GetMonthData(param.ToDate, j)));
+                                list = new DBRepository().FilterParams(list, param, false);
+                                ExcelWriter.Write202(new Report210() { Datas = list }, new DBRepository().GetLastRates(), ServiceName[j - 1] + DateTime.Now.ToShortDateString(), false);
+                            }
                         }
                         else
                         {
-                            ExcelWriter.WriteMonthReport(DateTime.Now.Month - 1, "Взносы " + DateTime.Now.ToShortDateString(), 1);
-                            ExcelWriter.WriteMonthReport(DateTime.Now.Month - 1, "Электроэнергия " + DateTime.Now.ToShortDateString(), 2);
-                            ExcelWriter.WriteMonthReport(DateTime.Now.Month - 1, "Налог на землю " + DateTime.Now.ToShortDateString(), 3);
-                            ExcelWriter.WriteMonthReport(DateTime.Now.Month - 1, "Налог на недвижимость " + DateTime.Now.ToShortDateString(), 4);
+                            ExcelWriter.WriteMonthReport(DateTime.Now.Month, ServiceName[0] + DateTime.Now.ToShortDateString(), 1);
+                            ExcelWriter.WriteMonthReport(DateTime.Now.Month, ServiceName[1] + DateTime.Now.ToShortDateString(), 2);
+                            ExcelWriter.WriteMonthReport(DateTime.Now.Month, ServiceName[2] + DateTime.Now.ToShortDateString(), 3);
+                            ExcelWriter.WriteMonthReport(DateTime.Now.Month, ServiceName[3] + DateTime.Now.ToShortDateString(), 4);
+                            for (int j = 1; j < 5; j++)
+                            {
+                                FilterParams param = new FilterParams();
+                                List<Report210.ReportData> list = new List<Report210.ReportData>();
+                                param.FromDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month - 1, 1);
+                                param.ToDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month - 1, DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month - 1));
+                                param.ServiceId.Add(j);
+                                list.AddRange(DBRepository.Convert(DBRepository.GetMonthData(param.ToDate, j)));
+                                list = new DBRepository().FilterParams(list, param, false);
+                                ExcelWriter.Write202(new Report210() { Datas = list }, new DBRepository().GetLastRates(), ServiceName[j - 1] + DateTime.Now.ToShortDateString(), false);
+                            }
                         }
                     }
-                    else
-                        if (DateTime.Now.Day == ConfigAppManager.GetReportDay() || DateTime.Now.Day.Equals(DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month)))
-                        {
-                            ExcelWriter.WriteMonthReport(DateTime.Now.Month, "Взносы " + DateTime.Now.ToShortDateString(), 1);
-                            ExcelWriter.WriteMonthReport(DateTime.Now.Month, "Электроэнергия " + DateTime.Now.ToShortDateString(), 2);
-                            ExcelWriter.WriteMonthReport(DateTime.Now.Month, "Налог на землю " + DateTime.Now.ToShortDateString(), 3);
-                            ExcelWriter.WriteMonthReport(DateTime.Now.Month, "Налог на недвижимость " + DateTime.Now.ToShortDateString(), 4);
-                        }
+                    else;
+                else if (DateTime.Now.Day == ConfigAppManager.GetReportDay() || DateTime.Now.Day.Equals(DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month)))
+                {
+                    string[] ServiceName = { "Взносы ", "Электроэнергия ", "Налог на землю ", "Налог на недвижимость " };
+                    ExcelWriter.WriteMonthReport(DateTime.Now.Month, ServiceName[0] + DateTime.Now.ToShortDateString(), 1);
+                    ExcelWriter.WriteMonthReport(DateTime.Now.Month, ServiceName[1] + DateTime.Now.ToShortDateString(), 2);
+                    ExcelWriter.WriteMonthReport(DateTime.Now.Month, ServiceName[2] + DateTime.Now.ToShortDateString(), 3);
+                    ExcelWriter.WriteMonthReport(DateTime.Now.Month, ServiceName[3] + DateTime.Now.ToShortDateString(), 4);
+                    for (int j = 1; j < 5; j++)
+                    {
+                        FilterParams param = new FilterParams();
+                        List<Report210.ReportData> list = new List<Report210.ReportData>();
+                        param.FromDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+                        param.ToDate = DateTime.Now;
+                        param.ServiceId.Add(j);
+                        list.AddRange(DBRepository.Convert(DBRepository.GetMonthData(param.ToDate, j)));
+                        list = new DBRepository().FilterParams(list, param, false);
+                        ExcelWriter.Write202(new Report210() { Datas = list }, new DBRepository().GetLastRates(), ServiceName[j - 1] + DateTime.Now.ToShortDateString(), false);
+                    }
+                }
             }
         }
 
@@ -404,11 +440,11 @@ namespace EMS.Desktop
         private void ArrearConfirmB_Click(object sender, EventArgs e)
         {
             int i = 0;
-            foreach(Payment p in data)
+            foreach (Payment p in data)
             {
                 if (double.Parse(ArrearEditDGV.Rows[i].Cells[5].Value.ToString().Replace('.', ',')) != 0)
                 {
-                    DBRepository.ChangeArrear(int.Parse(ArrearEditDGV.Rows[i].Cells[0].Value.ToString()), 
+                    DBRepository.ChangeArrear(int.Parse(ArrearEditDGV.Rows[i].Cells[0].Value.ToString()),
                         double.Parse(ArrearEditDGV.Rows[i].Cells[5].Value.ToString().Replace('.', ',')));
                 }
                 i++;
@@ -419,29 +455,64 @@ namespace EMS.Desktop
             if (ConfigAppManager.GetReportDay() < 10)
                 if (DateTime.Now.Day == ConfigAppManager.GetReportDay())
                 {
+                    string[] ServiceName = { "Взносы ", "Электроэнергия ", "Налог на землю ", "Налог на недвижимость " };
                     if (DateTime.Now.Month == 1)
                     {
-                        ExcelWriter.WriteMonthReport(12, "Взносы " + DateTime.Now.ToShortDateString(), 1);
-                        ExcelWriter.WriteMonthReport(12, "Электроэнергия " + DateTime.Now.ToShortDateString(), 2);
-                        ExcelWriter.WriteMonthReport(12, "Налог на землю " + DateTime.Now.ToShortDateString(), 3);
-                        ExcelWriter.WriteMonthReport(12, "Налог на недвижимость " + DateTime.Now.ToShortDateString(), 4);
+                        ExcelWriter.WriteMonthReport(DateTime.Now.Month, ServiceName[0] + DateTime.Now.ToShortDateString(), 1);
+                        ExcelWriter.WriteMonthReport(DateTime.Now.Month, ServiceName[1] + DateTime.Now.ToShortDateString(), 2);
+                        ExcelWriter.WriteMonthReport(DateTime.Now.Month, ServiceName[2] + DateTime.Now.ToShortDateString(), 3);
+                        ExcelWriter.WriteMonthReport(DateTime.Now.Month, ServiceName[3] + DateTime.Now.ToShortDateString(), 4);
+                        for (int j = 1; j < 5; j++)
+                        {
+                            FilterParams param = new FilterParams();
+                            List<Report210.ReportData> list = new List<Report210.ReportData>();
+                            param.FromDate = new DateTime(DateTime.Now.Year - 1, 12, 1);
+                            param.ToDate = new DateTime(DateTime.Now.Year - 1, 12, 31);
+                            param.ServiceId.Add(j);
+                            list.AddRange(DBRepository.Convert(DBRepository.GetMonthData(param.ToDate, j)));
+                            list = new DBRepository().FilterParams(list, param, false);
+                            ExcelWriter.Write202(new Report210() { Datas = list }, new DBRepository().GetLastRates(), ServiceName[j - 1] + DateTime.Now.ToShortDateString(), false);
+                        }
                     }
                     else
                     {
-                        ExcelWriter.WriteMonthReport(DateTime.Now.Month - 1, "Взносы " + DateTime.Now.ToShortDateString(), 1);
-                        ExcelWriter.WriteMonthReport(DateTime.Now.Month - 1, "Электроэнергия " + DateTime.Now.ToShortDateString(), 2);
-                        ExcelWriter.WriteMonthReport(DateTime.Now.Month - 1, "Налог на землю " + DateTime.Now.ToShortDateString(), 3);
-                        ExcelWriter.WriteMonthReport(DateTime.Now.Month - 1, "Налог на недвижимость " + DateTime.Now.ToShortDateString(), 4);
+                        ExcelWriter.WriteMonthReport(DateTime.Now.Month, ServiceName[0] + DateTime.Now.ToShortDateString(), 1);
+                        ExcelWriter.WriteMonthReport(DateTime.Now.Month, ServiceName[1] + DateTime.Now.ToShortDateString(), 2);
+                        ExcelWriter.WriteMonthReport(DateTime.Now.Month, ServiceName[2] + DateTime.Now.ToShortDateString(), 3);
+                        ExcelWriter.WriteMonthReport(DateTime.Now.Month, ServiceName[3] + DateTime.Now.ToShortDateString(), 4);
+                        for (int j = 1; j < 5; j++)
+                        {
+                            FilterParams param = new FilterParams();
+                            List<Report210.ReportData> list = new List<Report210.ReportData>();
+                            param.FromDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month - 1, 1);
+                            param.ToDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month - 1, DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month - 1));
+                            param.ServiceId.Add(j);
+                            list.AddRange(DBRepository.Convert(DBRepository.GetMonthData(param.ToDate, j)));
+                            list = new DBRepository().FilterParams(list, param, false);
+                            ExcelWriter.Write202(new Report210() { Datas = list }, new DBRepository().GetLastRates(), ServiceName[j - 1] + DateTime.Now.ToShortDateString(), false);
+                        }
                     }
                 }
-                else
-                    if (DateTime.Now.Day == ConfigAppManager.GetReportDay() || DateTime.Now.Day.Equals(DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month)))
-                    {
-                        ExcelWriter.WriteMonthReport(DateTime.Now.Month, "Взносы " + DateTime.Now.ToShortDateString(), 1);
-                        ExcelWriter.WriteMonthReport(DateTime.Now.Month, "Электроэнергия " + DateTime.Now.ToShortDateString(), 2);
-                        ExcelWriter.WriteMonthReport(DateTime.Now.Month, "Налог на землю " + DateTime.Now.ToShortDateString(), 3);
-                        ExcelWriter.WriteMonthReport(DateTime.Now.Month, "Налог на недвижимость " + DateTime.Now.ToShortDateString(), 4);
-                    }
+                else;
+            else if (DateTime.Now.Day == ConfigAppManager.GetReportDay() || DateTime.Now.Day.Equals(DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month)))
+            {
+                string[] ServiceName = { "Взносы ", "Электроэнергия ", "Налог на землю ", "Налог на недвижимость " };
+                ExcelWriter.WriteMonthReport(DateTime.Now.Month, ServiceName[0] + DateTime.Now.ToShortDateString(), 1);
+                ExcelWriter.WriteMonthReport(DateTime.Now.Month, ServiceName[1] + DateTime.Now.ToShortDateString(), 2);
+                ExcelWriter.WriteMonthReport(DateTime.Now.Month, ServiceName[2] + DateTime.Now.ToShortDateString(), 3);
+                ExcelWriter.WriteMonthReport(DateTime.Now.Month, ServiceName[3] + DateTime.Now.ToShortDateString(), 4);
+                for (int j = 1; j < 5; j++)
+                {
+                    FilterParams param = new FilterParams();
+                    List<Report210.ReportData> list = new List<Report210.ReportData>();
+                    param.FromDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+                    param.ToDate = DateTime.Now;
+                    param.ServiceId.Add(j);
+                    list.AddRange(DBRepository.Convert(DBRepository.GetMonthData(param.ToDate, j)));
+                    list = new DBRepository().FilterParams(list, param, false);
+                    ExcelWriter.Write202(new Report210() { Datas = list }, new DBRepository().GetLastRates(), ServiceName[j - 1] + DateTime.Now.ToShortDateString(), false);
+                }
+            }
         }
 
         private void ArrearEditDGV_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)

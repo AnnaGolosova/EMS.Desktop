@@ -24,6 +24,7 @@ namespace EMS.Desktop
             Path202TextBox.Text = ConfigAppManager.GetReports202Path();
             Path210TextBox.Text = ConfigAppManager.GetReports210Path();
             TariffTB.Text = ConfigAppManager.GetTariff().ToString();
+            ReportDayPicker.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, ConfigAppManager.GetReportDay());
 
             FillConnectionPart();
         }
