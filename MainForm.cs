@@ -512,8 +512,18 @@ namespace EMS.Desktop
                     "Проблемы с базой данных", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            FilterViewDataForm Flt = new FilterViewDataForm(this, filterPrm, true);
-            Flt.Show();
+            DBRepository dbrepository = new DBRepository();
+            if (dbrepository.GetFiles().Count != 0)
+            {
+                FilterViewDataForm Flt = new FilterViewDataForm(this, filterPrm, true);
+                Flt.Show();
+            }
+            else
+            {
+                LoadingLabel.Visible = false;
+                LabelProgrBar.Text = "Нет файлов для создания журнала задолжников";
+                LabelProgrBar.Visible = true;
+            }
         }
 
         private void ArrearConfirmB_Click(object sender, EventArgs e)
