@@ -27,7 +27,7 @@ namespace EMS.Desktop.Helpers
                     try
                     {
                         DBRepository db = new DBRepository();
-                        if(!db.TryConnection())
+                        if(!DBRepository.TryConnection())
                         {
                             throw new DataBaseException("");
                         }

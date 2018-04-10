@@ -46,6 +46,7 @@
             this.MenuReposForExcel = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuDocuments = new System.Windows.Forms.ToolStripMenuItem();
             this.MainJournal = new System.Windows.Forms.ToolStripMenuItem();
+            this.DebtorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.добавитьДанныеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.добавитьПлательщикаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -84,13 +85,14 @@
             this.MenuRepos,
             this.MenuDocuments,
             this.MainJournal,
+            this.DebtorToolStripMenuItem,
             this.MenuSettings,
             this.добавитьДанныеToolStripMenuItem,
             this.MenuAboutProgram});
             this.Menu.Location = new System.Drawing.Point(0, 0);
             this.Menu.Name = "Menu";
             this.Menu.Padding = new System.Windows.Forms.Padding(8, 2, 0, 2);
-            this.Menu.Size = new System.Drawing.Size(1019, 28);
+            this.Menu.Size = new System.Drawing.Size(1016, 28);
             this.Menu.TabIndex = 0;
             this.Menu.Text = "menuStrip1";
             // 
@@ -155,6 +157,13 @@
             this.MainJournal.Text = "Журнал";
             this.MainJournal.Click += new System.EventHandler(this.MainJournal_Click);
             // 
+            // DebtorToolStripMenuItem
+            // 
+            this.DebtorToolStripMenuItem.Name = "DebtorToolStripMenuItem";
+            this.DebtorToolStripMenuItem.Size = new System.Drawing.Size(93, 24);
+            this.DebtorToolStripMenuItem.Text = "Должники";
+            this.DebtorToolStripMenuItem.Click += new System.EventHandler(this.DebtorToolStripMenuItem_Click);
+            // 
             // MenuSettings
             // 
             this.MenuSettings.Name = "MenuSettings";
@@ -195,10 +204,10 @@
             // MainProgressBar
             // 
             this.MainProgressBar.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.MainProgressBar.Location = new System.Drawing.Point(0, 511);
+            this.MainProgressBar.Location = new System.Drawing.Point(0, 499);
             this.MainProgressBar.Margin = new System.Windows.Forms.Padding(4);
             this.MainProgressBar.Name = "MainProgressBar";
-            this.MainProgressBar.Size = new System.Drawing.Size(1019, 28);
+            this.MainProgressBar.Size = new System.Drawing.Size(1016, 28);
             this.MainProgressBar.TabIndex = 1;
             // 
             // ColorPanel
@@ -211,7 +220,7 @@
             this.ColorPanel.Location = new System.Drawing.Point(0, 28);
             this.ColorPanel.Margin = new System.Windows.Forms.Padding(4);
             this.ColorPanel.Name = "ColorPanel";
-            this.ColorPanel.Size = new System.Drawing.Size(1019, 483);
+            this.ColorPanel.Size = new System.Drawing.Size(1016, 471);
             this.ColorPanel.TabIndex = 2;
             // 
             // ArrearGB
@@ -223,7 +232,7 @@
             this.ArrearGB.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.ArrearGB.Name = "ArrearGB";
             this.ArrearGB.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.ArrearGB.Size = new System.Drawing.Size(1019, 483);
+            this.ArrearGB.Size = new System.Drawing.Size(1016, 471);
             this.ArrearGB.TabIndex = 3;
             this.ArrearGB.TabStop = false;
             this.ArrearGB.Text = "Отредактируйте задолженности";
@@ -232,10 +241,10 @@
             // ArrearConfirmB
             // 
             this.ArrearConfirmB.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.ArrearConfirmB.Location = new System.Drawing.Point(3, 448);
+            this.ArrearConfirmB.Location = new System.Drawing.Point(3, 436);
             this.ArrearConfirmB.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.ArrearConfirmB.Name = "ArrearConfirmB";
-            this.ArrearConfirmB.Size = new System.Drawing.Size(1013, 33);
+            this.ArrearConfirmB.Size = new System.Drawing.Size(1010, 33);
             this.ArrearConfirmB.TabIndex = 3;
             this.ArrearConfirmB.Text = "Сохранить";
             this.ArrearConfirmB.UseVisualStyleBackColor = true;
@@ -271,7 +280,7 @@
             this.ArrearEditDGV.RowHeadersVisible = false;
             this.ArrearEditDGV.RowTemplate.DefaultCellStyle.BackColor = System.Drawing.SystemColors.Control;
             this.ArrearEditDGV.RowTemplate.Height = 24;
-            this.ArrearEditDGV.Size = new System.Drawing.Size(1013, 464);
+            this.ArrearEditDGV.Size = new System.Drawing.Size(1010, 452);
             this.ArrearEditDGV.TabIndex = 2;
             this.ArrearEditDGV.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.ArrearEditDGV_CellValidating);
             // 
@@ -368,14 +377,17 @@
             // 
             // dataGridView1
             // 
+            this.dataGridView1.AllowUserToAddRows = false;
+            this.dataGridView1.AllowUserToDeleteRows = false;
             this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.Location = new System.Drawing.Point(0, 0);
             this.dataGridView1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.Size = new System.Drawing.Size(1019, 483);
+            this.dataGridView1.Size = new System.Drawing.Size(1016, 471);
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.Visible = false;
             // 
@@ -424,7 +436,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1019, 539);
+            this.ClientSize = new System.Drawing.Size(1016, 527);
             this.Controls.Add(this.createExcelButton);
             this.Controls.Add(this.AmountLabel);
             this.Controls.Add(this.LabelProgrBar);
@@ -487,6 +499,7 @@
         private System.Windows.Forms.ToolStripMenuItem добавитьДанныеToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem добавитьПлательщикаToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem добавитьУчастокToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem DebtorToolStripMenuItem;
     }
 }
 

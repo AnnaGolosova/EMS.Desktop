@@ -1,13 +1,8 @@
 C:\Users\Администратор\Source\Repos\EMS.Desktop\EMS.Desktop\bin\Debug\EMS.Desktop.exe.config
-c:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\EMS.Desktop.exe.config
-c:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\EMS.Desktop.exe
-c:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\EMS.Desktop.pdb
 c:\Users\Администратор\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.csprojResolveAssemblyReference.cache
 c:\Users\Администратор\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.MainForm.resources
 c:\Users\Администратор\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.Properties.Resources.resources
 c:\Users\Администратор\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.csproj.GenerateResource.Cache
-c:\Users\Администратор\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.exe
-c:\Users\Администратор\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.pdb
 c:\Users\Администратор\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.FormSettings.resources
 c:\Users\Администратор\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.FormAboutProgram.resources
 c:\Users\Администратор\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.FormReposForERIP.resources
@@ -127,3 +122,20 @@ C:\Users\Daniil\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.Properties.Resour
 C:\Users\Daniil\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.csproj.GenerateResource.Cache
 C:\Users\Daniil\Source\Repos\EMS.Desktop\obj\Debug\EMS 1.2.exe.manifest
 C:\Users\Daniil\Source\Repos\EMS.Desktop\obj\Debug\EMS 1.2.application
+c:\Users\Администратор\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.FilterViewDataForm.resources
+c:\Users\Администратор\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.Forms.CreateExcel.resources
+c:\Users\Администратор\Source\Repos\EMS.Desktop\obj\Debug\EMS 1.2.exe
+c:\Users\Администратор\Source\Repos\EMS.Desktop\obj\Debug\EMS 1.2.pdb
+c:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\EMS 1.2.exe.config
+c:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\EMS 1.2.exe.manifest
+c:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\EMS 1.2.application
+c:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\EMS 1.2.exe
+c:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\EMS 1.2.pdb
+c:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\Microsoft.VisualStudio.OLE.Interop.dll
+c:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\Microsoft.VisualStudio.Shell.Interop.dll
+c:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\Microsoft.VisualStudio.TextManager.Interop.dll
+c:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\Microsoft.VisualStudio.OLE.Interop.xml
+c:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\Microsoft.VisualStudio.Shell.Interop.xml
+c:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\Microsoft.VisualStudio.TextManager.Interop.xml
+c:\Users\Администратор\Source\Repos\EMS.Desktop\obj\Debug\EMS 1.2.exe.manifest
+c:\Users\Администратор\Source\Repos\EMS.Desktop\obj\Debug\EMS 1.2.application

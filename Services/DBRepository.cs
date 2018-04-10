@@ -201,7 +201,7 @@ namespace EMS.Desktop.Services
             }
         }
 
-        internal bool TryConnection()
+        public static bool TryConnection()
         {
             return db.Database.Exists();
         }

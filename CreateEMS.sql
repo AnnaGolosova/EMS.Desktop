@@ -1,4 +1,5 @@
-﻿USE [EMS]
+﻿n6
+USE [EMS]
 GO
 DROP TABLE [dbo].[Copay];
 GO
