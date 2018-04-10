@@ -10,6 +10,7 @@ using System.Threading;
 using EMS.Desktop.Exceptions;
 using System.Configuration;
 using EMS.Desktop.Models;
+using EMS.Desktop.Forms;
 
 namespace EMS.Desktop
 {
@@ -537,6 +538,16 @@ namespace EMS.Desktop
             {
                 new Forms.CreateExcel(data).ShowDialog();
             }
+        }
+
+        private void добавитьУчастокToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new AddHomesteadForm(AddHomesteadState.AddNewHomestead).Show();
+        }
+
+        private void добавитьПлательщикаToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new AddHomesteadForm(AddHomesteadState.AddOnlyPayments).Show();
         }
     }
 }

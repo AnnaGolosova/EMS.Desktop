@@ -41,12 +41,10 @@ namespace EMS.Desktop.Helpers
                             obj.MainProgressBar.Value++;
                         };
                         obj.Invoke(MainPrBr);
-
-                        DateTime date1 = new DateTime();
-                        date1 = DateTime.Now;
-                        int dateM = date1.Month;
+                        
+                        int dateM = report.Datas.First().Date.Month;
                         string dateMonth = "";
-                        string dateYear = date1.Year.ToString();
+                        string dateYear = report.Datas.First().Date.Year.ToString();
                         switch (dateM)
                         {
                             case 1:
@@ -88,7 +86,7 @@ namespace EMS.Desktop.Helpers
                             default:
                                 break;
                         }
-                        FileManager.MoveFile(s, ConfigAppManager.GetReports210Path() + $"\\Downloaded\\{dateMonth}{dateYear}");
+                        FileManager.MoveFile(s, ConfigAppManager.GetReports210Path() + $"\\Downloaded\\{dateMonth} {dateYear}");
 
                         db.SetFileAsDownloaded(file);
                     }

@@ -20,7 +20,7 @@ namespace EMS.Desktop.Models
             this.Payment = new HashSet<Payment>();
         }
     
-        public Nullable<int> Number { get; set; }
+        public int Number { get; set; }
         public string OwnerName { get; set; }
         public int Id { get; set; }
     

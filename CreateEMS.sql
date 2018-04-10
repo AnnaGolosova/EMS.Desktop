@@ -60,7 +60,7 @@ GO
 
 CREATE TABLE [dbo].[Homestead] (
 	Id INT  IDENTITY (1, 1) NOT NULL PRIMARY KEY,
-    [Number]     INT        ,
+    [Number]     INT        NOT NULL,
     [Owner_Name] nvarchar(50)
 )
 GO
