@@ -23,7 +23,7 @@ namespace EMS.Desktop
         private void ShowAmount()
         {
             DBRepository db = new DBRepository();
-            if (!db.TryConnection())
+            if (!DBRepository.TryConnection())
             {
                 AmountLabel.Visible = false;
             }
@@ -42,6 +42,7 @@ namespace EMS.Desktop
             config.Save();
             ConfigurationManager.RefreshSection("connectionStrings");
             ShowAmount();
+            filterPrm = new FilterParams();
         }
 
         private void LoadingComplete(IAsyncResult result)
@@ -85,12 +86,24 @@ namespace EMS.Desktop
 
         private void MenuReposForERIP_Click(object sender, EventArgs e)
         {
+            if (!DBRepository.TryConnection())
+            {
+                MessageBox.Show("Проблемы с базой данных. Проверьте настройки строки подключения, правильно ли указано имя сервера",
+                    "Проблемы с базой данных", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             FormReposForERIP RpFrERIP = new FormReposForERIP();
             RpFrERIP.ShowDialog(this);
         }
 
         private void MenuReposForExcel_Click(object sender, EventArgs e)
         {
+            if (!DBRepository.TryConnection())
+            {
+                MessageBox.Show("Проблемы с базой данных. Проверьте настройки строки подключения, правильно ли указано имя сервера",
+                    "Проблемы с базой данных", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             FormReposForExcel RpFrExcel = new FormReposForExcel();
             RpFrExcel.ShowDialog();
         }
@@ -205,7 +218,7 @@ namespace EMS.Desktop
                 ArrearGB.Visible = false;
 
                 DBRepository dbrepository = new DBRepository();
-                if(!dbrepository.TryConnection())
+                if(!DBRepository.TryConnection())
                 {
                     throw new DataBaseException("");
                 }
@@ -267,6 +280,12 @@ namespace EMS.Desktop
 
         private void MenuDocuments_Click(object sender, EventArgs e)
         {
+            if(!DBRepository.TryConnection())
+            {
+                MessageBox.Show("Проблемы с базой данных. Проверьте настройки строки подключения, правильно ли указано имя сервера",
+                    "Проблемы с базой данных", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             FilterViewDataForm Flt = new FilterViewDataForm(this, filterPrm, false);
             Flt.Show();
         }
@@ -280,7 +299,7 @@ namespace EMS.Desktop
                 DBRepository repository = new DBRepository();
                 if (repository.GetFiles().Count != 0)
                 {
-                    if (!repository.TryConnection())
+                    if (!DBRepository.TryConnection())
                     {
                         throw new DataBaseException("");
                     }
@@ -487,6 +506,12 @@ namespace EMS.Desktop
 
         private void DebtorToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (!DBRepository.TryConnection())
+            {
+                MessageBox.Show("Проблемы с базой данных. Проверьте настройки строки подключения, правильно ли указано имя сервера",
+                    "Проблемы с базой данных", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             FilterViewDataForm Flt = new FilterViewDataForm(this, filterPrm, true);
             Flt.Show();
         }
@@ -582,11 +607,11 @@ namespace EMS.Desktop
 
         private void createExcelButton_Click(object sender, EventArgs e)
         {
-            DBRepository dbrepository = new DBRepository();
-            if (!dbrepository.TryConnection())
+            if (!DBRepository.TryConnection())
             {
                 throw new DataBaseException("");
             }
+            DBRepository dbrepository = new DBRepository();
             if (dbrepository.GetFiles().Count != 0)
             {
                 new Forms.CreateExcel(data).ShowDialog();
@@ -595,11 +620,23 @@ namespace EMS.Desktop
 
         private void добавитьУчастокToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (!DBRepository.TryConnection())
+            {
+                MessageBox.Show("Проблемы с базой данных. Проверьте настройки строки подключения, правильно ли указано имя сервера",
+                    "Проблемы с базой данных", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             new AddHomesteadForm(AddHomesteadState.AddNewHomestead).Show();
         }
 
         private void добавитьПлательщикаToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (!DBRepository.TryConnection())
+            {
+                MessageBox.Show("Проблемы с базой данных. Проверьте настройки строки подключения, правильно ли указано имя сервера",
+                    "Проблемы с базой данных", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             new AddHomesteadForm(AddHomesteadState.AddOnlyPayments).Show();
         }
     }
