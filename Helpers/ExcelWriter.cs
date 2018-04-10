@@ -23,14 +23,14 @@ namespace EMS.Desktop.Helpers
             {
                 string[] str = file210[i].Split('^');
                 datas.Datas.Add(new Report210.ReportData());
-                datas.Datas[i - 1].Id = Convert.ToInt32(str[0]);
-                datas.Datas[i - 1].ServiceId = Convert.ToInt32(str[1]);
-                datas.Datas[i - 1].HomeSteadNumber = Convert.ToInt32(str[2]);
+                datas.Datas[i - 1].Id = int.Parse(str[0]);
+                datas.Datas[i - 1].ServiceId = int.Parse(str[1]);
+                datas.Datas[i - 1].HomeSteadNumber = int.Parse(str[2]);
                 datas.Datas[i - 1].OwnerName = str[3];
-                datas.Datas[i - 1].Date = new DateTime(Convert.ToInt32(str[5].Split('.')[1]), Convert.ToInt32(str[5].Split('.')[0]), 1);
-                datas.Datas[i - 1].Introduced = Convert.ToDouble(str[6].Replace(".", ","));
-                datas.Datas[i - 1].Arrer = Convert.ToDouble(str[7].Replace(".", ","));
-                datas.Datas[i - 1].Entered = Convert.ToDouble(str[8].Replace(".", ","));
+                datas.Datas[i - 1].Date = new DateTime(int.Parse(str[5].Split('.')[1]), int.Parse(str[5].Split('.')[0]), 1);
+                datas.Datas[i - 1].Introduced = double.Parse(str[6].Replace(".", ","));
+                datas.Datas[i - 1].Arrer = double.Parse(str[7].Replace(".", ","));
+                datas.Datas[i - 1].Entered = double.Parse(str[8].Replace(".", ","));
                 datas.Datas[i - 1].Code = str[9] + "^" + str[10] + "^" + str[11] + "^" + str[12] + "^" + str[13] + "^" + str[14] + "^" + str[15] + "^" + str[16] + "^" + str[17] + "^" + str[18] + "^" + str[19];
                 datas.Datas[i - 1].meterInfo = new List<Report210.ReportData.MeterInfo>();
                 if (datas.Datas[i - 1].ServiceId == 2)
@@ -39,8 +39,8 @@ namespace EMS.Desktop.Helpers
                     for (int j = 0; j < countOfMeters; j++)
                         datas.Datas[i - 1].meterInfo.Add(new Report210.ReportData.MeterInfo()
                         {
-                            oldValue = Convert.ToInt32(str[10].Split('~')[6 + 5 * j]),
-                            newValue = Convert.ToInt32(str[10].Split('~')[8 + 5 * j]),
+                            oldValue = int.Parse(str[10].Split('~')[6 + 5 * j]),
+                            newValue = int.Parse(str[10].Split('~')[8 + 5 * j]),
                             number = j + 1
                         });
                 }
@@ -308,7 +308,10 @@ namespace EMS.Desktop.Helpers
                     ws.Cells[1, 1, 2, 7].Merge = true;
                     ws.Cells[1, 1].Value = "Данные об уплате взносов СТ «Диколовка-1»";
                     ws.Cells[3, 1, 3, 7].Merge = true;
-                    ws.Cells[4, 1].Value = "По состоянию на 01." + (month == 12 ? "01" : Convert.ToString(month + 1)) + '.' + DateTime.UtcNow.Year;
+                    if (ConfigAppManager.GetReportDay() < 10)
+                        ws.Cells[4, 1].Value = "По состоянию на 01." + (month == 12 ? "01" : month > 8 ? Convert.ToString(month + 1) : ('0' + Convert.ToString(month + 1))) + '.' + DateTime.Now.Year;
+                    else
+                        ws.Cells[4, 1].Value = "По состоянию на " + DateTime.DaysInMonth(DateTime.Now.Year, month) + '.' + (month > 9 ? month.ToString() : ("0" + month)) + '.' + DateTime.Now.Year;
                     ws.Cells[4, 1].Value = "№ по порядку";
                     ws.Cells[4, 2].Value = "№ участка";
                     ws.Cells[4, 3].Value = "ФИО";
@@ -389,13 +392,12 @@ namespace EMS.Desktop.Helpers
                     ws.Cells[5, 11].Value = "Доплата по долгам";
                     ws.Cells[5, 12].Value = ConfigAppManager.GetTariff();
 
-                    int i = 7;
-                    foreach (Payment data in datas)
+                    int i = 6;
+                    foreach (Payment data in datas.OrderBy(x => x.Homestead.Number))
                     {
                         foreach(MeterData md in data.MeterData)
                         {
-                            ws.Cells[i, 1].Value = i - 6;
-                            ws.Cells[i, 2].Value = data.Homestead.Number;
+                            ws.Cells[++i, 2].Value = data.Homestead.Number;
                             ws.Cells[i, 3].Value = "" + data.Date.Value.Year + '.' +
                                 (data.Date.Value.Month < 10 ? ('0' + data.Date.Value.Month.ToString()) : data.Date.Value.Month.ToString()) +
                                 '.' + (data.Date.Value.Day < 10 ? ('0' + data.Date.Value.Day.ToString()) : data.Date.Value.Day.ToString());
@@ -407,18 +409,31 @@ namespace EMS.Desktop.Helpers
                             ws.Cells[i, 12].Value = data.Entered;
                             for (int j = 1; j < 12; j++)
                                 ws.Cells[i, j].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                            i++;
+                        }
+                        if (data.MeterData.Count > 1)
+                        {
+                            int c = data.MeterData.Count - 1;
+                            ws.Cells[i - c, 1, i, 1].Merge = true;
+                            ws.Cells[i - c, 2, i, 2].Merge = true;
+                            ws.Cells[i - c, 3, i, 3].Merge = true;
+                            for (int j = c; j > 0; j--)
+                            {
+                                    ws.Cells[i - j, 4].Value = 0;
+                                    ws.Cells[i - j, 12].Value = 0;
+                            }
                         }
                     }
 
-                    ws.Cells[7, 5, i - 1, 5].Formula = "D7 - L7";
-                    ws.Cells[7, 7, i - 1, 7].Formula = "ROUND(F7 * $L$5, 2)";
-                    ws.Cells[7, 10, i - 1, 10].Formula = "ROUND(F7 * I7 * $L$5, 2)";
-                    ws.Cells[7, 14, i - 1, 14].Formula = "G7 + J7 + K7";
-                    ws.Cells[i, 4, i, 5].Formula = "SUM(D7:D" + (i - 1) + ')';
-                    ws.Cells[i, 7].Formula = "SUM(G7:G" + (i - 1) + ')';
-                    ws.Cells[i, 10, i, 11].Formula = "SUM(J7:J" + (i - 1) + ')';
-                    ws.Cells[i, 14].Formula = "SUM(N7:N" + (i - 1) + ')';
+                    ws.Cells[7, 1].Value = 1;
+                    ws.Cells[8, 1, i, 1].Formula = "A7 + 1";
+                    ws.Cells[7, 5, i, 5].Formula = "D7 - L7";
+                    ws.Cells[7, 7, i, 7].Formula = "ROUND(F7 * $L$5, 2)";
+                    ws.Cells[7, 10, i, 10].Formula = "ROUND(F7 * I7 * $L$5, 2)";
+                    ws.Cells[7, 14, i, 14].Formula = "G7 + J7 + K7";
+                    ws.Cells[i + 1, 4, i + 1, 5].Formula = "SUM(D7:D" + i + ')';
+                    ws.Cells[i + 1, 7].Formula = "SUM(G7:G" + i + ')';
+                    ws.Cells[i + 1, 10, i + 1, 11].Formula = "SUM(J7:J" + i + ')';
+                    ws.Cells[i + 1, 14].Formula = "SUM(N7:N" + i + ')';
 
                     ws.Cells[5, 1, 6, 11].Style.Font.Bold = true;
                     for (int j = 1; j < 12; j++)
@@ -427,23 +442,26 @@ namespace EMS.Desktop.Helpers
                         ws.Cells[6, j].Style.Border.BorderAround(ExcelBorderStyle.Thin);
                         ws.Cells[i, j].Style.Border.BorderAround(ExcelBorderStyle.Thin);
                     }
-                    ws.Cells[5, 1, i, 11].Style.Border.BorderAround(ExcelBorderStyle.Medium);
-                    ws.Cells[i, 1, i, 11].Style.Border.Top.Style = ExcelBorderStyle.Medium;
+                    ws.Cells[5, 1, i + 1, 11].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+                    ws.Cells[i + 1, 1, i + 1, 11].Style.Border.Top.Style = ExcelBorderStyle.Medium;
                     ws.Cells[6, 1, 6, 11].Style.Border.Bottom.Style = ExcelBorderStyle.Medium;
-                    ws.Cells[1, 1, i - 1, 11].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                    ws.Cells[1, 1, i - 1, 11].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-                    ws.Cells[7, 12, i - 1, 12].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
-                    ws.Cells[7, 12, i - 1, 12].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-                    ws.Cells[7, 14, i, 14].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                    ws.Cells[7, 14, i, 14].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-                    ws.Cells[7, 14, i - 1, 14].Style.Font.Color.SetColor(System.Drawing.Color.Red);
+                    ws.Cells[1, 1, i, 11].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Cells[1, 1, i, 11].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                    ws.Cells[7, 12, i, 12].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[7, 12, i, 12].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                    ws.Cells[7, 14, i + 1, 14].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                    ws.Cells[7, 14, i + 1, 14].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                    ws.Cells[7, 14, i, 14].Style.Font.Color.SetColor(System.Drawing.Color.Red);
                 }
                 else
                 {
                     ws.Cells[1, 1, 2, 8].Merge = true;
-                    ws.Cells[1, 1].Value = "Сводная ведомость об уплате налога на " + (serviceId == 3 ? "Землю" : "Недвижимость") + " СТ «Диколовка-1»";
+                    ws.Cells[1, 1].Value = "Данные об уплате налога на " + (serviceId == 3 ? "Землю" : "Недвижимость") + " СТ «Диколовка-1»";
                     ws.Cells[3, 1, 3, 8].Merge = true;
-                    ws.Cells[3, 1].Value = "По состоянию на 01." + (month == 12 ? "01" : month  > 8 ? Convert.ToString(month + 1) : ('0' + Convert.ToString(month + 1))) + '.' + DateTime.UtcNow.Year;
+                    if (ConfigAppManager.GetReportDay() < 10)
+                        ws.Cells[4, 1].Value = "По состоянию на 01." + (month == 12 ? "01" : month > 8 ? Convert.ToString(month + 1) : ('0' + Convert.ToString(month + 1))) + '.' + DateTime.Now.Year;
+                    else
+                        ws.Cells[4, 1].Value = "По состоянию на " + DateTime.DaysInMonth(DateTime.Now.Year, month) + '.' + (month > 9 ? month.ToString() : ("0" + month)) + '.' + DateTime.Now.Year;
                     ws.Cells[4, 1, 5, 1].Merge = true;
                     ws.Cells[4, 1].Value = "№ по порядку";
                     ws.Cells[4, 2, 5, 2].Merge = true;
@@ -534,7 +552,7 @@ namespace EMS.Desktop.Helpers
                 ws.Cells[2, 4].Value = "Номер участка";
                 ws.Cells[2, 5].Value = "Дата";
                 ws.Cells[2, 6].Value = "Задолженность";
-                ws.Cells[2, 7].Value = "Новые показания";
+                ws.Cells[2, 7].Value = "Последние показания";
                 ws.Cells[2, 8].Value = "Внесено";
                 for (int j = 1; j < 10; j++)
                     ws.Cells[2, j].Style.Border.BorderAround(ExcelBorderStyle.Thin);
@@ -558,9 +576,9 @@ namespace EMS.Desktop.Helpers
                         if (x.MeterData.Count > 1)
                         {
                             for (int j = 1; j < 7; j++)
-                                ws.Cells[i, j, i + x.MeterData.Count - 1, j].Merge = true;
-                            ws.Cells[i, 8, i + x.MeterData.Count - 1, 8].Merge = true;
-                            ws.Cells[i, 9, i + x.MeterData.Count - 1, 9].Merge = true;
+                                ws.Cells[i - x.MeterData.Count + 1, j, i, j].Merge = true;
+                            ws.Cells[i - x.MeterData.Count + 1, 8, i, 8].Merge = true;
+                            ws.Cells[i - x.MeterData.Count + 1, 9, i, 9].Merge = true;
                             for (int j0 = 1; j0 < x.MeterData.Count; j0++)
                                 for (int j = 1; j < 10; j++)
                                     ws.Cells[j0, j].Style.Border.BorderAround(ExcelBorderStyle.Thin);
@@ -574,8 +592,10 @@ namespace EMS.Desktop.Helpers
                 }
 
                 ws.Cells[2, 1, 2, 9].Style.Font.Bold = true;
+                ws.Cells[2, 1, 2, 9].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 ws.Cells[2, 1, i - 1, 9].Style.Border.BorderAround(ExcelBorderStyle.Medium);
                 ws.Cells[2, 1, 2, 9].Style.Border.Bottom.Style = ExcelBorderStyle.Medium;
+                ws.Cells[2, 1, i - 1, 9].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
 
                 try
                 {

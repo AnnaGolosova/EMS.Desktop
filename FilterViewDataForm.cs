@@ -21,9 +21,8 @@ namespace EMS.Desktop
         public FilterViewDataForm(MainForm _obj, FilterParams filter, bool _IsArear)
         {
             InitializeComponent();
-            DBRepository repository = new DBRepository();
-            string[] listhomestd = repository.GetHomestead().Select(h => h.OwnerName).ToArray();
-            int[] listnumber = repository.GetHomestead().Select(h => h.Number.Value).ToArray();
+            string[] listhomestd = DBRepository.GetHomestead().Select(h => h.OwnerName).ToArray();
+            int[] listnumber = DBRepository.GetHomestead().Select(h => h.Number).ToArray();
             var values = new AutoCompleteStringCollection();
             values.AddRange(listhomestd);
 
@@ -77,9 +76,8 @@ namespace EMS.Desktop
         private FilterParams BuildParams()
         {
             FilterParams param = new FilterParams();
-            DBRepository dbr = new DBRepository();
-            List<int> nbr = dbr.GetHomestead().Select(s => (int)s.Number).ToList();
-            List<string> homestd = dbr.GetHomestead().Select(s => s.OwnerName).ToList();
+            List<int> nbr = DBRepository.GetHomestead().Select(s => (int)s.Number).ToList();
+            List<string> homestd = DBRepository.GetHomestead().Select(s => s.OwnerName).ToList();
             if (!radioButtonAllTime.Checked)
             {
                 param.FromDate = dateTimePickerAt.Value.Date;

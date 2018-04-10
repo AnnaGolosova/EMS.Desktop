@@ -61,6 +61,52 @@ namespace EMS.Desktop.Services
             return list;
         }
 
+        public static Homestead AddHomestead(int t, string text)
+        {
+            Homestead h = new Homestead() { Number = t, OwnerName = text };
+            db.Homestead.Add(h);
+            db.SaveChanges();
+
+            Meter m = new Meter() { IdHomestead = h.Id, MeterNumber = 1 };
+            db.Meter.Add(m);
+            db.SaveChanges();
+
+            return h;
+        }
+
+        public static void AddStartValues(int homesteadId, List<int> serviceList, double meterDataValue, int meterId)
+        {
+            foreach(int i in serviceList)
+            {
+                Payment newPayment = new Payment()
+                {
+                    Arrear = 0,
+                    Date = DateTime.Now,
+                    Entered = 0,
+                    IdFile = 1,
+                    IdService = i,
+                    Introduced = 0,
+                    IdHomestead = homesteadId,
+                    PackageNumber = 1
+                };
+                db.Payment.Add(newPayment);
+                db.SaveChanges();
+                if(i == 2)
+                {
+                    MeterData meterData = new MeterData()
+                    {
+                        Id_Payment = newPayment.Id,
+                        Date = DateTime.Now,
+                        IdMeter = meterId,
+                        NewValue = meterDataValue,
+                        OldValue = 0,
+                    };
+                    db.MeterData.Add(meterData);
+                    db.SaveChanges();
+                }
+            }
+        }
+
         public double GetAmount()
         {
             try
@@ -174,7 +220,7 @@ namespace EMS.Desktop.Services
             db.SaveChanges();
         }
 
-        public List<Homestead> GetHomestead()
+        public static List<Homestead> GetHomestead()
         {
             return db.Homestead.ToList();
         }
@@ -631,6 +677,12 @@ namespace EMS.Desktop.Services
             string filePath = file.Path.Replace(fileName, "") + "Downloaded\\" + fileName;
             f.Path = filePath;
             db.SaveChanges();
+        }
+
+        public static void ChangeOwnerName(Homestead homestead)
+        {
+            Homestead h = GetHomestead(homestead.Number);
+            h.OwnerName = homestead.OwnerName;
         }
         #endregion
     }

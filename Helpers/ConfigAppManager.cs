@@ -113,5 +113,22 @@ namespace EMS.Desktop.Helpers
             config.Save(ConfigurationSaveMode.Modified);
             ConfigurationManager.RefreshSection("Tariff");
         }
+
+        public static int GetReportDay()
+        {
+            Configuration config = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
+            if (config.AppSettings.Settings["ReportDay"].Value != null)
+                return int.Parse(config.AppSettings.Settings["ReportDay"].Value);
+            else
+                return 0;
+        }
+
+        public static void SetReportDay(string day)
+        {
+            Configuration config = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
+            config.AppSettings.Settings["ReportDay"].Value = day;
+            config.Save(ConfigurationSaveMode.Modified);
+            ConfigurationManager.RefreshSection("ReportDay");
+        }
     }
 }
