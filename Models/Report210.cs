@@ -10,6 +10,7 @@ namespace EMS.Desktop.Models
     {
         public List<ReportData> Datas;
         public int FileId;
+        public int PackageNumber;
 
         public class ReportData
         {
@@ -30,7 +31,7 @@ namespace EMS.Desktop.Models
             {
                 public int number;
                 public int? rateId;
-                public double? oldValue;
+                public double oldValue;
                 public double newValue;
                 public int? id;
             }

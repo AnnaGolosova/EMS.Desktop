@@ -53,9 +53,80 @@ c:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\EPPlus.dl
 c:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\EntityFramework.SqlServer.xml
 c:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\EPPlus.xml
 c:\Users\Администратор\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.Forms.RateEditForm.resources
-c:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\EMS 1.2.exe.config
+C:\Users\Fazz\Source\Repos\EMS.Desktop\bin\Debug\EMS 1.2.exe.config
+C:\Users\Fazz\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.csproj.ResolveComReference.cache
+C:\Users\Fazz\Source\Repos\EMS.Desktop\obj\Debug\EMS 1.2.exe
+C:\Users\Fazz\Source\Repos\EMS.Desktop\obj\Debug\EMS 1.2.pdb
+C:\Users\Fazz\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.csprojResolveAssemblyReference.cache
+C:\Users\Fazz\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.Forms.CreateExcel.resources
+C:\Users\Fazz\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.Forms.RateEditForm.resources
+C:\Users\Fazz\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.MainForm.resources
+C:\Users\Fazz\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.FormAboutProgram.resources
+C:\Users\Fazz\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.FormReposForERIP.resources
+C:\Users\Fazz\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.FormReposForExcel.resources
+C:\Users\Fazz\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.FormSettings.resources
+C:\Users\Fazz\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.Properties.Resources.resources
+C:\Users\Fazz\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.csproj.GenerateResource.Cache
+C:\Users\Fazz\Source\Repos\EMS.Desktop\bin\Debug\EMS 1.2.exe.manifest
+C:\Users\Fazz\Source\Repos\EMS.Desktop\bin\Debug\EMS 1.2.application
+C:\Users\Fazz\Source\Repos\EMS.Desktop\bin\Debug\EMS 1.2.exe
+C:\Users\Fazz\Source\Repos\EMS.Desktop\bin\Debug\EMS 1.2.pdb
+C:\Users\Fazz\Source\Repos\EMS.Desktop\bin\Debug\EntityFramework.dll
+C:\Users\Fazz\Source\Repos\EMS.Desktop\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Fazz\Source\Repos\EMS.Desktop\bin\Debug\EPPlus.dll
+C:\Users\Fazz\Source\Repos\EMS.Desktop\bin\Debug\Microsoft.VisualStudio.OLE.Interop.dll
+C:\Users\Fazz\Source\Repos\EMS.Desktop\bin\Debug\Microsoft.VisualStudio.Shell.Interop.dll
+C:\Users\Fazz\Source\Repos\EMS.Desktop\bin\Debug\Microsoft.VisualStudio.TextManager.Interop.dll
+C:\Users\Fazz\Source\Repos\EMS.Desktop\bin\Debug\Microsoft.WindowsAPICodePack.dll
+C:\Users\Fazz\Source\Repos\EMS.Desktop\bin\Debug\Microsoft.WindowsAPICodePack.Shell.dll
+C:\Users\Fazz\Source\Repos\EMS.Desktop\bin\Debug\EntityFramework.xml
+C:\Users\Fazz\Source\Repos\EMS.Desktop\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Fazz\Source\Repos\EMS.Desktop\bin\Debug\EPPlus.xml
+C:\Users\Fazz\Source\Repos\EMS.Desktop\bin\Debug\Microsoft.VisualStudio.OLE.Interop.xml
+C:\Users\Fazz\Source\Repos\EMS.Desktop\bin\Debug\Microsoft.VisualStudio.Shell.Interop.xml
+C:\Users\Fazz\Source\Repos\EMS.Desktop\bin\Debug\Microsoft.VisualStudio.TextManager.Interop.xml
+C:\Users\Fazz\Source\Repos\EMS.Desktop\obj\Debug\EMS 1.2.exe.manifest
+C:\Users\Fazz\Source\Repos\EMS.Desktop\obj\Debug\EMS 1.2.application
+C:\Users\Daniil\Source\Repos\EMS.Desktop\bin\Debug\EMS 1.2.exe.config
+C:\Users\Daniil\Source\Repos\EMS.Desktop\obj\Debug\Interop.DSOFile.dll
+C:\Users\Daniil\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.csproj.ResolveComReference.cache
+C:\Users\Daniil\Source\Repos\EMS.Desktop\obj\Debug\EMS 1.2.exe
+C:\Users\Daniil\Source\Repos\EMS.Desktop\obj\Debug\EMS 1.2.pdb
+C:\Users\Daniil\Source\Repos\EMS.Desktop\bin\Debug\EMS 1.2.exe.manifest
+C:\Users\Daniil\Source\Repos\EMS.Desktop\bin\Debug\EMS 1.2.application
+C:\Users\Daniil\Source\Repos\EMS.Desktop\bin\Debug\EMS 1.2.exe
+C:\Users\Daniil\Source\Repos\EMS.Desktop\bin\Debug\EMS 1.2.pdb
+C:\Users\Daniil\Source\Repos\EMS.Desktop\bin\Debug\EntityFramework.dll
+C:\Users\Daniil\Source\Repos\EMS.Desktop\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Daniil\Source\Repos\EMS.Desktop\bin\Debug\EPPlus.dll
+C:\Users\Daniil\Source\Repos\EMS.Desktop\bin\Debug\Microsoft.VisualStudio.OLE.Interop.dll
+C:\Users\Daniil\Source\Repos\EMS.Desktop\bin\Debug\Microsoft.VisualStudio.Shell.Interop.dll
+C:\Users\Daniil\Source\Repos\EMS.Desktop\bin\Debug\Microsoft.VisualStudio.TextManager.Interop.dll
+C:\Users\Daniil\Source\Repos\EMS.Desktop\bin\Debug\Microsoft.WindowsAPICodePack.dll
+C:\Users\Daniil\Source\Repos\EMS.Desktop\bin\Debug\Microsoft.WindowsAPICodePack.Shell.dll
+C:\Users\Daniil\Source\Repos\EMS.Desktop\bin\Debug\EntityFramework.xml
+C:\Users\Daniil\Source\Repos\EMS.Desktop\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Daniil\Source\Repos\EMS.Desktop\bin\Debug\EPPlus.xml
+C:\Users\Daniil\Source\Repos\EMS.Desktop\bin\Debug\Microsoft.VisualStudio.OLE.Interop.xml
+C:\Users\Daniil\Source\Repos\EMS.Desktop\bin\Debug\Microsoft.VisualStudio.Shell.Interop.xml
+C:\Users\Daniil\Source\Repos\EMS.Desktop\bin\Debug\Microsoft.VisualStudio.TextManager.Interop.xml
+C:\Users\Daniil\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.csprojResolveAssemblyReference.cache
+C:\Users\Daniil\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.Forms.CreateExcel.resources
+C:\Users\Daniil\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.Forms.RateEditForm.resources
+C:\Users\Daniil\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.MainForm.resources
+C:\Users\Daniil\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.FormAboutProgram.resources
+C:\Users\Daniil\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.FormReposForERIP.resources
+C:\Users\Daniil\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.FormReposForExcel.resources
+C:\Users\Daniil\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.FormSettings.resources
+C:\Users\Daniil\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.Properties.Resources.resources
+C:\Users\Daniil\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.csproj.GenerateResource.Cache
+C:\Users\Daniil\Source\Repos\EMS.Desktop\obj\Debug\EMS 1.2.exe.manifest
+C:\Users\Daniil\Source\Repos\EMS.Desktop\obj\Debug\EMS 1.2.application
+c:\Users\Администратор\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.FilterViewDataForm.resources
+c:\Users\Администратор\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.Forms.CreateExcel.resources
 c:\Users\Администратор\Source\Repos\EMS.Desktop\obj\Debug\EMS 1.2.exe
 c:\Users\Администратор\Source\Repos\EMS.Desktop\obj\Debug\EMS 1.2.pdb
+c:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\EMS 1.2.exe.config
 c:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\EMS 1.2.exe.manifest
 c:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\EMS 1.2.application
 c:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\EMS 1.2.exe
@@ -66,6 +137,5 @@ c:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\Microsoft
 c:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\Microsoft.VisualStudio.OLE.Interop.xml
 c:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\Microsoft.VisualStudio.Shell.Interop.xml
 c:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\Microsoft.VisualStudio.TextManager.Interop.xml
-c:\Users\Администратор\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.FilterViewDataForm.resources
 c:\Users\Администратор\Source\Repos\EMS.Desktop\obj\Debug\EMS 1.2.exe.manifest
 c:\Users\Администратор\Source\Repos\EMS.Desktop\obj\Debug\EMS 1.2.application

@@ -45,7 +45,8 @@
           <Property Name="Id_Meter" Type="int" Nullable="false" />
           <Property Name="Id_Payment" Type="int" />
           <Property Name="Id_Rate" Type="int" />
-          <Property Name="Value" Type="float" Nullable="false" />
+          <Property Name="oldValue" Type="float" Nullable="false" />
+          <Property Name="newValue" Type="float" Nullable="false" />
           <Property Name="Date" Type="date" />
         </EntityType>
         <EntityType Name="Payment">
@@ -60,6 +61,7 @@
           <Property Name="Arrear" Type="float" Nullable="false" />
           <Property Name="Entered" Type="float" Nullable="false" />
           <Property Name="Date" Type="date" />
+          <Property Name="PackageNumber" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Rate">
           <Key>
@@ -174,6 +176,10 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="GetAmount" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="float">
+          <Parameter Name="Month" Type="int" Mode="In" />
+          <Parameter Name="Year" Type="int" Mode="In" />
+        </Function>
         <EntityContainer Name="EMSModelStoreContainer">
           <EntitySet Name="Copay" EntityType="Self.Copay" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="File" EntityType="Self.File" Schema="dbo" store:Type="Tables" />
@@ -263,13 +269,14 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IdMeter" Type="Int32" Nullable="false" />
-          <Property Name="Value" Type="Double" Nullable="false" />
           <Property Name="Date" Type="DateTime" Precision="0" />
           <NavigationProperty Name="Meter" Relationship="Self.FK_MeterData_ToMeter" FromRole="MeterData" ToRole="Meter" />
           <Property Name="Id_Payment" Type="Int32" />
           <NavigationProperty Name="Payment" Relationship="EMSModel.FK_MeterData_ToPayment" FromRole="MeterData" ToRole="Payment" />
           <Property Name="Id_Rate" Type="Int32" />
           <NavigationProperty Name="Rate" Relationship="EMSModel.FK_MeterData_ToRate" FromRole="MeterData" ToRole="Rate" />
+          <Property Name="OldValue" Type="Double" Nullable="false" />
+          <Property Name="NewValue" Type="Double" Nullable="false" />
         </EntityType>
         <EntityType Name="Payment">
           <Key>
@@ -287,6 +294,7 @@
           <NavigationProperty Name="MeterData" Relationship="EMSModel.FK_MeterData_ToPayment" FromRole="Payment" ToRole="MeterData" />
           <NavigationProperty Name="Homestead" Relationship="EMSModel.FK_Payment_ToHomestead" FromRole="Payment" ToRole="Homestead" />
           <Property Name="Arrear" Type="Double" Nullable="false" />
+          <Property Name="PackageNumber" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Rate">
           <Key>
@@ -398,6 +406,13 @@
             <End Role="Homestead" EntitySet="Homestead" />
             <End Role="Payment" EntitySet="Payment" />
           </AssociationSet>
+          <FunctionImport Name="GetAmound" ReturnType="Collection(Double)">
+            <Parameter Name="Month" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetAmount" ReturnType="Collection(Double)">
+          <Parameter Name="Month" Mode="In" Type="Int32" />
+            <Parameter Name="Year" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <Association Name="FK_MeterData_ToPayment">
           <End Type="EMSModel.Payment" Role="Payment" Multiplicity="0..1" />
@@ -492,11 +507,12 @@
           <EntitySetMapping Name="MeterData">
             <EntityTypeMapping TypeName="EMSModel.MeterData">
               <MappingFragment StoreEntitySet="MeterData">
+                <ScalarProperty Name="NewValue" ColumnName="newValue" />
+                <ScalarProperty Name="OldValue" ColumnName="oldValue" />
                 <ScalarProperty Name="Id_Rate" ColumnName="Id_Rate" />
                 <ScalarProperty Name="Id_Payment" ColumnName="Id_Payment" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="IdMeter" ColumnName="Id_Meter" />
-                <ScalarProperty Name="Value" ColumnName="Value" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -504,6 +520,7 @@
           <EntitySetMapping Name="Payment">
             <EntityTypeMapping TypeName="EMSModel.Payment">
               <MappingFragment StoreEntitySet="Payment">
+                <ScalarProperty Name="PackageNumber" ColumnName="PackageNumber" />
                 <ScalarProperty Name="Arrear" ColumnName="Arrear" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="IdHomestead" ColumnName="Id_Homestead" />

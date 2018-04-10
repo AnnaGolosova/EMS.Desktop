@@ -15,8 +15,10 @@ namespace EMS.Desktop
     public partial class FilterViewDataForm : Form
     {
         public MainForm obj;
+        FilterParams param = new FilterParams();
+        bool IsArear = false;
 
-        public FilterViewDataForm(MainForm _obj)
+        public FilterViewDataForm(MainForm _obj, FilterParams filter, bool _IsArear)
         {
             InitializeComponent();
             DBRepository repository = new DBRepository();
@@ -35,6 +37,34 @@ namespace EMS.Desktop
             comboBoxNumber.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             comboBoxNumber.AutoCompleteSource = AutoCompleteSource.ListItems;
             comboBoxNumber.Text = null;
+
+            param = filter;
+            IsArear = _IsArear;
+
+            if (param.ServicId != 0)
+            {
+                if (param.ServicId == 1)
+                    radioButton1.Checked = true;
+                if (param.ServicId == 2)
+                    radioButton2.Checked = true;
+                if (param.ServicId == 3)
+                    radioButton3.Checked = true;
+                if (param.ServicId == 4)
+                    radioButton4.Checked = true;
+            }
+            if (param.HomesteadNumbr != 0)
+                comboBoxNumber.Text = param.HomesteadNumbr.ToString();
+            if (param.HomesteadOwnerName != null)
+                comboBoxOwnerName.Text = param.HomesteadOwnerName;
+            if (param.FromDate.Year != 1)
+            {
+                dateTimePickerAt.Enabled = true;
+                dateTimePickerAt.Value = param.FromDate;
+                dateTimePickerTo.Enabled = true;
+                dateTimePickerTo.Value = param.ToDate;
+                labelTo.Enabled = true;
+                radioButtonAt.Checked = true;
+            }
 
             obj = _obj;
         }
@@ -88,6 +118,10 @@ namespace EMS.Desktop
                 }
             }
             catch { }
+            if (IsArear)
+                param.IsArear = true;
+            else
+                param.IsArear = false;
             return param;
         }
 
@@ -112,8 +146,9 @@ namespace EMS.Desktop
 
         private void buttonApply_Click(object sender, EventArgs e)
         {
-            FilterParams param = new FilterParams();
+            
             param = BuildParams();
+            obj.filterPrm = param;
             obj.LoadDataGridView(param);
             Hide();
 

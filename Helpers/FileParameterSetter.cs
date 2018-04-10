@@ -60,7 +60,7 @@ namespace EMS.Desktop.Helpers
                     m_file.CustomProperties.Add(PROPERTY_NAME, ref value);
                     m_file.Save();
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     MessageBox.Show("Файл не поддерживается.", "Неверный формат", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }

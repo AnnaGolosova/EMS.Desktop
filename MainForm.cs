@@ -15,6 +15,23 @@ namespace EMS.Desktop
 {
     public partial class MainForm : Form
     {
+        private delegate void LoadDelegate();
+        private List<Payment> data;
+        public FilterParams filterPrm = new FilterParams();
+
+        private void ShowAmount()
+        {
+            DBRepository db = new DBRepository();
+            if (!db.TryConnection())
+            {
+                AmountLabel.Visible = false;
+            }
+            else
+            {
+                AmountLabel.Text = "Сумма на р/с : " + db.GetAmount() + " BYN";
+            }
+        }
+
         public MainForm()
         {
             InitializeComponent();
@@ -23,6 +40,34 @@ namespace EMS.Desktop
             connectionStringsSection.ConnectionStrings["EMSEntities"].ConnectionString = ConfigAppManager.GetConnectionString();
             config.Save();
             ConfigurationManager.RefreshSection("connectionStrings");
+            ShowAmount();
+        }
+
+        private void LoadingComplete(IAsyncResult result)
+        {
+             BeginInvoke(new LoadDelegate(ShowAmount));
+            BeginInvoke(new LoadDelegate(ShowArrearDrid));
+        }
+
+        void ShowArrearDrid()
+        {
+            data = DBRepository.GetLastPayment();
+            ArrearEditDGV.Rows.Clear();
+            foreach (Payment p in data)
+            {
+                if(p.Service.Id == 2)
+                {
+                    ArrearEditDGV.Rows.Add(p.Id, p.Service.Id, p.Homestead.Number, p.Homestead.OwnerName,
+                        p.Introduced, p.Arrear,
+                        p.MeterData.OrderBy(md => md.Meter.MeterNumber).First().NewValue - p.MeterData.OrderBy(md => md.Meter.MeterNumber).First().OldValue,
+                        p.MeterData.OrderBy(md => md.Meter.MeterNumber).First().NewValue);
+                }
+                else
+                    ArrearEditDGV.Rows.Add(p.Id, p.Service.Id, p.Homestead.Number, p.Homestead.OwnerName,
+                        p.Introduced, p.Arrear);
+
+            }
+            ArrearGB.Visible = true;
         }
 
         public void OnCreate()
@@ -32,6 +77,7 @@ namespace EMS.Desktop
 
         private void MenuAboutProgram_Click(object sender, EventArgs e)
         {
+            var l = DBRepository.GetMonthData(new DateTime(2017, 9, 1), 4);
             FormAboutProgram FrAbPr = new FormAboutProgram();
             FrAbPr.ShowDialog();
         }
@@ -58,8 +104,8 @@ namespace EMS.Desktop
         {
             if (FileManager.GetNewFilesCount(ConfigAppManager.GetReports210Path()) != 0)
             {
-                Thread NewFile = new Thread(OnCreate);
-                NewFile.Start();
+                LoadDelegate loadDelegate = OnCreate;
+                IAsyncResult result = loadDelegate.BeginInvoke(new AsyncCallback(LoadingComplete), null);
             }
             else
             {
@@ -93,6 +139,8 @@ namespace EMS.Desktop
             try
             {
                 LoadingLabel.Visible = true;
+                ArrearGB.Visible = false;
+
                 DBRepository dbrepository = new DBRepository();
                 if(!dbrepository.TryConnection())
                 {
@@ -103,6 +151,7 @@ namespace EMS.Desktop
                     dataGridView1.Columns.Clear();
                     dataGridView1.Rows.Clear();
                     dataGridView1.Visible = true;
+                    createExcelButton.Hide();
 
                     var column1 = new DataGridViewColumn();
                     column1.HeaderText = "Количество платежей";
@@ -145,7 +194,7 @@ namespace EMS.Desktop
                     LabelProgrBar.Visible = true;
                 }
             }
-            catch(DataBaseException ex)
+            catch(DataBaseException)
             {
                 MessageBox.Show("Проблемы с базой данных. Проверьте настройки строки подключения, правильно ли указано имя сервера", 
                     "Проблемы с базой данных", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -155,7 +204,7 @@ namespace EMS.Desktop
 
         private void MenuDocuments_Click(object sender, EventArgs e)
         {
-            FilterViewDataForm Flt = new FilterViewDataForm(this);
+            FilterViewDataForm Flt = new FilterViewDataForm(this, filterPrm, false);
             Flt.Show();
         }
 
@@ -164,6 +213,7 @@ namespace EMS.Desktop
             try
             {
                 LoadingLabel.Visible = true;
+                ArrearGB.Visible = false;
                 DBRepository repository = new DBRepository();
                 if (repository.GetFiles().Count != 0)
                 {
@@ -179,7 +229,6 @@ namespace EMS.Desktop
                     var column1 = new DataGridViewColumn();
                     column1.HeaderText = "Услуга";
                     column1.Name = "Servise";
-                    //column1.MinimumWidth = 20;
                     column1.CellTemplate = new DataGridViewTextBoxCell();
                     column1.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                     column1.SortMode = DataGridViewColumnSortMode.Automatic;
@@ -187,7 +236,6 @@ namespace EMS.Desktop
                     var column2 = new DataGridViewColumn();
                     column2.HeaderText = "Н/у";
                     column2.Name = "HomeStead";
-                    //column2.MinimumWidth = 20;
                     column2.Width = 20;
                     column2.CellTemplate = new DataGridViewTextBoxCell();
                     column2.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
@@ -196,7 +244,6 @@ namespace EMS.Desktop
                     var column3 = new DataGridViewColumn();
                     column3.HeaderText = "Ф.И.О.";
                     column3.Name = "OwnerName";
-                    //column3.MinimumWidth = 20;
                     column3.CellTemplate = new DataGridViewTextBoxCell();
                     column3.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                     column3.SortMode = DataGridViewColumnSortMode.Automatic;
@@ -204,23 +251,20 @@ namespace EMS.Desktop
                     var column4 = new DataGridViewColumn();
                     column4.HeaderText = "Дата оплаты";
                     column4.Name = "Date";
-                    //column4.MinimumWidth = 20;
                     column4.CellTemplate = new DataGridViewTextBoxCell();
                     column4.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                     column4.SortMode = DataGridViewColumnSortMode.Automatic;
 
                     var column5 = new DataGridViewColumn();
-                    column5.HeaderText = "Внесено";
-                    column5.Name = "Introdused";
-                    // column5.MinimumWidth = 20;
+                    column5.HeaderText = "Задолженность"; 
+                    column5.Name = "Arrear";
                     column5.CellTemplate = new DataGridViewTextBoxCell();
                     column5.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                     column5.SortMode = DataGridViewColumnSortMode.Automatic;
 
                     var column6 = new DataGridViewColumn();
-                    column6.HeaderText = "Задолженность";
-                    column6.Name = "Arrear";
-                    //column6.Width = 20;
+                    column6.HeaderText = "Внесено";
+                    column6.Name = "Introdused"; 
                     column6.CellTemplate = new DataGridViewTextBoxCell();
                     column6.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                     column6.SortMode = DataGridViewColumnSortMode.Automatic;
@@ -228,25 +272,34 @@ namespace EMS.Desktop
                     var column7 = new DataGridViewColumn();
                     column7.HeaderText = "Поступило";
                     column7.Name = "Entered";
-                    //column7.MinimumWidth = 20;
                     column7.CellTemplate = new DataGridViewTextBoxCell();
                     column7.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                     column7.SortMode = DataGridViewColumnSortMode.Automatic;
 
                     var column8 = new DataGridViewColumn();
-                    column8.HeaderText = "Значение счётчика";
-                    column8.Name = "MeterData";
+                    column8.HeaderText = "Разность";
+                    column8.Name = "Difference";
                     column8.Width = 20;
                     column8.CellTemplate = new DataGridViewTextBoxCell();
                     column8.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                    //column8.SortMode = DataGridViewColumnSortMode.Automatic;
 
                     var column9 = new DataGridViewColumn();
-                    column9.HeaderText = "Путь к файлу";
-                    column9.Name = "Path";
-                    //column8.MinimumWidth = 20;
+                    column9.HeaderText = "Кол-во кВТ за месяц";
+                    column9.Name = "DifferenceMeter";
+                    column9.Width = 20;
                     column9.CellTemplate = new DataGridViewTextBoxCell();
-                    column9.SortMode = DataGridViewColumnSortMode.Automatic;
+                    column9.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+
+                    var column10 = new DataGridViewColumn();
+                    column10.HeaderText = "Значение счётчика";
+                    column10.Name = "MeterData";
+                    column10.CellTemplate = new DataGridViewTextBoxCell();
+                    column10.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+
+                    var column11 = new DataGridViewColumn();
+                    column11.HeaderText = "Путь к файлу";
+                    column11.Name = "Path";
+                    column11.CellTemplate = new DataGridViewTextBoxCell();
 
                     dataGridView1.Columns.Add(column1);
                     dataGridView1.Columns.Add(column2);
@@ -257,11 +310,13 @@ namespace EMS.Desktop
                     dataGridView1.Columns.Add(column7);
                     dataGridView1.Columns.Add(column8);
                     dataGridView1.Columns.Add(column9);
+                    dataGridView1.Columns.Add(column10);
+                    dataGridView1.Columns.Add(column11);
                     LoadingLabel.Visible = false;
 
                     dataGridView1.AllowUserToAddRows = false;
 
-                    List<Models.Payment> listdbr = repository.GetPayment();
+                    List<Payment> listdbr = repository.GetPayment();
                     listdbr.OrderBy(s => s.Date);
                     int x = 0;
                     if(param.ServicId != 0)
@@ -272,19 +327,23 @@ namespace EMS.Desktop
                         listdbr = listdbr.Where(c => c.Homestead.OwnerName == param.HomesteadOwnerName).ToList();
                     if (param.FromDate.Year != 1)
                         listdbr = listdbr.Where(c => c.Date >= param.FromDate && c.Date <= param.ToDate).ToList();
-                    foreach (Models.Payment s in listdbr)
+                    if (param.IsArear)
+                        listdbr = listdbr.Where(c => c.Arrear > 0.0).ToList();
+                    foreach (Payment s in listdbr)
                     {
                         if (s.IdService == 2)
                         {
-                            dataGridView1.Rows.Add(s.Service.Id, s.Homestead.Number, s.Homestead.OwnerName, s.Date.Value.ToShortDateString(), s.Introduced, "0.0", s.Entered, s.MeterData.ToList()[0].Value, s.File.Path);
+                            dataGridView1.Rows.Add(s.Service.Id, s.Homestead.Number, s.Homestead.OwnerName, s.Date.Value.ToShortDateString(), s.Arrear, s.Introduced, s.Entered,
+                                s.Introduced - s.Entered, s.MeterData.ToList()[0].NewValue - s.MeterData.ToList()[0].OldValue, s.MeterData.ToList()[0].NewValue, s.File.Path);
                             if (s.Homestead.Meter.Count > 1)
                             {
                                 int n = s.Homestead.Meter.Count;
                                 for (int i = 1; i < n; i++)
                                 {
                                     x++;
-                                    dataGridView1.Rows.Add(s.Service.Id, s.Homestead.Number, s.Homestead.OwnerName, s.Date.Value.ToShortDateString(), s.Introduced, "0.0", s.Entered, s.MeterData.ToList()[i].Value + "(" + (i + 1) +  " счётчик)", s.File.Path);
-                                    for (int j = 0; j < 7; j++)
+                                    dataGridView1.Rows.Add(s.Service.Id, s.Homestead.Number, s.Homestead.OwnerName, s.Date.Value.ToShortDateString(), s.Arrear, s.Introduced, s.Entered,
+                                s.Introduced - s.Entered, s.MeterData.ToList()[i].NewValue - s.MeterData.ToList()[i].OldValue + "(" + (i + 1) + " счётчик)", s.MeterData.ToList()[i].NewValue, s.File.Path);
+                                    for (int j = 0; j < 11; j++)
                                     {
                                         dataGridView1.Rows[x].Cells[j].Style.BackColor = Color.Lavender;
                                     }
@@ -293,11 +352,15 @@ namespace EMS.Desktop
                         }
                         else
                         {
-                            dataGridView1.Rows.Add(s.Service.Id, s.Homestead.Number, s.Homestead.OwnerName, s.Date.Value.ToShortDateString(), s.Introduced, "0.0", s.Entered, "", s.File.Path);
-                            dataGridView1.Rows[x].Cells[7].Style.BackColor = Color.Lavender;
+                            dataGridView1.Rows.Add(s.Service.Id, s.Homestead.Number, s.Homestead.OwnerName, s.Date.Value.ToShortDateString(), s.Introduced, s.Arrear, s.Entered);
+                            /*dataGridView1.Rows[x].Cells[7].Style.BackColor = Color.Lavender;
+                            dataGridView1.Rows[x].Cells[8].Style.BackColor = Color.Lavender;
+                            dataGridView1.Rows[x].Cells[9].Style.BackColor = Color.Lavender;
+                            dataGridView1.Rows[x].Cells[10].Style.BackColor = Color.Lavender;*/
                         }
                         x++;
                     }
+                    createExcelButton.Visible = true;
                 }
                 else
                 {
@@ -331,8 +394,8 @@ namespace EMS.Desktop
             LabelProgrBar.Visible = false;
             if (FileManager.GetNewFilesCount(ConfigAppManager.GetReports210Path()) != 0)
             {
-                Thread NewFile = new Thread(OnCreate);
-                NewFile.Start();
+                LoadDelegate loadDelegate = OnCreate;
+                IAsyncResult result = loadDelegate.BeginInvoke(new AsyncCallback(LoadingComplete), null);
             }
             else
             {
@@ -361,140 +424,48 @@ namespace EMS.Desktop
 
         private void DebtorToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            try
+            FilterViewDataForm Flt = new FilterViewDataForm(this, filterPrm, true);
+            Flt.Show();
+        }
+
+        private void ArrearConfirmB_Click(object sender, EventArgs e)
+        {
+            int i = 0;
+            foreach(Payment p in data)
             {
-                LoadingLabel.Visible = true;
-                DBRepository repository = new DBRepository();
-                List<Models.Payment> listdbr = repository.GetPayment();
-                if(listdbr.Max(s => s.Arrear) > 0.0)
+                if (double.Parse(ArrearEditDGV.Rows[i].Cells[5].Value.ToString().Replace('.', ',')) != 0)
                 {
-                    if (!repository.TryConnection())
-                    {
-                        LoadingLabel.Visible = false;
-                        throw new DataBaseException("");
-                    }
-                    LoadingLabel.Visible = true;
-                    dataGridView1.Columns.Clear();
-                    dataGridView1.Rows.Clear();
-                    dataGridView1.Visible = true;
-
-                    var column1 = new DataGridViewColumn();
-                    column1.HeaderText = "Услуга";
-                    column1.Name = "Servise";
-                    //column1.MinimumWidth = 20;
-                    column1.CellTemplate = new DataGridViewTextBoxCell();
-                    column1.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-
-                    var column2 = new DataGridViewColumn();
-                    column2.HeaderText = "Номер участка";
-                    column2.Name = "HomeStead";
-                    //column2.MinimumWidth = 20;
-                    column2.CellTemplate = new DataGridViewTextBoxCell();
-                    column2.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-
-                    var column3 = new DataGridViewColumn();
-                    column3.HeaderText = "Ф.И.О.";
-                    column3.Name = "OwnerName";
-                    //column3.MinimumWidth = 20;
-                    column3.CellTemplate = new DataGridViewTextBoxCell();
-                    column3.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-
-                    var column4 = new DataGridViewColumn();
-                    column4.HeaderText = "Дата оплаты";
-                    column4.Name = "Date";
-                    //column4.MinimumWidth = 20;
-                    column4.CellTemplate = new DataGridViewTextBoxCell();
-                    column4.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-
-                    var column5 = new DataGridViewColumn();
-                    column5.HeaderText = "Внесено";
-                    column5.Name = "Introdused";
-                    // column5.MinimumWidth = 20;
-                    column5.CellTemplate = new DataGridViewTextBoxCell();
-                    column5.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-
-                    var column6 = new DataGridViewColumn();
-                    column6.HeaderText = "Задолженность";
-                    column6.Name = "Arrear";
-                    // column6.MinimumWidth = 20;
-                    column6.CellTemplate = new DataGridViewTextBoxCell();
-                    column6.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-
-                    var column7 = new DataGridViewColumn();
-                    column7.HeaderText = "Поступило на рассчётный счёт";
-                    column7.Name = "Entered";
-                    //column7.MinimumWidth = 20;
-                    column7.CellTemplate = new DataGridViewTextBoxCell();
-                    column7.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-
-                    var column8 = new DataGridViewColumn();
-                    column8.HeaderText = "Значение счётчика";
-                    column8.Name = "MeterData";
-                    //column8.MinimumWidth = 20;
-                    column8.CellTemplate = new DataGridViewTextBoxCell();
-
-                    dataGridView1.Columns.Add(column1);
-                    dataGridView1.Columns.Add(column2);
-                    dataGridView1.Columns.Add(column3);
-                    dataGridView1.Columns.Add(column4);
-                    dataGridView1.Columns.Add(column5);
-                    dataGridView1.Columns.Add(column6);
-                    dataGridView1.Columns.Add(column7);
-                    dataGridView1.Columns.Add(column8);
-                    LoadingLabel.Visible = false;
-
-                    dataGridView1.AllowUserToAddRows = false;
-
-                    //List<Models.Payment> listdbr = repository.GetPayment();
-                    listdbr.OrderBy(s => s.Date);
-                    int x = 0;
-                    FilterParams param = new FilterParams();
-                    foreach (Models.Payment s in listdbr)
-                    {
-                         if(s.Arrear != 0.0)
-                         {
-                            if (s.IdService == 2)
-                            {
-                                dataGridView1.Rows.Add(s.Service.Id, s.Homestead.Number, s.Homestead.OwnerName, s.Date.Value.ToShortDateString(), s.Introduced, "0.0", s.Entered, s.MeterData.ToList()[0].Value);
-                                if (s.Homestead.Meter.Count > 1)
-                                {
-                                    int n = s.Homestead.Meter.Count;
-                                    for (int i = 1; i < n; i++)
-                                    {
-                                        x++;
-                                        dataGridView1.Rows.Add("", "", "", "", "", "", "", s.MeterData.ToList()[i].Value);
-                                        for (int j = 0; j < 7; j++)
-                                        {
-                                            dataGridView1.Rows[x].Cells[j].Style.BackColor = Color.Lavender;
-                                        }
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                dataGridView1.Rows.Add(s.Service.Id, s.Homestead.Number, s.Homestead.OwnerName, s.Date.Value.ToShortDateString(), s.Introduced, "0.0", s.Entered, "");
-                                dataGridView1.Rows[x].Cells[7].Style.BackColor = Color.Lavender;
-                            }
-                            x++;
-                       }
-                    }
-                    
+                    DBRepository.ChangeArrear(int.Parse(ArrearEditDGV.Rows[i].Cells[0].Value.ToString()), 
+                        double.Parse(ArrearEditDGV.Rows[i].Cells[5].Value.ToString().Replace('.', ',')));
                 }
-                else
-                {
-                    LoadingLabel.Visible = false;
-                    LabelProgrBar.Text = "Должники не найдены";
-                    LabelProgrBar.Visible = true;
-                }
-            }
-            catch (DataBaseException)
-            {
-                LoadingLabel.Visible = false;
-                MessageBox.Show("Проблемы с базой данных. Проверьте настройки строки подключения, правильно ли указано имя сервера",
-                    "Проблемы с базой данных", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
+                i++;
             }
 
+            ArrearGB.Visible = false;
+        }
+
+        private void ArrearEditDGV_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+        {
+            double d;
+            if(e.ColumnIndex == 5)
+            {
+                if (!double.TryParse(e.FormattedValue.ToString().Replace('.',','), out d))
+                    ArrearEditDGV.Rows[e.RowIndex].Cells[e.ColumnIndex].Style.BackColor = ColorTranslator.FromHtml("#ff899e");
+                else ArrearEditDGV.Rows[e.RowIndex].Cells[e.ColumnIndex].Style.BackColor = Color.White;
+            }
+        }
+
+        private void createExcelButton_Click(object sender, EventArgs e)
+        {
+            DBRepository dbrepository = new DBRepository();
+            if (!dbrepository.TryConnection())
+            {
+                throw new DataBaseException("");
+            }
+            if (dbrepository.GetFiles().Count != 0)
+            {
+                new Forms.CreateExcel(data).ShowDialog();
+            }
         }
     }
 }

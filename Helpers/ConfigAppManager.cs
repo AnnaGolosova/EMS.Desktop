@@ -86,5 +86,32 @@ namespace EMS.Desktop.Helpers
             config.Save(ConfigurationSaveMode.Modified);
             ConfigurationManager.RefreshSection("appSettings");
         }
+
+        public static int GetNextReportNumber()
+        {
+            Configuration config = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
+            int reportNumber = int.Parse(config.AppSettings.Settings["ReportNumber"].Value) + 1;
+            config.AppSettings.Settings["ReportNumber"].Value = reportNumber.ToString();
+            config.Save(ConfigurationSaveMode.Modified);
+            ConfigurationManager.RefreshSection("appSettings");
+            return reportNumber;
+        }
+
+        public static double GetTariff()
+        {
+            Configuration config = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
+            if (config.AppSettings.Settings["Tariff"].Value != null)
+                return Double.Parse(config.AppSettings.Settings["Tariff"].Value.ToString());
+            else
+                return 0;
+        }
+
+        public static void SetTariff(string tariff)
+        {
+            Configuration config = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
+            config.AppSettings.Settings["Tariff"].Value = tariff;
+            config.Save(ConfigurationSaveMode.Modified);
+            ConfigurationManager.RefreshSection("Tariff");
+        }
     }
 }

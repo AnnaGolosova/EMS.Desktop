@@ -34,12 +34,15 @@
             this.Number = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.OwnerName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.MeterNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Arrear = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Rate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.RateViewDGV = new System.Windows.Forms.DataGridView();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Title = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Percent = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Tariff = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Value = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             ((System.ComponentModel.ISupportInitialize)(this.RateDGV)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.RateViewDGV)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -58,13 +61,14 @@
             this.Number,
             this.OwnerName,
             this.MeterNumber,
+            this.Arrear,
             this.Rate});
             this.RateDGV.Dock = System.Windows.Forms.DockStyle.Fill;
             this.RateDGV.Location = new System.Drawing.Point(0, 0);
-            this.RateDGV.Margin = new System.Windows.Forms.Padding(2);
+            this.RateDGV.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.RateDGV.Name = "RateDGV";
             this.RateDGV.RowTemplate.Height = 24;
-            this.RateDGV.Size = new System.Drawing.Size(644, 169);
+            this.RateDGV.Size = new System.Drawing.Size(859, 271);
             this.RateDGV.TabIndex = 0;
             // 
             // Number
@@ -73,7 +77,7 @@
             this.Number.HeaderText = "Номер участка";
             this.Number.Name = "Number";
             this.Number.ReadOnly = true;
-            this.Number.Width = 99;
+            this.Number.Width = 125;
             // 
             // OwnerName
             // 
@@ -81,7 +85,7 @@
             this.OwnerName.HeaderText = "Имя владельца";
             this.OwnerName.Name = "OwnerName";
             this.OwnerName.ReadOnly = true;
-            this.OwnerName.Width = 102;
+            this.OwnerName.Width = 127;
             // 
             // MeterNumber
             // 
@@ -89,7 +93,12 @@
             this.MeterNumber.HeaderText = "Номер счетчика";
             this.MeterNumber.Name = "MeterNumber";
             this.MeterNumber.ReadOnly = true;
-            this.MeterNumber.Width = 105;
+            this.MeterNumber.Width = 133;
+            // 
+            // Arrear
+            // 
+            this.Arrear.HeaderText = "Задолжность";
+            this.Arrear.Name = "Arrear";
             // 
             // Rate
             // 
@@ -107,6 +116,8 @@
             this.RateViewDGV.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ID,
             this.Title,
+            this.Percent,
+            this.Tariff,
             this.Value});
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
@@ -118,12 +129,32 @@
             this.RateViewDGV.DefaultCellStyle = dataGridViewCellStyle1;
             this.RateViewDGV.Dock = System.Windows.Forms.DockStyle.Top;
             this.RateViewDGV.Location = new System.Drawing.Point(0, 0);
-            this.RateViewDGV.Margin = new System.Windows.Forms.Padding(2);
+            this.RateViewDGV.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.RateViewDGV.Name = "RateViewDGV";
             this.RateViewDGV.RowHeadersVisible = false;
             this.RateViewDGV.RowTemplate.Height = 24;
-            this.RateViewDGV.Size = new System.Drawing.Size(644, 78);
+            this.RateViewDGV.Size = new System.Drawing.Size(859, 96);
             this.RateViewDGV.TabIndex = 1;
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.RateViewDGV);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.RateDGV);
+            this.splitContainer1.Size = new System.Drawing.Size(859, 551);
+            this.splitContainer1.SplitterDistance = 276;
+            this.splitContainer1.TabIndex = 2;
             // 
             // ID
             // 
@@ -141,6 +172,19 @@
             this.Title.Name = "Title";
             this.Title.ReadOnly = true;
             // 
+            // Percent
+            // 
+            this.Percent.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Percent.HeaderText = "";
+            this.Percent.Name = "Percent";
+            // 
+            // Tariff
+            // 
+            this.Tariff.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Tariff.HeaderText = "";
+            this.Tariff.Name = "Tariff";
+            this.Tariff.ReadOnly = true;
+            // 
             // Value
             // 
             this.Value.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
@@ -148,35 +192,14 @@
             this.Value.Name = "Value";
             this.Value.ReadOnly = true;
             // 
-            // splitContainer1
-            // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer1.Margin = new System.Windows.Forms.Padding(2);
-            this.splitContainer1.Name = "splitContainer1";
-            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitContainer1.Panel1
-            // 
-            this.splitContainer1.Panel1.Controls.Add(this.RateViewDGV);
-            // 
-            // splitContainer1.Panel2
-            // 
-            this.splitContainer1.Panel2.Controls.Add(this.RateDGV);
-            this.splitContainer1.Size = new System.Drawing.Size(644, 448);
-            this.splitContainer1.SplitterDistance = 276;
-            this.splitContainer1.SplitterWidth = 3;
-            this.splitContainer1.TabIndex = 2;
-            // 
             // RateEditForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(644, 448);
+            this.ClientSize = new System.Drawing.Size(859, 551);
             this.Controls.Add(this.splitContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(2);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "RateEditForm";
             this.Text = "Редактор тарифов";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RateEditForm_FormClosing);
@@ -193,14 +216,17 @@
         #endregion
 
         private System.Windows.Forms.DataGridView RateDGV;
+        private System.Windows.Forms.DataGridView RateViewDGV;
+        private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Number;
         private System.Windows.Forms.DataGridViewTextBoxColumn OwnerName;
         private System.Windows.Forms.DataGridViewTextBoxColumn MeterNumber;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Arrear;
         private System.Windows.Forms.DataGridViewTextBoxColumn Rate;
-        private System.Windows.Forms.DataGridView RateViewDGV;
-        private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.DataGridViewTextBoxColumn ID;
         private System.Windows.Forms.DataGridViewTextBoxColumn Title;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Percent;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Tariff;
         private System.Windows.Forms.DataGridViewTextBoxColumn Value;
     }
 }

@@ -16,6 +16,7 @@ namespace EMS.Desktop.Helpers
         public static void LoadFile(MainForm obj)
         {
             string path = ConfigAppManager.GetReports210Path();
+            int packageNumber = DBRepository.GetNextPackageNumber();
             List<string> Rep210 = FileManager.GetNewFilePathes(path);
             if (FileManager.GetNewFilesCount(path) != 0)
             {
@@ -31,6 +32,7 @@ namespace EMS.Desktop.Helpers
                             throw new DataBaseException("");
                         }
                         Report210 report = ExcelWriter.Read210(s);
+                        report.PackageNumber = packageNumber;
                         File file = db.CreateFile(s);
                         report.FileId = file.Id;
                         db.LoadReport210(report);
@@ -39,10 +41,58 @@ namespace EMS.Desktop.Helpers
                             obj.MainProgressBar.Value++;
                         };
                         obj.Invoke(MainPrBr);
-                        FileManager.MoveFile(s, ConfigAppManager.GetReports210Path() + "\\Downloaded");
+
+                        DateTime date1 = new DateTime();
+                        date1 = DateTime.Now;
+                        int dateM = date1.Month;
+                        string dateMonth = "";
+                        string dateYear = date1.Year.ToString();
+                        switch (dateM)
+                        {
+                            case 1:
+                                dateMonth = "Январь";
+                                break;
+                            case 2:
+                                dateMonth = "Февраль";
+                                break;
+                            case 3:
+                                dateMonth = "Март";
+                                break;
+                            case 4:
+                                dateMonth = "Апрель";
+                                break;
+                            case 5:
+                                dateMonth = "Май";
+                                break;
+                            case 6:
+                                dateMonth = "Июнь";
+                                break;
+                            case 7:
+                                dateMonth = "Июль";
+                                break;
+                            case 8:
+                                dateMonth = "Август";
+                                break;
+                            case 9:
+                                dateMonth = "Сентябрь";
+                                break;
+                            case 10:
+                                dateMonth = "Октябрь";
+                                break;
+                            case 11:
+                                dateMonth = "Ноябрь";
+                                break;
+                            case 12:
+                                dateMonth = "Декабрь";
+                                break;
+                            default:
+                                break;
+                        }
+                        FileManager.MoveFile(s, ConfigAppManager.GetReports210Path() + $"\\Downloaded\\{dateMonth}{dateYear}");
+
                         db.SetFileAsDownloaded(file);
                     }
-                    catch(DataBaseException ex)
+                    catch(DataBaseException)
                     {
                         MessageBox.Show("Проблемы с базой данных. Проверьте настройки строки подключения, правильно ли указано имя сервера",
                             "Проблемы с базой данных", MessageBoxButtons.OK, MessageBoxIcon.Error);

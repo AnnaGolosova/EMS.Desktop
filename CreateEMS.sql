@@ -1,4 +1,5 @@
-﻿USE [EMS]
+﻿n6
+USE [EMS]
 GO
 DROP TABLE [dbo].[Copay];
 GO
@@ -83,6 +84,7 @@ CREATE TABLE [dbo].[Payment] (
     [Arrear]       FLOAT (53) NOT NULL DEFAULT 0,
     [Entered]       FLOAT (53) NOT NULL DEFAULT 0,
     [Date]          DATE       NULL,
+	[PackageNumber] INT			NOT NULL DEFAULT 0
 	
 	CONSTRAINT FK_Payment_ToHomestead		FOREIGN KEY ([Id_Homestead])		REFERENCES Homestead(Id),
 	CONSTRAINT FK_Payment_ToService		FOREIGN KEY ([Id_Service])		REFERENCES [Service](Id),
@@ -95,7 +97,8 @@ Create Table [dbo].[MeterData] (
 	Id_Meter	INT		NOT NULL,
     [Id_Payment] INT        NULL,
 	[Id_Rate]	INT		NULL,
-	Value		FLOAT	NOT NULL default 0,
+	oldValue		FLOAT	NOT NULL default 0,
+	newValue		FLOAT	NOT NULL default 0,
 	[Date]		DATE	NULL ,
 	
 	CONSTRAINT FK_MeterData_ToMeter FOREIGN KEY (Id_Meter) REFERENCES Meter(Id), 
@@ -116,7 +119,8 @@ select	payment.Id,
 		entered,
 		payment.[date],
 		id_rate,
-		MeterData.value as 'meterValue',
+		MeterData.newValue as 'newValue',
+		MeterData.oldValue as 'oldValue',
 		owner_name,
 		meter_number,
 		[path]
@@ -130,13 +134,43 @@ go
 
 INSERT INTO [SERVICE] 
 VALUES	(1, N'Взносы'),
-		(2, N'Электроэнергия'),
+		(2, N'Электроснабжение'),
 		(3, N'Налог на землю'),
 		(4, N'Налог на недвижимость')
 GO
 
 INSERT INTO [Rate]
-VALUES	(2, 0.1246, '09/01/2017', 1),
-		(2, 0.1246, '09/01/2017', 1),
-		(2, 0.1246, '09/01/2017', 1)
+VALUES	(2, 0.3, '09/01/2017', 1),
+		(2, 0.25, '09/01/2017', 1),
+		(2, 0.5, '09/01/2017', 1)
+GO
+
+DROP FUNCTION GetAmount
+GO
+
+CREATE FUNCTION GetAmount(@Month int, @Year int)
+RETURNS float(53)
+AS
+BEGIN
+	DECLARE @res float(53) = (
+		SELECT sum(Entered) as Amount FROM Payment
+		WHERE month([Date]) = @Month and year([Date]) = @Year
+	)
+	IF(@res IS NULL)
+		 set @res = 0
+	RETURN @res
+END
+GO
+
+DROP FUNCTION GetNextPackageNumber
+GO
+
+CREATE FUNCTION GetNextPackageNumber()
+RETURNS INT
+AS
+BEGIN
+	IF(Select count(*) from Payment) = 0
+		return 1
+	return (SELECT (max(PackageNumber) + 1) FROM Payment)
+END
 GO

@@ -28,6 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.Menu = new System.Windows.Forms.MenuStrip();
             this.MenuFail = new System.Windows.Forms.ToolStripMenuItem();
@@ -43,11 +51,26 @@
             this.MenuAboutProgram = new System.Windows.Forms.ToolStripMenuItem();
             this.MainProgressBar = new System.Windows.Forms.ProgressBar();
             this.ColorPanel = new System.Windows.Forms.Panel();
+            this.ArrearGB = new System.Windows.Forms.GroupBox();
+            this.ArrearConfirmB = new System.Windows.Forms.Button();
+            this.ArrearEditDGV = new System.Windows.Forms.DataGridView();
+            this.Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ServiceId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.HomesteadNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.OwnerName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Introduced = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Arrear = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Difference = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Value = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.LoadingLabel = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.LabelProgrBar = new System.Windows.Forms.Label();
+            this.AmountLabel = new System.Windows.Forms.Label();
+            this.createExcelButton = new System.Windows.Forms.Button();
             this.Menu.SuspendLayout();
             this.ColorPanel.SuspendLayout();
+            this.ArrearGB.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ArrearEditDGV)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -110,7 +133,6 @@
             // 
             // MenuReposForExcel
             // 
-            this.MenuReposForExcel.Enabled = false;
             this.MenuReposForExcel.Name = "MenuReposForExcel";
             this.MenuReposForExcel.Size = new System.Drawing.Size(135, 22);
             this.MenuReposForExcel.Text = "Отчёт Excel";
@@ -162,6 +184,7 @@
             // ColorPanel
             // 
             this.ColorPanel.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.ColorPanel.Controls.Add(this.ArrearGB);
             this.ColorPanel.Controls.Add(this.LoadingLabel);
             this.ColorPanel.Controls.Add(this.dataGridView1);
             this.ColorPanel.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -169,6 +192,143 @@
             this.ColorPanel.Name = "ColorPanel";
             this.ColorPanel.Size = new System.Drawing.Size(797, 391);
             this.ColorPanel.TabIndex = 2;
+            // 
+            // ArrearGB
+            // 
+            this.ArrearGB.Controls.Add(this.ArrearConfirmB);
+            this.ArrearGB.Controls.Add(this.ArrearEditDGV);
+            this.ArrearGB.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ArrearGB.Location = new System.Drawing.Point(0, 0);
+            this.ArrearGB.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.ArrearGB.Name = "ArrearGB";
+            this.ArrearGB.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.ArrearGB.Size = new System.Drawing.Size(764, 391);
+            this.ArrearGB.TabIndex = 3;
+            this.ArrearGB.TabStop = false;
+            this.ArrearGB.Text = "Отредактируйте задолженности";
+            this.ArrearGB.Visible = false;
+            // 
+            // ArrearConfirmB
+            // 
+            this.ArrearConfirmB.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.ArrearConfirmB.Location = new System.Drawing.Point(2, 362);
+            this.ArrearConfirmB.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.ArrearConfirmB.Name = "ArrearConfirmB";
+            this.ArrearConfirmB.Size = new System.Drawing.Size(760, 27);
+            this.ArrearConfirmB.TabIndex = 3;
+            this.ArrearConfirmB.Text = "Сохранить";
+            this.ArrearConfirmB.UseVisualStyleBackColor = true;
+            this.ArrearConfirmB.Click += new System.EventHandler(this.ArrearConfirmB_Click);
+
+            // 
+            // ArrearEditDGV
+            // 
+            this.ArrearEditDGV.AllowUserToAddRows = false;
+            this.ArrearEditDGV.AllowUserToDeleteRows = false;
+            this.ArrearEditDGV.AllowUserToResizeRows = false;
+            this.ArrearEditDGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.ArrearEditDGV.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Id,
+            this.ServiceId,
+            this.HomesteadNumber,
+            this.OwnerName,
+            this.Introduced,
+            this.Arrear,
+            this.Difference,
+            this.Value});
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.ArrearEditDGV.DefaultCellStyle = dataGridViewCellStyle8;
+            this.ArrearEditDGV.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ArrearEditDGV.Location = new System.Drawing.Point(2, 15);
+            this.ArrearEditDGV.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.ArrearEditDGV.Name = "ArrearEditDGV";
+            this.ArrearEditDGV.RowHeadersVisible = false;
+            this.ArrearEditDGV.RowTemplate.DefaultCellStyle.BackColor = System.Drawing.SystemColors.Control;
+            this.ArrearEditDGV.RowTemplate.Height = 24;
+            this.ArrearEditDGV.Size = new System.Drawing.Size(760, 374);
+            this.ArrearEditDGV.TabIndex = 2;
+            this.ArrearEditDGV.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.ArrearEditDGV_CellValidating);
+            // 
+            // Id
+            // 
+            this.Id.HeaderText = "Id";
+            this.Id.Name = "Id";
+            this.Id.Visible = false;
+            // 
+            // ServiceId
+            // 
+            this.ServiceId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            this.ServiceId.DefaultCellStyle = dataGridViewCellStyle1;
+            this.ServiceId.HeaderText = "Услуга";
+            this.ServiceId.Name = "ServiceId";
+            this.ServiceId.ReadOnly = true;
+            this.ServiceId.Width = 68;
+            // 
+            // HomesteadNumber
+            // 
+            this.HomesteadNumber.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            this.HomesteadNumber.DefaultCellStyle = dataGridViewCellStyle2;
+            this.HomesteadNumber.HeaderText = "Номер участка";
+            this.HomesteadNumber.Name = "HomesteadNumber";
+            this.HomesteadNumber.ReadOnly = true;
+            this.HomesteadNumber.Width = 99;
+            // 
+            // OwnerName
+            // 
+            this.OwnerName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            this.OwnerName.DefaultCellStyle = dataGridViewCellStyle3;
+            this.OwnerName.HeaderText = "Владелец";
+            this.OwnerName.Name = "OwnerName";
+            this.OwnerName.ReadOnly = true;
+            this.OwnerName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.OwnerName.Width = 62;
+            // 
+            // Introduced
+            // 
+            this.Introduced.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+            this.Introduced.DefaultCellStyle = dataGridViewCellStyle4;
+            this.Introduced.HeaderText = "Внесено";
+            this.Introduced.Name = "Introduced";
+            this.Introduced.ReadOnly = true;
+            this.Introduced.Width = 75;
+            // 
+            // Arrear
+            // 
+            this.Arrear.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.Arrear.DefaultCellStyle = dataGridViewCellStyle5;
+            this.Arrear.HeaderText = "Задолженность";
+            this.Arrear.Name = "Arrear";
+            // 
+            // Difference
+            // 
+            this.Difference.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
+            this.Difference.DefaultCellStyle = dataGridViewCellStyle6;
+            this.Difference.HeaderText = "Количество кВ/ч";
+            this.Difference.Name = "Difference";
+            this.Difference.ReadOnly = true;
+            this.Difference.Width = 107;
+            // 
+            // Value
+            // 
+            this.Value.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
+            this.Value.DefaultCellStyle = dataGridViewCellStyle7;
+            this.Value.HeaderText = "Последнее значение счетчика";
+            this.Value.Name = "Value";
+            this.Value.ReadOnly = true;
+            this.Value.Width = 116;
             // 
             // LoadingLabel
             // 
@@ -193,7 +353,7 @@
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.Location = new System.Drawing.Point(0, 0);
-            this.dataGridView1.Margin = new System.Windows.Forms.Padding(2);
+            this.dataGridView1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersVisible = false;
@@ -217,10 +377,38 @@
             this.LabelProgrBar.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.LabelProgrBar.Visible = false;
             // 
+            // AmountLabel
+            // 
+            this.AmountLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.AmountLabel.AutoSize = true;
+            this.AmountLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.AmountLabel.Location = new System.Drawing.Point(590, 6);
+            this.AmountLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.AmountLabel.Name = "AmountLabel";
+            this.AmountLabel.Size = new System.Drawing.Size(150, 13);
+            this.AmountLabel.TabIndex = 3;
+            this.AmountLabel.Text = "Сумма на р/с : 100 BYN";
+            // 
+            // createExcelButton
+            // 
+            this.createExcelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.createExcelButton.Location = new System.Drawing.Point(638, 415);
+            this.createExcelButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.createExcelButton.Name = "createExcelButton";
+            this.createExcelButton.Size = new System.Drawing.Size(127, 23);
+            this.createExcelButton.TabIndex = 4;
+            this.createExcelButton.Text = "Сохранить в Excel";
+            this.createExcelButton.UseVisualStyleBackColor = true;
+            this.createExcelButton.Visible = false;
+            this.createExcelButton.Click += new System.EventHandler(this.createExcelButton_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(764, 438);
+            this.Controls.Add(this.createExcelButton);
+            this.Controls.Add(this.AmountLabel);
             this.ClientSize = new System.Drawing.Size(797, 438);
             this.Controls.Add(this.LabelProgrBar);
             this.Controls.Add(this.ColorPanel);
@@ -237,6 +425,8 @@
             this.Menu.PerformLayout();
             this.ColorPanel.ResumeLayout(false);
             this.ColorPanel.PerformLayout();
+            this.ArrearGB.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.ArrearEditDGV)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -263,6 +453,19 @@
         private System.Windows.Forms.Label LoadingLabel;
         private System.Windows.Forms.ToolStripMenuItem ToolStripDownloadNewFile;
         private System.Windows.Forms.ToolStripMenuItem CLearFileStatesMI;
+        private System.Windows.Forms.Label AmountLabel;
+        private System.Windows.Forms.DataGridView ArrearEditDGV;
+        private System.Windows.Forms.GroupBox ArrearGB;
+        private System.Windows.Forms.Button ArrearConfirmB;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Id;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ServiceId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn HomesteadNumber;
+        private System.Windows.Forms.DataGridViewTextBoxColumn OwnerName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Introduced;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Arrear;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Difference;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Value;
+        private System.Windows.Forms.Button createExcelButton;
         private System.Windows.Forms.ToolStripMenuItem DebtorToolStripMenuItem;
     }
 }
