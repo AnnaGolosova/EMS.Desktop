@@ -74,20 +74,22 @@
             // labelSmax
             // 
             this.labelSmax.AutoSize = true;
+            this.labelSmax.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.labelSmax.Location = new System.Drawing.Point(8, 133);
             this.labelSmax.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelSmax.Name = "labelSmax";
-            this.labelSmax.Size = new System.Drawing.Size(109, 17);
+            this.labelSmax.Size = new System.Drawing.Size(116, 18);
             this.labelSmax.TabIndex = 3;
             this.labelSmax.Text = "Смахтин Даник";
             // 
             // labelSap
             // 
             this.labelSap.AutoSize = true;
+            this.labelSap.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.labelSap.Location = new System.Drawing.Point(8, 103);
             this.labelSap.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelSap.Name = "labelSap";
-            this.labelSap.Size = new System.Drawing.Size(117, 17);
+            this.labelSap.Size = new System.Drawing.Size(123, 18);
             this.labelSap.TabIndex = 2;
             this.labelSap.Text = "Сапончик Артём";
             // 
@@ -146,10 +148,12 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(313, -1);
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.InitialImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.InitialImage")));
+            this.pictureBox1.Location = new System.Drawing.Point(336, 13);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(133, 62);
+            this.pictureBox1.Size = new System.Drawing.Size(92, 91);
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             // 
@@ -161,7 +165,7 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(80, 17);
             this.label2.TabIndex = 4;
-            this.label2.Text = "Version 1.2";
+            this.label2.Text = "Version 2.0";
             // 
             // FormAboutProgram
             // 

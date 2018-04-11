@@ -91,8 +91,8 @@
             this.MenuAboutProgram});
             this.Menu.Location = new System.Drawing.Point(0, 0);
             this.Menu.Name = "Menu";
-            this.Menu.Padding = new System.Windows.Forms.Padding(8, 2, 0, 2);
-            this.Menu.Size = new System.Drawing.Size(1016, 28);
+            this.Menu.Padding = new System.Windows.Forms.Padding(11, 2, 0, 2);
+            this.Menu.Size = new System.Drawing.Size(1833, 28);
             this.Menu.TabIndex = 0;
             this.Menu.Text = "menuStrip1";
             // 
@@ -204,10 +204,10 @@
             // MainProgressBar
             // 
             this.MainProgressBar.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.MainProgressBar.Location = new System.Drawing.Point(0, 499);
-            this.MainProgressBar.Margin = new System.Windows.Forms.Padding(4);
+            this.MainProgressBar.Location = new System.Drawing.Point(0, 813);
+            this.MainProgressBar.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
             this.MainProgressBar.Name = "MainProgressBar";
-            this.MainProgressBar.Size = new System.Drawing.Size(1016, 28);
+            this.MainProgressBar.Size = new System.Drawing.Size(1833, 34);
             this.MainProgressBar.TabIndex = 1;
             // 
             // ColorPanel
@@ -218,9 +218,9 @@
             this.ColorPanel.Controls.Add(this.dataGridView1);
             this.ColorPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ColorPanel.Location = new System.Drawing.Point(0, 28);
-            this.ColorPanel.Margin = new System.Windows.Forms.Padding(4);
+            this.ColorPanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.ColorPanel.Name = "ColorPanel";
-            this.ColorPanel.Size = new System.Drawing.Size(1016, 471);
+            this.ColorPanel.Size = new System.Drawing.Size(1833, 785);
             this.ColorPanel.TabIndex = 2;
             // 
             // ArrearGB
@@ -231,8 +231,8 @@
             this.ArrearGB.Location = new System.Drawing.Point(0, 0);
             this.ArrearGB.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.ArrearGB.Name = "ArrearGB";
-            this.ArrearGB.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.ArrearGB.Size = new System.Drawing.Size(1016, 471);
+            this.ArrearGB.Padding = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            this.ArrearGB.Size = new System.Drawing.Size(1833, 785);
             this.ArrearGB.TabIndex = 3;
             this.ArrearGB.TabStop = false;
             this.ArrearGB.Text = "Отредактируйте задолженности";
@@ -241,10 +241,10 @@
             // ArrearConfirmB
             // 
             this.ArrearConfirmB.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.ArrearConfirmB.Location = new System.Drawing.Point(3, 436);
-            this.ArrearConfirmB.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.ArrearConfirmB.Location = new System.Drawing.Point(4, 742);
+            this.ArrearConfirmB.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.ArrearConfirmB.Name = "ArrearConfirmB";
-            this.ArrearConfirmB.Size = new System.Drawing.Size(1010, 33);
+            this.ArrearConfirmB.Size = new System.Drawing.Size(1825, 41);
             this.ArrearConfirmB.TabIndex = 3;
             this.ArrearConfirmB.Text = "Сохранить";
             this.ArrearConfirmB.UseVisualStyleBackColor = true;
@@ -274,13 +274,13 @@
             dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.ArrearEditDGV.DefaultCellStyle = dataGridViewCellStyle8;
             this.ArrearEditDGV.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ArrearEditDGV.Location = new System.Drawing.Point(3, 17);
+            this.ArrearEditDGV.Location = new System.Drawing.Point(4, 17);
             this.ArrearEditDGV.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.ArrearEditDGV.Name = "ArrearEditDGV";
             this.ArrearEditDGV.RowHeadersVisible = false;
             this.ArrearEditDGV.RowTemplate.DefaultCellStyle.BackColor = System.Drawing.SystemColors.Control;
             this.ArrearEditDGV.RowTemplate.Height = 24;
-            this.ArrearEditDGV.Size = new System.Drawing.Size(1010, 452);
+            this.ArrearEditDGV.Size = new System.Drawing.Size(1825, 766);
             this.ArrearEditDGV.TabIndex = 2;
             this.ArrearEditDGV.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.ArrearEditDGV_CellValidating);
             // 
@@ -385,11 +385,12 @@
             this.dataGridView1.Location = new System.Drawing.Point(0, 0);
             this.dataGridView1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.Size = new System.Drawing.Size(1016, 471);
+            this.dataGridView1.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
+            this.dataGridView1.Size = new System.Drawing.Size(1833, 785);
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.Visible = false;
+            this.dataGridView1.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.dataGridView1_CellValidating);
             // 
             // LabelProgrBar
             // 
@@ -399,10 +400,10 @@
             this.LabelProgrBar.Cursor = System.Windows.Forms.Cursors.Default;
             this.LabelProgrBar.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.LabelProgrBar.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.LabelProgrBar.Location = new System.Drawing.Point(0, 511);
-            this.LabelProgrBar.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.LabelProgrBar.Location = new System.Drawing.Point(0, 811);
+            this.LabelProgrBar.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.LabelProgrBar.Name = "LabelProgrBar";
-            this.LabelProgrBar.Size = new System.Drawing.Size(1019, 28);
+            this.LabelProgrBar.Size = new System.Drawing.Size(1837, 34);
             this.LabelProgrBar.TabIndex = 0;
             this.LabelProgrBar.Text = "Файлы загружены";
             this.LabelProgrBar.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -413,7 +414,8 @@
             this.AmountLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.AmountLabel.AutoSize = true;
             this.AmountLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.AmountLabel.Location = new System.Drawing.Point(787, 7);
+            this.AmountLabel.Location = new System.Drawing.Point(1528, 9);
+            this.AmountLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.AmountLabel.Name = "AmountLabel";
             this.AmountLabel.Size = new System.Drawing.Size(183, 17);
             this.AmountLabel.TabIndex = 3;
@@ -422,8 +424,8 @@
             // createExcelButton
             // 
             this.createExcelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.createExcelButton.Location = new System.Drawing.Point(851, 511);
-            this.createExcelButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.createExcelButton.Location = new System.Drawing.Point(1608, 811);
+            this.createExcelButton.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.createExcelButton.Name = "createExcelButton";
             this.createExcelButton.Size = new System.Drawing.Size(169, 28);
             this.createExcelButton.TabIndex = 4;
@@ -436,7 +438,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1016, 527);
+            this.ClientSize = new System.Drawing.Size(1833, 847);
             this.Controls.Add(this.createExcelButton);
             this.Controls.Add(this.AmountLabel);
             this.Controls.Add(this.LabelProgrBar);
@@ -445,8 +447,8 @@
             this.Controls.Add(this.Menu);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.Menu;
-            this.Margin = new System.Windows.Forms.Padding(4);
-            this.MinimumSize = new System.Drawing.Size(1034, 574);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.MinimumSize = new System.Drawing.Size(1034, 573);
             this.Name = "MainForm";
             this.Text = "E.M.S.";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Closing_MainForm);

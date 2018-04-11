@@ -35,6 +35,8 @@
             this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.comboBoxNumber = new System.Windows.Forms.ComboBox();
+            this.labelNumber = new System.Windows.Forms.Label();
             this.comboBoxOwnerName = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBoxTime = new System.Windows.Forms.GroupBox();
@@ -43,8 +45,6 @@
             this.labelTo = new System.Windows.Forms.Label();
             this.dateTimePickerAt = new System.Windows.Forms.DateTimePicker();
             this.radioButtonAt = new System.Windows.Forms.RadioButton();
-            this.comboBoxNumber = new System.Windows.Forms.ComboBox();
-            this.labelNumber = new System.Windows.Forms.Label();
             this.buttonApply = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.ServiceGroupBox.SuspendLayout();
@@ -60,9 +60,9 @@
             this.ServiceGroupBox.Controls.Add(this.radioButton2);
             this.ServiceGroupBox.Controls.Add(this.radioButton1);
             this.ServiceGroupBox.Location = new System.Drawing.Point(16, 108);
-            this.ServiceGroupBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ServiceGroupBox.Margin = new System.Windows.Forms.Padding(4);
             this.ServiceGroupBox.Name = "ServiceGroupBox";
-            this.ServiceGroupBox.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ServiceGroupBox.Padding = new System.Windows.Forms.Padding(4);
             this.ServiceGroupBox.Size = new System.Drawing.Size(201, 172);
             this.ServiceGroupBox.TabIndex = 0;
             this.ServiceGroupBox.TabStop = false;
@@ -73,7 +73,7 @@
             this.radioButtonAll.AutoSize = true;
             this.radioButtonAll.Checked = true;
             this.radioButtonAll.Location = new System.Drawing.Point(8, 144);
-            this.radioButtonAll.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.radioButtonAll.Margin = new System.Windows.Forms.Padding(4);
             this.radioButtonAll.Name = "radioButtonAll";
             this.radioButtonAll.Size = new System.Drawing.Size(53, 21);
             this.radioButtonAll.TabIndex = 4;
@@ -85,7 +85,7 @@
             // 
             this.radioButton4.AutoSize = true;
             this.radioButton4.Location = new System.Drawing.Point(8, 108);
-            this.radioButton4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.radioButton4.Margin = new System.Windows.Forms.Padding(4);
             this.radioButton4.Name = "radioButton4";
             this.radioButton4.Size = new System.Drawing.Size(37, 21);
             this.radioButton4.TabIndex = 3;
@@ -96,7 +96,7 @@
             // 
             this.radioButton3.AutoSize = true;
             this.radioButton3.Location = new System.Drawing.Point(8, 80);
-            this.radioButton3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.radioButton3.Margin = new System.Windows.Forms.Padding(4);
             this.radioButton3.Name = "radioButton3";
             this.radioButton3.Size = new System.Drawing.Size(37, 21);
             this.radioButton3.TabIndex = 2;
@@ -107,7 +107,7 @@
             // 
             this.radioButton2.AutoSize = true;
             this.radioButton2.Location = new System.Drawing.Point(8, 52);
-            this.radioButton2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.radioButton2.Margin = new System.Windows.Forms.Padding(4);
             this.radioButton2.Name = "radioButton2";
             this.radioButton2.Size = new System.Drawing.Size(37, 21);
             this.radioButton2.TabIndex = 1;
@@ -118,7 +118,7 @@
             // 
             this.radioButton1.AutoSize = true;
             this.radioButton1.Location = new System.Drawing.Point(8, 23);
-            this.radioButton1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.radioButton1.Margin = new System.Windows.Forms.Padding(4);
             this.radioButton1.Name = "radioButton1";
             this.radioButton1.Size = new System.Drawing.Size(37, 21);
             this.radioButton1.TabIndex = 0;
@@ -132,19 +132,39 @@
             this.groupBox2.Controls.Add(this.comboBoxOwnerName);
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Location = new System.Drawing.Point(225, 108);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox2.Size = new System.Drawing.Size(336, 172);
             this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Сортировка ФИО";
             // 
+            // comboBoxNumber
+            // 
+            this.comboBoxNumber.FormattingEnabled = true;
+            this.comboBoxNumber.Location = new System.Drawing.Point(8, 119);
+            this.comboBoxNumber.Margin = new System.Windows.Forms.Padding(4);
+            this.comboBoxNumber.Name = "comboBoxNumber";
+            this.comboBoxNumber.Size = new System.Drawing.Size(313, 24);
+            this.comboBoxNumber.TabIndex = 1;
+            this.comboBoxNumber.TextChanged += new System.EventHandler(this.comboBoxNumber_TextChanged);
+            // 
+            // labelNumber
+            // 
+            this.labelNumber.AutoSize = true;
+            this.labelNumber.Location = new System.Drawing.Point(8, 95);
+            this.labelNumber.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelNumber.Name = "labelNumber";
+            this.labelNumber.Size = new System.Drawing.Size(107, 17);
+            this.labelNumber.TabIndex = 0;
+            this.labelNumber.Text = "Номер участка";
+            // 
             // comboBoxOwnerName
             // 
             this.comboBoxOwnerName.FormattingEnabled = true;
-            this.comboBoxOwnerName.Location = new System.Drawing.Point(8, 43);
-            this.comboBoxOwnerName.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.comboBoxOwnerName.Location = new System.Drawing.Point(8, 60);
+            this.comboBoxOwnerName.Margin = new System.Windows.Forms.Padding(4);
             this.comboBoxOwnerName.Name = "comboBoxOwnerName";
             this.comboBoxOwnerName.Size = new System.Drawing.Size(313, 24);
             this.comboBoxOwnerName.TabIndex = 4;
@@ -153,7 +173,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(8, 22);
+            this.label1.Location = new System.Drawing.Point(8, 33);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(219, 17);
@@ -168,9 +188,9 @@
             this.groupBoxTime.Controls.Add(this.dateTimePickerAt);
             this.groupBoxTime.Controls.Add(this.radioButtonAt);
             this.groupBoxTime.Location = new System.Drawing.Point(16, 15);
-            this.groupBoxTime.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBoxTime.Margin = new System.Windows.Forms.Padding(4);
             this.groupBoxTime.Name = "groupBoxTime";
-            this.groupBoxTime.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBoxTime.Padding = new System.Windows.Forms.Padding(4);
             this.groupBoxTime.Size = new System.Drawing.Size(545, 85);
             this.groupBoxTime.TabIndex = 4;
             this.groupBoxTime.TabStop = false;
@@ -181,7 +201,7 @@
             this.radioButtonAllTime.AutoSize = true;
             this.radioButtonAllTime.Checked = true;
             this.radioButtonAllTime.Location = new System.Drawing.Point(8, 55);
-            this.radioButtonAllTime.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.radioButtonAllTime.Margin = new System.Windows.Forms.Padding(4);
             this.radioButtonAllTime.Name = "radioButtonAllTime";
             this.radioButtonAllTime.Size = new System.Drawing.Size(116, 21);
             this.radioButtonAllTime.TabIndex = 7;
@@ -194,7 +214,7 @@
             // 
             this.dateTimePickerTo.Enabled = false;
             this.dateTimePickerTo.Location = new System.Drawing.Point(348, 23);
-            this.dateTimePickerTo.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dateTimePickerTo.Margin = new System.Windows.Forms.Padding(4);
             this.dateTimePickerTo.Name = "dateTimePickerTo";
             this.dateTimePickerTo.Size = new System.Drawing.Size(188, 22);
             this.dateTimePickerTo.TabIndex = 6;
@@ -214,7 +234,7 @@
             // 
             this.dateTimePickerAt.Enabled = false;
             this.dateTimePickerAt.Location = new System.Drawing.Point(103, 23);
-            this.dateTimePickerAt.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dateTimePickerAt.Margin = new System.Windows.Forms.Padding(4);
             this.dateTimePickerAt.Name = "dateTimePickerAt";
             this.dateTimePickerAt.Size = new System.Drawing.Size(193, 22);
             this.dateTimePickerAt.TabIndex = 4;
@@ -223,7 +243,7 @@
             // 
             this.radioButtonAt.AutoSize = true;
             this.radioButtonAt.Location = new System.Drawing.Point(8, 23);
-            this.radioButtonAt.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.radioButtonAt.Margin = new System.Windows.Forms.Padding(4);
             this.radioButtonAt.Name = "radioButtonAt";
             this.radioButtonAt.Size = new System.Drawing.Size(38, 21);
             this.radioButtonAt.TabIndex = 3;
@@ -231,31 +251,11 @@
             this.radioButtonAt.UseVisualStyleBackColor = true;
             this.radioButtonAt.CheckedChanged += new System.EventHandler(this.radioButtonAt_CheckedChanged);
             // 
-            // comboBoxNumber
-            // 
-            this.comboBoxNumber.FormattingEnabled = true;
-            this.comboBoxNumber.Location = new System.Drawing.Point(8, 92);
-            this.comboBoxNumber.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.comboBoxNumber.Name = "comboBoxNumber";
-            this.comboBoxNumber.Size = new System.Drawing.Size(177, 24);
-            this.comboBoxNumber.TabIndex = 1;
-            this.comboBoxNumber.TextChanged += new System.EventHandler(this.comboBoxNumber_TextChanged);
-            // 
-            // labelNumber
-            // 
-            this.labelNumber.AutoSize = true;
-            this.labelNumber.Location = new System.Drawing.Point(8, 72);
-            this.labelNumber.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.labelNumber.Name = "labelNumber";
-            this.labelNumber.Size = new System.Drawing.Size(107, 17);
-            this.labelNumber.TabIndex = 0;
-            this.labelNumber.Text = "Номер участка";
-            // 
             // buttonApply
             // 
             this.buttonApply.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonApply.Location = new System.Drawing.Point(422, 292);
-            this.buttonApply.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.buttonApply.Margin = new System.Windows.Forms.Padding(4);
             this.buttonApply.Name = "buttonApply";
             this.buttonApply.Size = new System.Drawing.Size(140, 28);
             this.buttonApply.TabIndex = 6;
@@ -267,7 +267,7 @@
             // 
             this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.buttonCancel.Location = new System.Drawing.Point(13, 292);
-            this.buttonCancel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.buttonCancel.Margin = new System.Windows.Forms.Padding(4);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(140, 28);
             this.buttonCancel.TabIndex = 7;
@@ -285,7 +285,7 @@
             this.Controls.Add(this.groupBoxTime);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.ServiceGroupBox);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "FilterViewDataForm";
             this.Text = "Фильтрация данных";
             this.ServiceGroupBox.ResumeLayout(false);

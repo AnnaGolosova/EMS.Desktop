@@ -31,6 +31,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSettings));
             this.TabControl = new System.Windows.Forms.TabControl();
             this.PathesTab = new System.Windows.Forms.TabPage();
+            this.ReportDayLabel = new System.Windows.Forms.Label();
+            this.ReportDayPicker = new System.Windows.Forms.DateTimePicker();
             this.TariffTB = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.OverView210Button = new System.Windows.Forms.Button();
@@ -49,8 +51,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.OkButton = new System.Windows.Forms.Button();
-            this.ReportDayPicker = new System.Windows.Forms.DateTimePicker();
-            this.ReportDayLabel = new System.Windows.Forms.Label();
             this.TabControl.SuspendLayout();
             this.PathesTab.SuspendLayout();
             this.ServerTab.SuspendLayout();
@@ -63,10 +63,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.TabControl.Controls.Add(this.PathesTab);
             this.TabControl.Controls.Add(this.ServerTab);
-            this.TabControl.Location = new System.Drawing.Point(12, 12);
+            this.TabControl.Location = new System.Drawing.Point(16, 15);
+            this.TabControl.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.TabControl.Name = "TabControl";
             this.TabControl.SelectedIndex = 0;
-            this.TabControl.Size = new System.Drawing.Size(425, 319);
+            this.TabControl.Size = new System.Drawing.Size(592, 382);
             this.TabControl.TabIndex = 0;
             // 
             // PathesTab
@@ -84,37 +85,64 @@
             this.PathesTab.Controls.Add(this.OverViewExcelButton);
             this.PathesTab.Controls.Add(this.PathExcelTextBox);
             this.PathesTab.Controls.Add(this.PathExcelLabel);
-            this.PathesTab.Location = new System.Drawing.Point(4, 22);
+            this.PathesTab.Location = new System.Drawing.Point(4, 25);
+            this.PathesTab.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.PathesTab.Name = "PathesTab";
-            this.PathesTab.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
-            this.PathesTab.Size = new System.Drawing.Size(417, 293);
+            this.PathesTab.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.PathesTab.Size = new System.Drawing.Size(584, 353);
             this.PathesTab.TabIndex = 0;
             this.PathesTab.Text = "Основные";
             this.PathesTab.UseVisualStyleBackColor = true;
             // 
+            // ReportDayLabel
+            // 
+            this.ReportDayLabel.AutoSize = true;
+            this.ReportDayLabel.Location = new System.Drawing.Point(8, 295);
+            this.ReportDayLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.ReportDayLabel.Name = "ReportDayLabel";
+            this.ReportDayLabel.Size = new System.Drawing.Size(165, 17);
+            this.ReportDayLabel.TabIndex = 23;
+            this.ReportDayLabel.Text = "День создания отчётов";
+            // 
+            // ReportDayPicker
+            // 
+            this.ReportDayPicker.CustomFormat = "dd";
+            this.ReportDayPicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.ReportDayPicker.Location = new System.Drawing.Point(191, 295);
+            this.ReportDayPicker.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ReportDayPicker.Name = "ReportDayPicker";
+            this.ReportDayPicker.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.ReportDayPicker.ShowUpDown = true;
+            this.ReportDayPicker.Size = new System.Drawing.Size(78, 22);
+            this.ReportDayPicker.TabIndex = 22;
+            this.ReportDayPicker.ValueChanged += new System.EventHandler(this.ReportDayPicker_ValueChanged);
+            // 
             // TariffTB
             // 
             this.TariffTB.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.TariffTB.Location = new System.Drawing.Point(8, 194);
+            this.TariffTB.Location = new System.Drawing.Point(11, 239);
+            this.TariffTB.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.TariffTB.Name = "TariffTB";
-            this.TariffTB.Size = new System.Drawing.Size(315, 20);
+            this.TariffTB.Size = new System.Drawing.Size(419, 22);
             this.TariffTB.TabIndex = 21;
             this.TariffTB.TextChanged += new System.EventHandler(this.TariffTB_TextChanged);
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(8, 178);
+            this.label4.Location = new System.Drawing.Point(11, 219);
+            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(131, 13);
+            this.label4.Size = new System.Drawing.Size(171, 17);
             this.label4.TabIndex = 20;
             this.label4.Text = "Государственный тариф";
             // 
             // OverView210Button
             // 
-            this.OverView210Button.Location = new System.Drawing.Point(330, 137);
+            this.OverView210Button.Location = new System.Drawing.Point(440, 169);
+            this.OverView210Button.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.OverView210Button.Name = "OverView210Button";
-            this.OverView210Button.Size = new System.Drawing.Size(77, 20);
+            this.OverView210Button.Size = new System.Drawing.Size(103, 25);
             this.OverView210Button.TabIndex = 19;
             this.OverView210Button.Text = "Обзор";
             this.OverView210Button.UseVisualStyleBackColor = true;
@@ -122,26 +150,29 @@
             // 
             // Path210TextBox
             // 
-            this.Path210TextBox.Location = new System.Drawing.Point(6, 137);
+            this.Path210TextBox.Location = new System.Drawing.Point(8, 169);
+            this.Path210TextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Path210TextBox.Name = "Path210TextBox";
             this.Path210TextBox.ReadOnly = true;
-            this.Path210TextBox.Size = new System.Drawing.Size(315, 20);
+            this.Path210TextBox.Size = new System.Drawing.Size(419, 22);
             this.Path210TextBox.TabIndex = 18;
             // 
             // Path210Label
             // 
             this.Path210Label.AutoSize = true;
-            this.Path210Label.Location = new System.Drawing.Point(6, 121);
+            this.Path210Label.Location = new System.Drawing.Point(8, 149);
+            this.Path210Label.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Path210Label.Name = "Path210Label";
-            this.Path210Label.Size = new System.Drawing.Size(110, 13);
+            this.Path210Label.Size = new System.Drawing.Size(142, 17);
             this.Path210Label.TabIndex = 17;
             this.Path210Label.Text = "Путь к файлам .210:";
             // 
             // OverView202Button
             // 
-            this.OverView202Button.Location = new System.Drawing.Point(330, 79);
+            this.OverView202Button.Location = new System.Drawing.Point(440, 97);
+            this.OverView202Button.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.OverView202Button.Name = "OverView202Button";
-            this.OverView202Button.Size = new System.Drawing.Size(77, 20);
+            this.OverView202Button.Size = new System.Drawing.Size(103, 25);
             this.OverView202Button.TabIndex = 16;
             this.OverView202Button.Text = "Обзор";
             this.OverView202Button.UseVisualStyleBackColor = true;
@@ -149,26 +180,29 @@
             // 
             // Path202TextBox
             // 
-            this.Path202TextBox.Location = new System.Drawing.Point(6, 79);
+            this.Path202TextBox.Location = new System.Drawing.Point(8, 97);
+            this.Path202TextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Path202TextBox.Name = "Path202TextBox";
             this.Path202TextBox.ReadOnly = true;
-            this.Path202TextBox.Size = new System.Drawing.Size(315, 20);
+            this.Path202TextBox.Size = new System.Drawing.Size(419, 22);
             this.Path202TextBox.TabIndex = 15;
             // 
             // Path202Label
             // 
             this.Path202Label.AutoSize = true;
-            this.Path202Label.Location = new System.Drawing.Point(6, 63);
+            this.Path202Label.Location = new System.Drawing.Point(8, 78);
+            this.Path202Label.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Path202Label.Name = "Path202Label";
-            this.Path202Label.Size = new System.Drawing.Size(161, 13);
+            this.Path202Label.Size = new System.Drawing.Size(210, 17);
             this.Path202Label.TabIndex = 14;
             this.Path202Label.Text = "Путь сохранения файлов .202:";
             // 
             // OverViewExcelButton
             // 
-            this.OverViewExcelButton.Location = new System.Drawing.Point(330, 22);
+            this.OverViewExcelButton.Location = new System.Drawing.Point(440, 27);
+            this.OverViewExcelButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.OverViewExcelButton.Name = "OverViewExcelButton";
-            this.OverViewExcelButton.Size = new System.Drawing.Size(77, 20);
+            this.OverViewExcelButton.Size = new System.Drawing.Size(103, 25);
             this.OverViewExcelButton.TabIndex = 13;
             this.OverViewExcelButton.Text = "Обзор";
             this.OverViewExcelButton.UseVisualStyleBackColor = true;
@@ -176,18 +210,20 @@
             // 
             // PathExcelTextBox
             // 
-            this.PathExcelTextBox.Location = new System.Drawing.Point(6, 22);
+            this.PathExcelTextBox.Location = new System.Drawing.Point(8, 27);
+            this.PathExcelTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.PathExcelTextBox.Name = "PathExcelTextBox";
             this.PathExcelTextBox.ReadOnly = true;
-            this.PathExcelTextBox.Size = new System.Drawing.Size(315, 20);
+            this.PathExcelTextBox.Size = new System.Drawing.Size(419, 22);
             this.PathExcelTextBox.TabIndex = 12;
             // 
             // PathExcelLabel
             // 
             this.PathExcelLabel.AutoSize = true;
-            this.PathExcelLabel.Location = new System.Drawing.Point(6, 6);
+            this.PathExcelLabel.Location = new System.Drawing.Point(8, 7);
+            this.PathExcelLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.PathExcelLabel.Name = "PathExcelLabel";
-            this.PathExcelLabel.Size = new System.Drawing.Size(166, 13);
+            this.PathExcelLabel.Size = new System.Drawing.Size(215, 17);
             this.PathExcelLabel.TabIndex = 11;
             this.PathExcelLabel.Text = "Путь сохранения файлов Excel:";
             // 
@@ -198,10 +234,10 @@
             this.ServerTab.Controls.Add(this.ConnectionStringTB);
             this.ServerTab.Controls.Add(this.label2);
             this.ServerTab.Controls.Add(this.label1);
-            this.ServerTab.Location = new System.Drawing.Point(4, 22);
-            this.ServerTab.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.ServerTab.Location = new System.Drawing.Point(4, 25);
+            this.ServerTab.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.ServerTab.Name = "ServerTab";
-            this.ServerTab.Size = new System.Drawing.Size(417, 293);
+            this.ServerTab.Size = new System.Drawing.Size(584, 353);
             this.ServerTab.TabIndex = 1;
             this.ServerTab.Text = "Настройки сервера";
             this.ServerTab.UseVisualStyleBackColor = true;
@@ -210,28 +246,27 @@
             // 
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 271);
-            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label3.Location = new System.Drawing.Point(16, 323);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(313, 13);
+            this.label3.Size = new System.Drawing.Size(403, 17);
             this.label3.TabIndex = 4;
             this.label3.Text = "Изменения вступят в силу после перезагрузки приложения";
             // 
             // ServerNameTB
             // 
-            this.ServerNameTB.Location = new System.Drawing.Point(14, 124);
-            this.ServerNameTB.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.ServerNameTB.Location = new System.Drawing.Point(19, 153);
+            this.ServerNameTB.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.ServerNameTB.Name = "ServerNameTB";
-            this.ServerNameTB.Size = new System.Drawing.Size(390, 20);
+            this.ServerNameTB.Size = new System.Drawing.Size(519, 22);
             this.ServerNameTB.TabIndex = 3;
             this.ServerNameTB.Leave += new System.EventHandler(this.ServerNameTB_Leave);
             // 
             // ConnectionStringTB
             // 
-            this.ConnectionStringTB.Location = new System.Drawing.Point(14, 29);
-            this.ConnectionStringTB.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.ConnectionStringTB.Location = new System.Drawing.Point(19, 36);
+            this.ConnectionStringTB.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.ConnectionStringTB.Name = "ConnectionStringTB";
-            this.ConnectionStringTB.Size = new System.Drawing.Size(390, 62);
+            this.ConnectionStringTB.Size = new System.Drawing.Size(519, 75);
             this.ConnectionStringTB.TabIndex = 2;
             this.ConnectionStringTB.Text = "";
             this.ConnectionStringTB.Leave += new System.EventHandler(this.ConnectionStringTB_Leave);
@@ -239,64 +274,43 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 108);
-            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label2.Location = new System.Drawing.Point(16, 133);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(74, 13);
+            this.label2.Size = new System.Drawing.Size(93, 17);
             this.label2.TabIndex = 1;
             this.label2.Text = "Имя сервера";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 13);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Location = new System.Drawing.Point(16, 16);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(113, 13);
+            this.label1.Size = new System.Drawing.Size(148, 17);
             this.label1.TabIndex = 0;
             this.label1.Text = "Строка подключения";
             // 
             // OkButton
             // 
             this.OkButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.OkButton.Location = new System.Drawing.Point(336, 337);
+            this.OkButton.Location = new System.Drawing.Point(473, 404);
+            this.OkButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.OkButton.Name = "OkButton";
-            this.OkButton.Size = new System.Drawing.Size(101, 27);
+            this.OkButton.Size = new System.Drawing.Size(135, 33);
             this.OkButton.TabIndex = 1;
             this.OkButton.Text = "ОК";
             this.OkButton.UseVisualStyleBackColor = true;
             this.OkButton.Click += new System.EventHandler(this.OkButton_Click);
             // 
-            // ReportDayPicker
-            // 
-            this.ReportDayPicker.CustomFormat = "dd";
-            this.ReportDayPicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.ReportDayPicker.Location = new System.Drawing.Point(6, 257);
-            this.ReportDayPicker.Name = "ReportDayPicker";
-            this.ReportDayPicker.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.ReportDayPicker.ShowUpDown = true;
-            this.ReportDayPicker.Size = new System.Drawing.Size(37, 20);
-            this.ReportDayPicker.TabIndex = 22;
-            this.ReportDayPicker.ValueChanged += new System.EventHandler(this.ReportDayPicker_ValueChanged);
-            // 
-            // ReportDayLabel
-            // 
-            this.ReportDayLabel.AutoSize = true;
-            this.ReportDayLabel.Location = new System.Drawing.Point(6, 241);
-            this.ReportDayLabel.Name = "ReportDayLabel";
-            this.ReportDayLabel.Size = new System.Drawing.Size(127, 13);
-            this.ReportDayLabel.TabIndex = 23;
-            this.ReportDayLabel.Text = "День создания отчётов";
-            // 
             // FormSettings
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(449, 376);
+            this.ClientSize = new System.Drawing.Size(624, 452);
             this.Controls.Add(this.OkButton);
             this.Controls.Add(this.TabControl);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(353, 414);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.MinimumSize = new System.Drawing.Size(465, 499);
             this.Name = "FormSettings";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Настройки";

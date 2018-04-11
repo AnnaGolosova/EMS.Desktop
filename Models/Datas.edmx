@@ -56,7 +56,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Id_Homestead" Type="int" Nullable="false" />
           <Property Name="Id_Service" Type="int" Nullable="false" />
-          <Property Name="Id_File" Type="int" Nullable="false" />
+          <Property Name="Id_File" Type="int" />
           <Property Name="INTroduced" Type="float" Nullable="false" />
           <Property Name="Arrear" Type="float" Nullable="false" />
           <Property Name="Entered" Type="float" Nullable="false" />
@@ -129,7 +129,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Payment_ToFile">
-          <End Role="File" Type="Self.File" Multiplicity="1" />
+          <End Role="File" Type="Self.File" Multiplicity="0..1" />
           <End Role="Payment" Type="Self.Payment" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="File">
@@ -285,7 +285,7 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IdHomestead" Type="Int32" Nullable="false" />
           <Property Name="IdService" Type="Int32" Nullable="false" />
-          <Property Name="IdFile" Type="Int32" Nullable="false" />
+          <Property Name="IdFile" Type="Int32" />
           <Property Name="Introduced" Type="Double" Nullable="false" />
           <Property Name="Entered" Type="Double" Nullable="false" />
           <Property Name="Date" Type="DateTime" Precision="0" />
@@ -318,7 +318,7 @@
           <NavigationProperty Name="Rate" Relationship="Self.FK_Rate_ToService" FromRole="Service" ToRole="Rate" />
         </EntityType>
         <Association Name="FK_Payment_ToFile">
-          <End Role="File" Type="Self.File" Multiplicity="1" />
+          <End Role="File" Type="Self.File" Multiplicity="0..1" />
           <End Role="Payment" Type="Self.Payment" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="File">
