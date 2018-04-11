@@ -22,7 +22,7 @@ namespace EMS.Desktop.Models
         public int Id { get; set; }
         public int IdHomestead { get; set; }
         public int IdService { get; set; }
-        public int IdFile { get; set; }
+        public Nullable<int> IdFile { get; set; }
         public double Introduced { get; set; }
         public double Entered { get; set; }
         public Nullable<System.DateTime> Date { get; set; }

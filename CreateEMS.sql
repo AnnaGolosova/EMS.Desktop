@@ -1,5 +1,4 @@
-﻿n6
-USE [EMS]
+﻿USE [EMS]
 GO
 DROP TABLE [dbo].[Copay];
 GO
@@ -79,7 +78,7 @@ CREATE TABLE [dbo].[Payment] (
     [Id]            INT        IDENTITY (1, 1) NOT NULL PRIMARY KEY,
     [Id_Homestead]  INT        NOT NULL,
     [Id_Service]    INT        NOT NULL,
-    [Id_File]       INT        NOT NULL,
+    [Id_File]       INT        NULL,
     [INTroduced]    FLOAT (53) NOT NULL DEFAULT 0,
     [Arrear]       FLOAT (53) NOT NULL DEFAULT 0,
     [Entered]       FLOAT (53) NOT NULL DEFAULT 0,

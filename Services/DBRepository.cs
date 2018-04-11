@@ -112,7 +112,7 @@ namespace EMS.Desktop.Services
             try
             {
                 //var amount = db.Database.SqlQuery<int>("GetAmount", DateTime.Now.Month, DateTime.Now.Year);
-                var amount = db.Database.SqlQuery<double>($"DECLARE @s float(53) = cast(EMS.dbo.GetAmount({9}, {2017}) as float(53)) select @s").First();
+                var amount = db.Database.SqlQuery<double>($"DECLARE @s float(53) = cast(EMS.dbo.GetAmount({DateTime.Now.Month}, {DateTime.Now.Year}) as float(53)) select @s").First();
                 return amount;
             }
             catch(InvalidOperationException)
@@ -299,7 +299,7 @@ namespace EMS.Desktop.Services
             }
         }
 
-        public Payment GetPayment(int Id)
+        public static Payment GetPayment(int Id)
         {
             return db.Payment.Where(p => p.Id == Id).First();
         }
@@ -476,7 +476,7 @@ namespace EMS.Desktop.Services
             return db.Service.ToList();
         }
 
-        public Service GetService(int serviceId)
+        public static Service GetService(int serviceId)
         {
             try
             {
@@ -683,6 +683,7 @@ namespace EMS.Desktop.Services
         {
             Homestead h = GetHomestead(homestead.Number);
             h.OwnerName = homestead.OwnerName;
+            db.SaveChanges();
         }
         #endregion
     }

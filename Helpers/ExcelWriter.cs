@@ -8,6 +8,7 @@ using EMS.Desktop.Services;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using System.Windows.Forms;
+using EMS.Desktop.Exceptions;
 
 namespace EMS.Desktop.Helpers
 {
@@ -103,7 +104,7 @@ namespace EMS.Desktop.Helpers
                     foreach (Rate r in rep.LocalRates)
                     {
                         string rateStr = "1^" + r.Id + "^";
-                        r.Service = db.GetService(r.IdService);
+                        r.Service = DBRepository.GetService(r.IdService);
                         rateStr += r.Service.Name + "^^^^^" + r.Value + "^";
                         writer.WriteLine(rateStr);
                     }
@@ -180,12 +181,12 @@ namespace EMS.Desktop.Helpers
 
         private static void WriteExcel(Report202 report, string fileName, NoRateState flag)
         {
-            if (report.Datas.Count == 0)
+            /*if (report.Datas.Count == 0)
             {
                 MessageBox.Show("Отчет по заданным параметрам не имеет записей! Измените параметры и повторите попытку.",
                     "Отчет не содержит записей", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
-            }
+            }*/
             using (DBRepository db = new DBRepository())
             {
                 using (var excel = new ExcelPackage())
@@ -198,7 +199,7 @@ namespace EMS.Desktop.Helpers
                         {
                             ws.Cells[i, 1].Value = 1;
                             ws.Cells[i, 2].Value = r.Id;
-                            r.Service = db.GetService(r.IdService);
+                            r.Service = DBRepository.GetService(r.IdService);
                             ws.Cells[i, 3].Value = r.Service.Name;
                             ws.Cells[i++, 8].Value = r.Value;
                         }
@@ -283,8 +284,7 @@ namespace EMS.Desktop.Helpers
             List<Payment> datas = db.GetPaymentByMonth(month);
             if(datas.Count == 0)
             {
-                MessageBox.Show("Отчет по заданным параметрам не имеет записей!", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
+                throw new ReportIsEmptyException(serviceId);
             }
             using (ExcelPackage excel = new ExcelPackage())
             {
@@ -572,23 +572,19 @@ namespace EMS.Desktop.Helpers
                     {
                         for (int j = 0; j < x.MeterData.Count; j++)
                             ws.Cells[i + j, 7].Value = x.MeterData.ElementAt(j).NewValue;
-                        ws.Cells[i++, 8].Value = "^^^^";
-                        if (x.MeterData.Count > 1)
-                        {
-                            for (int j = 1; j < 7; j++)
-                                ws.Cells[i - x.MeterData.Count + 1, j, i, j].Merge = true;
-                            ws.Cells[i - x.MeterData.Count + 1, 8, i, 8].Merge = true;
-                            ws.Cells[i - x.MeterData.Count + 1, 9, i, 9].Merge = true;
-                            for (int j0 = 1; j0 < x.MeterData.Count; j0++)
-                                for (int j = 1; j < 10; j++)
-                                    ws.Cells[j0, j].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                        }
+                        //if (x.MeterData.Count > 1)
+                        //{
+                        //    //for (int j = 1; j < 7; j++)
+                        //    //    ws.Cells[i - x.MeterData.Count + 1, j, i, j].Merge = true;
+                        //    ws.Cells[i - x.MeterData.Count + 1, 8, i, 8].Merge = true;
+                        //    ws.Cells[i - x.MeterData.Count + 1, 9, i, 9].Merge = true;
+                        //    for (int j0 = 1; j0 < x.MeterData.Count; j0++)
+                        //        for (int j = 1; j < 10; j++)
+                        //            ws.Cells[j0, j].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        //}
                     }
-                    else
-                    {
-                        ws.Cells[i, 8].Value = x.Introduced;
-                        ws.Cells[i++, 9].Value = "^^^^";
-                    }
+                    ws.Cells[i, 8].Value = x.Introduced;
+                    ws.Cells[i++, 9].Value = "^^^^";
                 }
 
                 ws.Cells[2, 1, 2, 9].Style.Font.Bold = true;

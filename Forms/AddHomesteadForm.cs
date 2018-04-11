@@ -28,12 +28,14 @@ namespace EMS.Desktop.Forms
                 SelectHomesteadGB.Visible = true;
                 homesteadList = DBRepository.GetHomestead().OrderBy(h => h.Number).ToList();
                 HomesteadNumberCB.Items.AddRange(homesteadList.Select(h => (object)h.Number).ToArray());
+                this.Text = "Добавление нового плательщика";
             }
             else
             {
                 NumberTB.Focus();
                 AddHomesteadGB.Visible = true;
                 SelectHomesteadGB.Visible = false;
+                this.Text = "Добавление нового участка";
             }
         }
 
@@ -71,6 +73,7 @@ namespace EMS.Desktop.Forms
             }
             if (state == AddHomesteadState.AddOnlyPayments)
             {
+                Homestead h;
                 try
                 {
                     if (!int.TryParse(HomesteadNumberCB.Text, out t))
@@ -78,13 +81,13 @@ namespace EMS.Desktop.Forms
                         MessageBox.Show("Значение не может быть преобразовано в число", "Неверный номер участка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
+                    h = DBRepository.GetHomestead(homesteadList.Where(hh => hh.Number == t).First().Number);
                 }
                 catch (InvalidOperationException)
                 {
                     MessageBox.Show("Участок с таким номером не найден", "Участок не найден", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
-                Homestead h = DBRepository.GetHomestead(homesteadList.Where(hh => hh.Number == t).First().Number);
                 if(!string.IsNullOrEmpty(ChangeOwnerNameTB.Text) && !string.IsNullOrWhiteSpace(ChangeOwnerNameTB.Text) &&
                     ChangeOwnerNameTB.Text.CompareTo(h.OwnerName) != 0)
                 {

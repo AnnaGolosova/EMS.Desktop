@@ -72,9 +72,8 @@ namespace EMS.Desktop.Forms
                 else RateDGV[e.ColumnIndex, e.RowIndex].Style.BackColor = Color.White;
             }
             if(e.ColumnIndex == 3)
-            {
-                DBRepository db = new DBRepository();
-                int paymentId = db.GetPayment(data[e.RowIndex].Id).Id;
+            { 
+                int paymentId = DBRepository.GetPayment(data[e.RowIndex].Id).Id;
                 
                 double d;
                 if(!double.TryParse(e.FormattedValue.ToString().Replace('.', ','), out d))

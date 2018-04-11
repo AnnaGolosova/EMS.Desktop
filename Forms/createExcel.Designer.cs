@@ -38,8 +38,8 @@
             // cancel
             // 
             this.cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancel.Location = new System.Drawing.Point(198, 60);
-            this.cancel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cancel.Location = new System.Drawing.Point(13, 69);
+            this.cancel.Margin = new System.Windows.Forms.Padding(4);
             this.cancel.Name = "cancel";
             this.cancel.Size = new System.Drawing.Size(160, 31);
             this.cancel.TabIndex = 0;
@@ -49,8 +49,8 @@
             // 
             // confirm
             // 
-            this.confirm.Location = new System.Drawing.Point(13, 60);
-            this.confirm.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.confirm.Location = new System.Drawing.Point(203, 69);
+            this.confirm.Margin = new System.Windows.Forms.Padding(4);
             this.confirm.Name = "confirm";
             this.confirm.Size = new System.Drawing.Size(160, 31);
             this.confirm.TabIndex = 1;
@@ -61,7 +61,7 @@
             // FileNameTB
             // 
             this.FileNameTB.Location = new System.Drawing.Point(13, 30);
-            this.FileNameTB.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.FileNameTB.Margin = new System.Windows.Forms.Padding(4);
             this.FileNameTB.Name = "FileNameTB";
             this.FileNameTB.Size = new System.Drawing.Size(345, 22);
             this.FileNameTB.TabIndex = 2;
@@ -88,7 +88,7 @@
             this.Controls.Add(this.confirm);
             this.Controls.Add(this.cancel);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(1000, 1000);
             this.MinimumSize = new System.Drawing.Size(394, 148);

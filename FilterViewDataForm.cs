@@ -30,7 +30,7 @@ namespace EMS.Desktop
             comboBoxOwnerName.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             comboBoxOwnerName.AutoCompleteSource = AutoCompleteSource.ListItems;
             comboBoxOwnerName.Text = null;
-
+            buttonApply.Focus();
 
             comboBoxNumber.DataSource = listnumber.OrderBy(x => x).ToArray();
             comboBoxNumber.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
