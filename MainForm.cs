@@ -383,7 +383,7 @@ namespace EMS.Desktop
                     column5.Name = "Arrear";
                     column5.ReadOnly = false;
                     column5.CellTemplate = new DataGridViewTextBoxCell();
-                    column5.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                    column5.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                     column5.SortMode = DataGridViewColumnSortMode.Automatic;
 
                     var column6 = new DataGridViewColumn();
@@ -430,6 +430,7 @@ namespace EMS.Desktop
                     column11.Name = "Path";
                     column11.ReadOnly = true;
                     column11.CellTemplate = new DataGridViewTextBoxCell();
+                    column11.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
 
                     var column12 = new DataGridViewColumn();
                     column12.Name = "Id";
@@ -437,18 +438,33 @@ namespace EMS.Desktop
                     column12.CellTemplate = new DataGridViewTextBoxCell();
                     column12.Visible = false;
 
+                    var column14 = new DataGridViewColumn();
+                    column14.Name = "IdMeterData";
+                    column14.ReadOnly = true;
+                    column14.CellTemplate = new DataGridViewTextBoxCell();
+                    column14.Visible = false;
+
+                    var column13 = new DataGridViewColumn();
+                    column13.HeaderText = "Тариф";
+                    column13.Name = "Rate";
+                    column13.ReadOnly = false;
+                    column13.CellTemplate = new DataGridViewTextBoxCell();
+                    column13.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
                     dataGridView1.Columns.Add(column12);
                     dataGridView1.Columns.Add(column1);
                     dataGridView1.Columns.Add(column2);
                     dataGridView1.Columns.Add(column3);
                     dataGridView1.Columns.Add(column4);
-                    dataGridView1.Columns.Add(column5);
                     dataGridView1.Columns.Add(column6);
                     dataGridView1.Columns.Add(column7);
                     dataGridView1.Columns.Add(column8);
+                    dataGridView1.Columns.Add(column5);
+                    dataGridView1.Columns.Add(column13);
                     dataGridView1.Columns.Add(column9);
                     dataGridView1.Columns.Add(column10);
                     dataGridView1.Columns.Add(column11);
+                    dataGridView1.Columns.Add(column14);
                     LoadingLabel.Visible = false;
 
                     dataGridView1.AllowUserToAddRows = false;
@@ -470,16 +486,18 @@ namespace EMS.Desktop
                     {
                         if (s.IdService == 2)
                         {
-                            dataGridView1.Rows.Add(s.Id, s.Service.Id, s.Homestead.Number, s.Homestead.OwnerName, s.Date.Value.ToShortDateString(), s.Arrear, s.Introduced, s.Entered,
-                                (s.Introduced - s.Entered).ToString("F3"), (s.MeterData.ToList()[0].NewValue - s.MeterData.ToList()[0].OldValue), s.MeterData.ToList()[0].NewValue, s.File.Path);
+                            dataGridView1.Rows.Add(s.Id, s.Service.Id, s.Homestead.Number, s.Homestead.OwnerName, s.Date.Value.ToShortDateString(), s.Introduced, s.Entered,
+                                (s.Introduced - s.Entered).ToString("F3"), s.Arrear, (int)DBRepository.GetRatePosition(s.MeterData.ToList()[0].Rate.Id), 
+                                (s.MeterData.ToList()[0].NewValue - s.MeterData.ToList()[0].OldValue), s.MeterData.ToList()[0].NewValue, s.File.Path, s.MeterData.ToList()[0].Id);
                             if (s.Homestead.Meter.Count > 1)
                             {
                                 int n = s.MeterData.Count;
                                 for (int i = 1; i < n; i++)
                                 {
                                     x++;
-                                    dataGridView1.Rows.Add(s.Id, s.Service.Id, s.Homestead.Number, s.Homestead.OwnerName, s.Date.Value.ToShortDateString(), s.Arrear, s.Introduced, s.Entered,
-                                    (s.Introduced - s.Entered).ToString("F3"), s.MeterData.ToList()[i].NewValue - s.MeterData.ToList()[i].OldValue + "(" + (i + 1) + " счётчик)", s.MeterData.ToList()[i].NewValue, s.File.Path);
+                                    dataGridView1.Rows.Add(s.Id, s.Service.Id, s.Homestead.Number, s.Homestead.OwnerName, s.Date.Value.ToShortDateString(), s.Introduced, s.Entered,
+                                        (s.Introduced - s.Entered).ToString("F3"), s.Arrear, (int)DBRepository.GetRatePosition(s.MeterData.ToList()[i].Rate.Id),
+                                        (s.MeterData.ToList()[i].NewValue - s.MeterData.ToList()[i].OldValue) + " (" + i + ") счетчик", s.MeterData.ToList()[i].NewValue, s.File.Path, s.MeterData.ToList()[i].Id);
                                     for (int j = 0; j < 11; j++)
                                     {
                                         dataGridView1.Rows[x].Cells[j].Style.BackColor = Color.Lavender;
@@ -489,7 +507,8 @@ namespace EMS.Desktop
                         }
                         else
                         {
-                            dataGridView1.Rows.Add(s.Id, s.Service.Id, s.Homestead.Number, s.Homestead.OwnerName, s.Date.Value.ToShortDateString(),s.Arrear, s.Introduced,  s.Entered, (s.Introduced - s.Entered).ToString("F3"), "","", s.File.Path);
+                            dataGridView1.Rows.Add(s.Id, s.Service.Id, s.Homestead.Number, s.Homestead.OwnerName, s.Date.Value.ToShortDateString(), 
+                                s.Introduced,  s.Entered, (s.Introduced - s.Entered).ToString("F3"), s.Arrear, "","", "", s.File.Path, "~");
                             /*dataGridView1.Rows[x].Cells[7].Style.BackColor = Color.Lavender;
                             dataGridView1.Rows[x].Cells[8].Style.BackColor = Color.Lavender;
                             dataGridView1.Rows[x].Cells[9].Style.BackColor = Color.Lavender;
@@ -708,15 +727,34 @@ namespace EMS.Desktop
         private void dataGridView1_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
         {
             double d;
-            if (e.ColumnIndex == 5)
+            if (e.ColumnIndex == 8)
             {
-                if (!double.TryParse(e.FormattedValue.ToString().Replace('.',','), out d))
+                if (!double.TryParse(e.FormattedValue.ToString().Replace('.', ','), out d))
                     dataGridView1[e.ColumnIndex, e.RowIndex].Style.BackColor = ColorTranslator.FromHtml("#ff899e");
                 else
                 {
                     Payment p = DBRepository.GetPayment(int.Parse(dataGridView1[0, e.RowIndex].Value.ToString()));
                     DBRepository.ChangeArrear(p.Id, d);
                     dataGridView1[e.ColumnIndex, e.RowIndex].Style.BackColor = Color.White;
+                }
+            }
+            if (e.ColumnIndex == 9)
+            {
+                if (!(new List<string>() { "1", "2", "3", "" }).Any(r => r.CompareTo(e.FormattedValue.ToString().Normalize()) == 0))
+                    dataGridView1[e.ColumnIndex, e.RowIndex].Style.BackColor = ColorTranslator.FromHtml("#ff899e");
+                else
+                {
+                    dataGridView1[e.ColumnIndex, e.RowIndex].Style.BackColor = Color.White;
+                    if(e.FormattedValue.ToString() != "" && dataGridView1[13, e.RowIndex].Value.ToString() != "~")
+                    {
+                        DBRepository db = new DBRepository();
+                        int id = int.Parse(dataGridView1[13, e.RowIndex].Value.ToString());
+                        MeterData md = DBRepository.GetMeterData().Where(m => m.Id == id).First();
+                        int rateId = Int32.Parse(e.FormattedValue.ToString());
+                        rateId = db.GetLastRates().OrderBy(r => r.Id).First().Id + rateId - 1;
+                        if (md.Id_Rate != rateId)
+                            db.ChangeMeterData((int)md.Id, rateId);
+                    }
                 }
             }
         }
