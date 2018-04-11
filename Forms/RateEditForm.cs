@@ -44,8 +44,8 @@ namespace EMS.Desktop.Forms
                         }
                         else
                         {
-                            Rate rate = db.GetRate(null, meter.rateId);
-                            int? x = db.GetRatePosition(meter.rateId);
+                            Rate rate = DBRepository.GetRate(null, meter.rateId);
+                            int? x = DBRepository.GetRatePosition(meter.rateId);
                             RateDGV.Rows.Add(record.HomeSteadNumber, record.OwnerName, meter.number, record.Arrer, rate == null ? "" : x.ToString());
                         }
                     }

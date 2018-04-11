@@ -147,7 +147,7 @@ namespace EMS.Desktop.Helpers
                             }
                             else
                             {
-                                localId = db.GetRatePosition(mi.LocalRateId).ToString();
+                                localId = DBRepository.GetRatePosition(mi.LocalRateId).ToString();
                             }
                             s += j++ + "~" + localId + "~~~6~" + mi.Value + "~";
                         }
@@ -243,7 +243,7 @@ namespace EMS.Desktop.Helpers
                                 }
                                 else
                                 {
-                                    localId = db.GetRatePosition(mi.LocalRateId).ToString();
+                                    localId = DBRepository.GetRatePosition(mi.LocalRateId).ToString();
                                 }
                                 s += j++ + "~" + localId + "~~~6~" + mi.Value + "~";
                             }
@@ -404,7 +404,7 @@ namespace EMS.Desktop.Helpers
                             ws.Cells[i, 4].Value = data.Introduced;
                             ws.Cells[i, 6].Value = md.NewValue - md.OldValue;
                             ws.Cells[i, 8].Value = md.NewValue;
-                            // ws.Cells[i, 9].Value = "";
+                            ws.Cells[i, 9].Value = md.Rate.Value;
                             // ws.Cells[i, 11].Value = "";
                             ws.Cells[i, 12].Value = data.Entered;
                             for (int j = 1; j < 12; j++)

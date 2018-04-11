@@ -121,7 +121,7 @@ namespace EMS.Desktop.Services
             }
         }
 
-        public int? GetRatePosition(int? rateId)
+        public static int? GetRatePosition(int? rateId)
         {
             Rate rate = GetRate(null, rateId);
             int rateNumber = (int)rate.Number;
@@ -304,7 +304,7 @@ namespace EMS.Desktop.Services
             return db.Payment.Where(p => p.Id == Id).First();
         }
 
-        public List<MeterData> GetMeterData()
+        public static List<MeterData> GetMeterData()
         {
             return db.MeterData.ToList();
         }
@@ -425,7 +425,12 @@ namespace EMS.Desktop.Services
             return db.Rate.AsNoTracking().ToList();
         }
 
-        public Rate GetRate(int? number, int? id)
+        public Rate GetRate(int position)
+        {
+            return db.Rate.OrderByDescending(r => r.Id).Take(3).OrderBy(r => r.Id).ToList()[position - 1];
+        }
+
+        public static Rate GetRate(int? number, int? id)
         {
             try
             {
@@ -585,6 +590,7 @@ namespace EMS.Desktop.Services
 
                             meterData.IdMeter = meter.Id;
                             meterData.NewValue = info.newValue;
+                            meterData.Id_Rate = GetRate(1).Id;
                             meterData.OldValue = info.oldValue;
                             meterData.Date = data.Date;
                             meterData.Id_Payment = currentPayment.Id;
@@ -603,7 +609,6 @@ namespace EMS.Desktop.Services
                 throw new DataBaseException(e.Message, e);
             }
         }
-
 
         public static List<Payment> GetMonthData(DateTime date, int serviceId)
         {
