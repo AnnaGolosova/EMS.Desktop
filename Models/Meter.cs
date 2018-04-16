@@ -23,7 +23,7 @@ namespace EMS.Desktop.Models
         public int IdHomestead { get; set; }
         public int MeterNumber { get; set; }
     
-        public virtual ICollection<MeterData> MeterData { get; set; }
         public virtual Homestead Homestead { get; set; }
+        public virtual ICollection<MeterData> MeterData { get; set; }
     }
 }

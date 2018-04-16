@@ -46,7 +46,8 @@ CREATE TABLE [dbo].[Rate] (
     [Value]      FLOAT (53) NOT NULL,
     [Date]       DATE       NULL,
     [Number]       int       NULL,
-
+	[Tariff]	INT			NULL,
+	
 	CONSTRAINT FK_Rate_ToService FOREIGN KEY (Id_Service) REFERENCES [Service](Id) 
 )
 GO
@@ -82,7 +83,7 @@ CREATE TABLE [dbo].[Payment] (
     [INTroduced]    FLOAT (53) NOT NULL DEFAULT 0,
     [Arrear]       FLOAT (53) NOT NULL DEFAULT 0,
     [Entered]       FLOAT (53) NOT NULL DEFAULT 0,
-    [Date]          DATE       NULL,
+    [Date]          DATE       NOT NULL,
 	[PackageNumber] INT			NOT NULL DEFAULT 0
 	
 	CONSTRAINT FK_Payment_ToHomestead		FOREIGN KEY ([Id_Homestead])		REFERENCES Homestead(Id),
@@ -95,7 +96,7 @@ Create Table [dbo].[MeterData] (
 	[Id]		INT		NOT NULL identity(1,1)  PRIMARY KEY,
 	Id_Meter	INT		NOT NULL,
     [Id_Payment] INT        NULL,
-	[Id_Rate]	INT		NULL,
+	[Id_Rate]	INT		NOT NULL,
 	oldValue		FLOAT	NOT NULL default 0,
 	newValue		FLOAT	NOT NULL default 0,
 	[Date]		DATE	NULL ,
@@ -139,9 +140,9 @@ VALUES	(1, N'Взносы'),
 GO
 
 INSERT INTO [Rate]
-VALUES	(2, 0.3, '09/01/2017', 1),
-		(2, 0.25, '09/01/2017', 1),
-		(2, 0.5, '09/01/2017', 1)
+VALUES	(2, 0.05, '09/01/2017', 1, NULL),
+		(2, 0.25, '09/01/2017', 1, NULL),
+		(2, 0.5, '09/01/2017', 1, NULL)
 GO
 
 DROP FUNCTION GetAmount

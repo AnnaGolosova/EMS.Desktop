@@ -31,10 +31,10 @@ namespace EMS.Desktop.Models
         public DbSet<File> File { get; set; }
         public DbSet<Homestead> Homestead { get; set; }
         public DbSet<Meter> Meter { get; set; }
-        public DbSet<MeterData> MeterData { get; set; }
         public DbSet<Payment> Payment { get; set; }
         public DbSet<Rate> Rate { get; set; }
         public DbSet<Service> Service { get; set; }
+        public DbSet<MeterData> MeterData { get; set; }
     
         public virtual ObjectResult<Nullable<double>> GetAmound(Nullable<int> month)
         {
