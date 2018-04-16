@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using EMS.Desktop.Models;
 using EMS.Desktop.Exceptions;
+using EMS.Desktop.Helpers;
 
 namespace EMS.Desktop.Services
 {
@@ -93,10 +94,12 @@ namespace EMS.Desktop.Services
                 db.SaveChanges();
                 if(i == 2)
                 {
+                    int rateId = GetRate(1).Id;
                     MeterData meterData = new MeterData()
                     {
-                        Id_Payment = newPayment.Id,
+                        IdPayment = newPayment.Id,
                         Date = DateTime.Now,
+                        IdRate = rateId,
                         IdMeter = meterId,
                         NewValue = meterDataValue,
                         OldValue = 0,
@@ -206,10 +209,10 @@ namespace EMS.Desktop.Services
             return db.Database.Exists();
         }
 
-        internal void ChangeMeterData(int id, int? rateId)
+        internal void ChangeMeterData(int id, int rateId)
         {
             MeterData md = db.MeterData.Where(m => m.Id == id).First();
-            md.Id_Rate = rateId;
+            md.IdRate = rateId;
             db.SaveChanges();
         }
 
@@ -425,9 +428,10 @@ namespace EMS.Desktop.Services
             return db.Rate.AsNoTracking().ToList();
         }
 
-        public Rate GetRate(int position)
+        public static Rate GetRate(int position)
         {
-            return db.Rate.OrderByDescending(r => r.Id).Take(3).OrderBy(r => r.Id).ToList()[position - 1];
+            return db.Rate.OrderByDescending(r => r.Id).Take(3)
+                .OrderBy(r => r.Id).ToList()[position - 1];
         }
 
         public static Rate GetRate(int? number, int? id)
@@ -440,7 +444,7 @@ namespace EMS.Desktop.Services
                         .First();
                 else
                     return db.Rate
-                        .Where(r => r.Id == (int)id)
+                        .Where(r => r.Id == id)
                         .First();
 
             }
@@ -530,6 +534,18 @@ namespace EMS.Desktop.Services
             db.SaveChanges();
         }
 
+        public double PreviousArrear(Payment pay)
+        {
+            try
+            {
+                List<Payment> pp = db.Payment.Where(p => p.IdHomestead == pay.IdHomestead && p.Date.Value < pay.Date.Value).OrderByDescending(p => p.Date.Value).ToList();
+                return db.Payment.Where(p => p.IdHomestead == pay.IdHomestead && p.Date.Value < pay.Date.Value).OrderByDescending(p => p.Date.Value).First().Arrear;
+            }
+            catch (InvalidOperationException)
+            {
+                return 0;
+            }
+        }
         #endregion
 
         #region Setters
@@ -554,7 +570,7 @@ namespace EMS.Desktop.Services
                         db.SaveChanges();
                     }
                     currentPayment.IdHomestead = (int)homestead.Id;
-                    
+                    double tariff = ConfigAppManager.GetTariff();
                     currentPayment.Date = data.Date;
                     currentPayment.Introduced = data.Introduced;
                     currentPayment.Arrear = data.Arrer;
@@ -590,12 +606,16 @@ namespace EMS.Desktop.Services
 
                             meterData.IdMeter = meter.Id;
                             meterData.NewValue = info.newValue;
-                            meterData.Id_Rate = GetRate(1).Id;
+                            meterData.IdRate = GetRate(1).Id;
                             meterData.OldValue = info.oldValue;
                             meterData.Date = data.Date;
-                            meterData.Id_Payment = currentPayment.Id;
+                            meterData.IdPayment = currentPayment.Id;
                             db.MeterData.Add(meterData);
                             db.SaveChanges();
+                            
+                            currentPayment.Arrear = Math.Round(PreviousArrear(currentPayment) - (currentPayment.Introduced -
+                                Math.Round(data.meterInfo.Sum(m => m.newValue - m.oldValue) * ConfigAppManager.GetTariff(), 2) -
+                                Math.Round(data.meterInfo.Sum(m => m.newValue - m.oldValue) * ConfigAppManager.GetTariff() * ( DBRepository.GetRate(null, meterData.IdRate).Value), 2)), 2);
                         }
                     }
                 }
@@ -653,7 +673,7 @@ namespace EMS.Desktop.Services
                             newValue = md.NewValue,
                             oldValue = md.OldValue,
                             number = md.Meter.MeterNumber,
-                            rateId = md.Id_Rate,
+                            rateId = md.IdRate,
                             id = md.Id
                         });
                     }

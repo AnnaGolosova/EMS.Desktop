@@ -30,7 +30,7 @@ namespace EMS.Desktop.Models
             public class MeterInfo
             {
                 public int number;
-                public int? rateId;
+                public int rateId;
                 public double oldValue;
                 public double newValue;
                 public int? id;

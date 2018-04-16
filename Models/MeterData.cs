@@ -16,11 +16,11 @@ namespace EMS.Desktop.Models
     {
         public int Id { get; set; }
         public int IdMeter { get; set; }
-        public Nullable<System.DateTime> Date { get; set; }
-        public Nullable<int> Id_Payment { get; set; }
-        public Nullable<int> Id_Rate { get; set; }
+        public Nullable<int> IdPayment { get; set; }
+        public int IdRate { get; set; }
         public double OldValue { get; set; }
         public double NewValue { get; set; }
+        public Nullable<System.DateTime> Date { get; set; }
     
         public virtual Meter Meter { get; set; }
         public virtual Payment Payment { get; set; }

@@ -170,7 +170,6 @@ namespace EMS.Desktop
                         }
                     }
                 }
-                else;
             else if (DateTime.Now.Day == ConfigAppManager.GetReportDay() || DateTime.Now.Day.Equals(DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month)))
             {
                 string[] ServiceName = { "Взносы ", "Электроэнергия ", "Налог на землю ", "Налог на недвижимость " };
@@ -497,7 +496,7 @@ namespace EMS.Desktop
                                     x++;
                                     dataGridView1.Rows.Add(s.Id, s.Service.Id, s.Homestead.Number, s.Homestead.OwnerName, s.Date.Value.ToShortDateString(), s.Introduced, s.Entered,
                                         (s.Introduced - s.Entered).ToString("F3"), s.Arrear, (int)DBRepository.GetRatePosition(s.MeterData.ToList()[i].Rate.Id),
-                                        (s.MeterData.ToList()[i].NewValue - s.MeterData.ToList()[i].OldValue) + " (" + i + ") счетчик", s.MeterData.ToList()[i].NewValue, s.File.Path, s.MeterData.ToList()[i].Id);
+                                        (s.MeterData.ToList()[i].NewValue - s.MeterData.ToList()[i].OldValue) + " (" + (i + 1) + ") счетчик", s.MeterData.ToList()[i].NewValue, s.File.Path, s.MeterData.ToList()[i].Id);
                                     for (int j = 0; j < 11; j++)
                                     {
                                         dataGridView1.Rows[x].Cells[j].Style.BackColor = Color.Lavender;
@@ -656,7 +655,6 @@ namespace EMS.Desktop
                         }
                     }
                 }
-                else;
             else if (DateTime.Now.Day == ConfigAppManager.GetReportDay() || DateTime.Now.Day.Equals(DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month)))
             {
                 string[] ServiceName = { "Взносы ", "Электроэнергия ", "Налог на землю ", "Налог на недвижимость " };
@@ -752,11 +750,22 @@ namespace EMS.Desktop
                         MeterData md = DBRepository.GetMeterData().Where(m => m.Id == id).First();
                         int rateId = Int32.Parse(e.FormattedValue.ToString());
                         rateId = db.GetLastRates().OrderBy(r => r.Id).First().Id + rateId - 1;
-                        if (md.Id_Rate != rateId)
+                        if (md.IdRate != rateId)
                             db.ChangeMeterData((int)md.Id, rateId);
                     }
                 }
             }
+        }
+        
+        private void dataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            //if(e.ColumnIndex == 9 && dataGridView1[13, e.RowIndex].Value.ToString() != "~")
+            //{
+            //    DBRepository db = new DBRepository();
+            //    int id = int.Parse(dataGridView1[13, e.RowIndex].Value.ToString());
+            //    MeterData md = DBRepository.GetMeterData().Where(m => m.Id == id).First();
+            //    dataGridView1[e.ColumnIndex, e.RowIndex].ToolTipText = (md.NewValue - md.OldValue) + " * " + md.Rate.Value + " * " + ConfigAppManager.GetTariff() + " = " + ConfigAppManager.GetTariff() * md.Rate.Value;
+            //}
         }
     }
 }
