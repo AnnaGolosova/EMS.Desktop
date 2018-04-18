@@ -18,12 +18,14 @@ namespace EMS.Desktop.Models
 
         public List<int> ServiceId;
         public List<int> HomesteadId;
+        public List<string> HomesteadOwnName;
 
         public FilterParams()
         {
             ServiceId = new List<int>();
             HomesteadId = new List<int>();
             HomesteadNumber = new List<int?>();
+            HomesteadOwnName = new List<string>();
         }
     }
 }

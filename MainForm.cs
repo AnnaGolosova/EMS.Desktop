@@ -454,18 +454,29 @@ namespace EMS.Desktop
                     dataGridView1.AllowUserToAddRows = false;
 
                     List<Payment> listdbr = repository.GetPayment();
-                    listdbr.OrderBy(s => s.Date);
+                    
                     int x = 0;
-                    if(param.ServicId != 0)
+                    if (param.HomesteadOwnName.Count != 0)
+                    {
+                        listdbr.Clear();
+                        foreach (string s in param.HomesteadOwnName)
+                        {
+                            List<Payment> listpay = repository.GetPayment().Where(c => c.Homestead.OwnerName == s).ToList();
+                            foreach (Payment p in listpay)
+                                listdbr.Add(p);
+                        }
+
+                    }
+                    if (param.ServicId != 0)
                         listdbr = listdbr.Where(c => c.IdService == param.ServicId).ToList();
                     if(param.HomesteadNumbr != 0)
                         listdbr = listdbr.Where(c => c.Homestead.Number == param.HomesteadNumbr).ToList();
-                    if (param.HomesteadOwnerName != null)
-                        listdbr = listdbr.Where(c => c.Homestead.OwnerName == param.HomesteadOwnerName).ToList();
+                    
                     if (param.FromDate.Year != 1)
                         listdbr = listdbr.Where(c => c.Date >= param.FromDate && c.Date <= param.ToDate).ToList();
                     if (param.IsArear)
                         listdbr = listdbr.Where(c => c.Arrear > 0.0).ToList();
+                    listdbr.OrderBy(s => s.Date);
                     foreach (Payment s in listdbr)
                     {
                         if (s.IdService == 2)
