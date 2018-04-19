@@ -124,18 +124,19 @@ C:\Users\Daniil\Source\Repos\EMS.Desktop\obj\Debug\EMS 1.2.exe.manifest
 C:\Users\Daniil\Source\Repos\EMS.Desktop\obj\Debug\EMS 1.2.application
 c:\Users\Администратор\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.FilterViewDataForm.resources
 c:\Users\Администратор\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.Forms.CreateExcel.resources
-c:\Users\Администратор\Source\Repos\EMS.Desktop\obj\Debug\EMS 1.2.exe
-c:\Users\Администратор\Source\Repos\EMS.Desktop\obj\Debug\EMS 1.2.pdb
-c:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\EMS 1.2.exe.config
-c:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\EMS 1.2.exe.manifest
-c:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\EMS 1.2.application
-c:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\EMS 1.2.exe
-c:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\EMS 1.2.pdb
 c:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\Microsoft.VisualStudio.OLE.Interop.dll
 c:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\Microsoft.VisualStudio.Shell.Interop.dll
 c:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\Microsoft.VisualStudio.TextManager.Interop.dll
 c:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\Microsoft.VisualStudio.OLE.Interop.xml
 c:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\Microsoft.VisualStudio.Shell.Interop.xml
 c:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\Microsoft.VisualStudio.TextManager.Interop.xml
-c:\Users\Администратор\Source\Repos\EMS.Desktop\obj\Debug\EMS 1.2.exe.manifest
-c:\Users\Администратор\Source\Repos\EMS.Desktop\obj\Debug\EMS 1.2.application
+C:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\EMS 2.0.exe.config
+c:\Users\Администратор\Source\Repos\EMS.Desktop\obj\Debug\EMS.Desktop.Forms.AddHomesteadForm.resources
+c:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\EMS 2.0.exe.manifest
+c:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\EMS 2.0.application
+c:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\EMS 2.0.exe
+c:\Users\Администратор\Source\Repos\EMS.Desktop\bin\Debug\EMS 2.0.pdb
+c:\Users\Администратор\Source\Repos\EMS.Desktop\obj\Debug\EMS 2.0.exe.manifest
+c:\Users\Администратор\Source\Repos\EMS.Desktop\obj\Debug\EMS 2.0.application
+c:\Users\Администратор\Source\Repos\EMS.Desktop\obj\Debug\EMS 2.0.exe
+c:\Users\Администратор\Source\Repos\EMS.Desktop\obj\Debug\EMS 2.0.pdb

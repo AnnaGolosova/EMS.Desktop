@@ -1,6 +1,7 @@
 ﻿using EMS.Desktop.Models;
 using EMS.Desktop.Services;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -21,12 +22,14 @@ namespace EMS.Desktop
         public FilterViewDataForm(MainForm _obj, FilterParams filter, bool _IsArear)
         {
             InitializeComponent();
-            string[] listhomestd = DBRepository.GetHomestead().Select(h => h.OwnerName).ToArray();
-            int[] listnumber = DBRepository.GetHomestead().Select(h => h.Number).ToArray();
+            DBRepository repository = new DBRepository();
+            List<Payment> listdbr = repository.GetPayment();
+            string[] listhomestd = DBRepository.GetHomestead().OrderBy(h => h.OwnerName).Select(h => h.OwnerName).ToArray();
+            int[] listnumber = DBRepository.GetHomestead().OrderBy(h => h.Number).Select(h => h.Number).ToArray();
             var values = new AutoCompleteStringCollection();
             values.AddRange(listhomestd);
 
-            comboBoxOwnerName.DataSource = listhomestd.OrderBy(x => x).ToArray();
+            /*comboBoxOwnerName.DataSource = listhomestd.OrderBy(x => x).ToArray();
             comboBoxOwnerName.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             comboBoxOwnerName.AutoCompleteSource = AutoCompleteSource.ListItems;
             comboBoxOwnerName.Text = null;
@@ -35,10 +38,15 @@ namespace EMS.Desktop
             comboBoxNumber.DataSource = listnumber.OrderBy(x => x).ToArray();
             comboBoxNumber.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             comboBoxNumber.AutoCompleteSource = AutoCompleteSource.ListItems;
-            comboBoxNumber.Text = null;
+            comboBoxNumber.Text = null;*/
 
             param = filter;
             IsArear = _IsArear;
+
+            foreach(Homestead h in DBRepository.GetHomestead().OrderBy(hh => hh.Number))
+            {
+                listBoxOwnerName.Items.Add($"{h.Number}\t{h.OwnerName}");
+            }
 
             if (param.ServicId != 0)
             {
@@ -51,10 +59,10 @@ namespace EMS.Desktop
                 if (param.ServicId == 4)
                     radioButton4.Checked = true;
             }
-            if (param.HomesteadNumbr != 0)
+            /*if (param.HomesteadNumbr != 0)
                 comboBoxNumber.Text = param.HomesteadNumbr.ToString();
             if (param.HomesteadOwnerName != null)
-                comboBoxOwnerName.Text = param.HomesteadOwnerName;
+                comboBoxOwnerName.Text = param.HomesteadOwnerName;*/
             if (param.FromDate.Year != 1)
             {
                 dateTimePickerAt.Enabled = true;
@@ -68,16 +76,17 @@ namespace EMS.Desktop
             obj = _obj;
         }
 
-        private void comboBox1_TextChanged(object sender, EventArgs e)
+        /*private void comboBox1_TextChanged(object sender, EventArgs e)
         {
             int index = comboBoxOwnerName.FindString(comboBoxOwnerName.Text);
-        }
+        }*/
 
         private FilterParams BuildParams()
         {
             FilterParams param = new FilterParams();
             List<int> nbr = DBRepository.GetHomestead().Select(s => (int)s.Number).ToList();
             List<string> homestd = DBRepository.GetHomestead().Select(s => s.OwnerName).ToList();
+            //listBoxOwnerName.GetSelected();
             if (!radioButtonAllTime.Checked)
             {
                 param.FromDate = dateTimePickerAt.Value.Date;
@@ -93,18 +102,29 @@ namespace EMS.Desktop
                 param.ServicId = 4;
             if (radioButtonAll.Checked)
                 param.ServicId = 0;
-            if (comboBoxOwnerName.Text != "")
+            /*if (comboBoxOwnerName.Text != "")
             {
-                if (homestd.Any(s => s == comboBoxOwnerName.Text))
-                    param.HomesteadOwnerName = comboBoxOwnerName.Text;
+                if (homestd.Any(s => s == listBoxOwnerName.SelectedValue.ToString()))
+
+                    //param.HomesteadOwnName.Add();
                 else
                 {
                     MessageBox.Show("Такого человека не существует");
                     comboBoxOwnerName.Focus();
                     return null;
                 }
+            }*/
+            if(listBoxOwnerName.SelectedItems != null)
+            {
+                ICollection selctd = listBoxOwnerName.SelectedItems;
+                ArrayList s = new ArrayList(selctd);
+                List<string> selectItems = s.Cast<string>().ToList();
+                foreach(string ss in selectItems)
+                {
+                    param.HomesteadOwnName.Add(ss.Remove(0, ss.IndexOf("\t") + 1));
+                }
             }
-            try
+            /*try
             {
                 if (nbr.Any(s => s == int.Parse(comboBoxNumber.Text)))
                     param.HomesteadNumbr = int.Parse(comboBoxNumber.Text);
@@ -115,7 +135,7 @@ namespace EMS.Desktop
                     return null;
                 }
             }
-            catch { }
+            catch { }*/
             if (IsArear)
                 param.IsArear = true;
             else
@@ -123,10 +143,10 @@ namespace EMS.Desktop
             return param;
         }
 
-        private void comboBoxNumber_TextChanged(object sender, EventArgs e)
+        /*private void comboBoxNumber_TextChanged(object sender, EventArgs e)
         {
             int index = comboBoxNumber.FindString(comboBoxNumber.Text);
-        }
+        }*/
         
         private void radioButtonAt_CheckedChanged(object sender, EventArgs e)
         {
@@ -149,14 +169,6 @@ namespace EMS.Desktop
             obj.filterPrm = param;
             obj.LoadDataGridView(param);
             Hide();
-
-            
-            /*int serv = radioButtonAll.Checked ? 5 : (radioButton1.Checked ? 1 : (radioButton2.Checked ? 2 : radioButton3.Checked ? 3 : (radioButton4.Checked ? 4 : 0)));
-            if(radioButtonAt.Checked)
-                obj.LoadDataGridView(comboBoxOwnerName.Text.ToString(), int.Parse(comboBoxNumber.Text), serv, dateTimePickerAt.Value, dateTimePickerTo.Value);
-            if(radioButtonDay.Checked)
-                obj.LoadDataGridView(comboBoxOwnerName.Text.ToString(), int.Parse(comboBoxNumber.Text), serv, dateTimePickerDay.Value);
-           */
         }
 
         private void buttonCancel_Click(object sender, EventArgs e)
@@ -164,12 +176,68 @@ namespace EMS.Desktop
             Hide();
         }
 
-        /*private void comboBoxNumber_Validating(object sender, CancelEventArgs e)
+        private void listBoxOwnerName_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var dgv = sender as DataGridView;
-            if (!(new List<string>() { "1", "2", "3", "" }).Any(r => r.CompareTo(e.FormattedValue.ToString().Normalize()) == 0))
-                dataGridView1[e.ColumnIndex, e.RowIndex].Style.BackColor = System.Drawing.ColorTranslator.FromHtml("#ff899e");
-            else dataGridView1[e.ColumnIndex, e.RowIndex].Style.BackColor = Color.White;
-        }*/
+            /*
+            int i;
+            DBRepository repository = new DBRepository();
+            List<Payment> listdbr = repository.GetPayment();
+            
+            ICollection selctd = listBoxOwnerName.SelectedItems;
+            ArrayList s = new ArrayList(selctd);
+            List<string> selectItems = s.Cast<string>().ToList();
+            listdbr = listdbr.Where(h => selectItems.Any(p => p.CompareTo(h.Homestead.OwnerName) == 0)).ToList();
+
+            for (i = 0; i < listBoxNumber.Items.Count; i++)
+            {
+                foreach (Payment p in listdbr)
+                {
+                    if (listBoxNumber.Items[i].ToString() == p.Homestead.Number.ToString())
+                    {
+                        if (listBoxNumber.GetSelected(i) == false)
+                            listBoxNumber.SetSelected(i, true);
+                        else
+                            listBoxNumber.SetSelected(i, false);
+                        //break;
+                    }
+                }
+            }
+            */
+
+
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            ICollection selctd = listBoxOwnerName.SelectedItems;
+            ArrayList s = new ArrayList(selctd);
+            List<string> selectItems = s.Cast<string>().ToList();
+            listBoxOwnerName.Items.Clear();
+            int i = 0;
+            foreach (Homestead h in DBRepository.GetHomestead().OrderBy(hh => hh.Number))
+            {
+                listBoxOwnerName.Items.Add($"{h.Number}\t{h.OwnerName}");
+                if (selectItems.Any(ii => ii.Contains(h.OwnerName)))
+                    listBoxOwnerName.SetSelected(i, true);
+                i++;
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            ICollection selctd = listBoxOwnerName.SelectedItems;
+            ArrayList s = new ArrayList(selctd);
+            List<string> selectItems = s.Cast<string>().ToList();
+            int i = 0;
+            listBoxOwnerName.Items.Clear();
+            foreach (Homestead h in DBRepository.GetHomestead().OrderBy(hh => hh.OwnerName))
+            {
+                listBoxOwnerName.Items.Add($"{h.Number}\t{h.OwnerName}");
+                if (selectItems.Any(ii => ii.Contains(h.OwnerName)))
+                    listBoxOwnerName.SetSelected(i, true);
+                i++;
+            }
+        }
     }
 }
