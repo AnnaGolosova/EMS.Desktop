@@ -52,6 +52,8 @@ namespace EMS.Desktop
                 radioButtonAt.Checked = true;
             }
 
+            BadPeopleCheckBox.Checked = param.isBadReport;
+
             obj = _obj;
         }
 
@@ -104,6 +106,11 @@ namespace EMS.Desktop
 
         private void buttonApply_Click(object sender, EventArgs e)
         {
+            if(BadPeopleCheckBox.Checked && radioButtonAll.Checked)
+            {
+                MessageBox.Show("Для просмотра неоплативших участков выбериет услугу!", "Выберите услугу!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             param = BuildParams();
             obj.filterPrm = param;
             obj.LoadDataGridView(param);

@@ -355,209 +355,270 @@ namespace EMS.Desktop
                 {
                     if (!DBRepository.TryConnection())
                     {
-                        //MessageBox.Show("In `LoadDataGridView`");
                         throw new DataBaseException("");
                     }
 
-                    #region columns
-                    LoadingLabel.Visible = true;
-                    dataGridView1.Columns.Clear();
-                    dataGridView1.Rows.Clear();
-                    dataGridView1.Visible = true;
-                    dataGridView1.ScrollBars = ScrollBars.Both;
-
-                    var column1 = new DataGridViewColumn();
-                    column1.HeaderText = "Услуга";
-                    column1.Name = "Servise";
-                    column1.ReadOnly = true;
-                    column1.CellTemplate = new DataGridViewTextBoxCell();
-                    column1.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                    column1.SortMode = DataGridViewColumnSortMode.Automatic;
-
-                    var column2 = new DataGridViewColumn();
-                    column2.HeaderText = "Н/у";
-                    column2.Name = "HomeStead";
-                    column2.Width = 20;
-                    column2.ReadOnly = true;
-                    column2.CellTemplate = new DataGridViewTextBoxCell();
-                    column2.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                    column2.SortMode = DataGridViewColumnSortMode.Automatic;
-
-                    var column3 = new DataGridViewColumn();
-                    column3.HeaderText = "Ф.И.О.";
-                    column3.Name = "OwnerName";
-                    column3.ReadOnly = true;
-                    column3.CellTemplate = new DataGridViewTextBoxCell();
-                    column3.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                    column3.SortMode = DataGridViewColumnSortMode.Automatic;
-
-                    var column4 = new DataGridViewColumn();
-                    column4.HeaderText = "Дата оплаты";
-                    column4.Name = "Date";
-                    column4.ReadOnly = true;
-                    column4.CellTemplate = new DataGridViewTextBoxCell();
-                    column4.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                    column4.SortMode = DataGridViewColumnSortMode.Automatic;
-
-                    var column5 = new DataGridViewColumn();
-                    column5.HeaderText = "Задолженность"; 
-                    column5.Name = "Arrear";
-                    column5.ReadOnly = false;
-                    column5.CellTemplate = new DataGridViewTextBoxCell();
-                    column5.Width = 50;
-                    column5.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                    column5.MinimumWidth = 50;
-                    column5.SortMode = DataGridViewColumnSortMode.Automatic;
-
-                    var column6 = new DataGridViewColumn();
-                    column6.HeaderText = "Внесено";
-                    column6.Name = "Introdused";
-                    column6.ReadOnly = true;
-                    column6.CellTemplate = new DataGridViewTextBoxCell();
-                    column6.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                    column6.SortMode = DataGridViewColumnSortMode.Automatic;
-
-                    var column7 = new DataGridViewColumn();
-                    column7.HeaderText = "Поступило";
-                    column7.Name = "Entered";
-                    column7.ReadOnly = true;
-                    column7.CellTemplate = new DataGridViewTextBoxCell();
-                    column7.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                    column7.SortMode = DataGridViewColumnSortMode.Automatic;
-
-                    var column8 = new DataGridViewColumn();
-                    column8.HeaderText = "Разность";
-                    column8.Name = "Difference";
-                    column8.Width = 20;
-                    column8.ReadOnly = true;
-                    column8.CellTemplate = new DataGridViewTextBoxCell();
-                    column8.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-
-                    var column9 = new DataGridViewColumn();
-                    column9.HeaderText = "Кол-во кВТ за месяц";
-                    column9.Name = "DifferenceMeter";
-                    column9.Width = 20;
-                    column9.ReadOnly = true;
-                    column9.CellTemplate = new DataGridViewTextBoxCell();
-                    column9.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-
-                    var column10 = new DataGridViewColumn();
-                    column10.HeaderText = "Значение счётчика";
-                    column10.Name = "MeterData";
-                    column10.ReadOnly = true;
-                    column10.CellTemplate = new DataGridViewTextBoxCell();
-                    column10.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-
-                    var column11 = new DataGridViewColumn();
-                    column11.HeaderText = "Путь к файлу";
-                    column11.Name = "Path";
-                    column11.ReadOnly = true;
-                    column11.MinimumWidth = 50;
-                    column11.CellTemplate = new DataGridViewTextBoxCell();
-                    column11.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-
-                    var column12 = new DataGridViewColumn();
-                    column12.Name = "Id";
-                    column12.ReadOnly = true;
-                    column12.CellTemplate = new DataGridViewTextBoxCell();
-                    column12.Visible = false;
-
-                    var column14 = new DataGridViewColumn();
-                    column14.Name = "IdMeter";
-                    column14.ReadOnly = true;
-                    column14.CellTemplate = new DataGridViewTextBoxCell();
-                    column14.Visible = false;
-                    var column15 = new DataGridViewColumn();
-                    column15.Name = "IdMeterData";
-                    column15.ReadOnly = true;
-                    column15.CellTemplate = new DataGridViewTextBoxCell();
-                    column15.Visible = false;
-
-                    var column13 = new DataGridViewColumn();
-                    column13.HeaderText = "Тариф";
-                    column13.Name = "Rate";
-                    column13.ReadOnly = false;
-                    column13.CellTemplate = new DataGridViewTextBoxCell();
-                    column13.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                    column13.MinimumWidth = 50;
-                    column13.Width = 50;
-
-                    dataGridView1.Columns.Add(column12);
-                    dataGridView1.Columns.Add(column1);
-                    dataGridView1.Columns.Add(column2);
-                    dataGridView1.Columns.Add(column3);
-                    dataGridView1.Columns.Add(column4);
-                    dataGridView1.Columns.Add(column6);
-                    dataGridView1.Columns.Add(column7);
-                    dataGridView1.Columns.Add(column8);
-                    dataGridView1.Columns.Add(column5);
-                    dataGridView1.Columns.Add(column13);
-                    dataGridView1.Columns.Add(column9);
-                    dataGridView1.Columns.Add(column10);
-                    dataGridView1.Columns.Add(column11);
-                    dataGridView1.Columns.Add(column14);
-                    dataGridView1.Columns.Add(column15);
-                    LoadingLabel.Visible = false;
-
-                    #endregion
-
-                    dataGridView1.AllowUserToAddRows = false;
-
-                    List<Payment> listdbr = DBRepository.GetPayment();
-                    
-                    int x = 0;
-                    if (param.HomesteadOwnName.Count != 0)
-                    {
-                        listdbr.Clear();
-                        foreach (string s in param.HomesteadOwnName)
-                        {
-                            List<Payment> listpay = DBRepository.GetPayment().Where(c => c.Homestead.OwnerName == s).ToList();
-                            foreach (Payment p in listpay)
-                                listdbr.Add(p);
-                        }
-
-                    }
-                    if (param.ServicId != 0)
-                        listdbr = listdbr.Where(c => c.IdService == param.ServicId).ToList();
-                    if(param.HomesteadNumbr != 0)
-                        listdbr = listdbr.Where(c => c.Homestead.Number == param.HomesteadNumbr).ToList();
-                    
-                    if (param.FromDate.Year != 1)
-                        listdbr = listdbr.Where(c => c.Date >= param.FromDate && c.Date <= param.ToDate).ToList();
+                    List<Payment> listdbr = DBRepository.GetPayment().OrderBy(s => s.Date).ToList();
                     if (param.IsArear)
                         listdbr = listdbr.Where(c => c.Arrear > 0.0).ToList();
-                    listdbr.OrderBy(s => s.Date);
-                    foreach (Payment s in listdbr)
+                    if (param.ServicId != 0)
+                        listdbr = listdbr.Where(c => c.IdService == param.ServicId).ToList();
+                    if (param.isBadReport)
                     {
-                        if (s.IdService == 2)
+                        List<Homestead> homesteadList = new List<Homestead>();
+                        foreach (Homestead homestead in DBRepository.GetHomestead())
                         {
-                            dataGridView1.Rows.Add(s.Id, s.IdService, s.Homestead.Number, s.Homestead.OwnerName, s.Date.ToShortDateString(), s.Introduced, s.Entered,
-                                (s.Introduced - s.Entered).ToString("F3"), s.Arrear, (int)DBRepository.GetRatePosition(s.MeterData.ToList()[0].Meter.Rate.Id), 
-                                (s.MeterData.ToList()[0].NewValue - s.MeterData.ToList()[0].OldValue), s.MeterData.ToList()[0].NewValue, s.File.Path, s.MeterData.ToList()[0].IdMeter, s.MeterData.ToList()[0].Id);
-                            if (s.Homestead.Meter.Count > 1)
+                            bool b1 = listdbr.Any(p => p.IdHomestead == homestead.Id && param.ServicId == p.IdService);
+                            bool b2 = !listdbr.Any(p => p.IdHomestead == homestead.Id && p.Date >= param.FromDate && p.Date <= param.ToDate);
+                            if (listdbr.Any(p => p.IdHomestead == homestead.Id && param.ServicId == p.IdService) &&
+                                !listdbr.Any(p => p.IdHomestead == homestead.Id && p.Date >= param.FromDate && p.Date <= param.ToDate))
+                                homesteadList.Add(homestead);
+
+                        }
+                        #region columns
+                        LoadingLabel.Visible = true;
+                        dataGridView1.Columns.Clear();
+                        dataGridView1.Rows.Clear();
+                        dataGridView1.Visible = true;
+                        dataGridView1.ScrollBars = ScrollBars.Both;
+
+                        var column1 = new DataGridViewColumn()
+                        {
+                            HeaderText = "Номер участка",
+                            Name = "Servise",
+                            ReadOnly = true,
+                            CellTemplate = new DataGridViewTextBoxCell(),
+                            AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
+                            SortMode = DataGridViewColumnSortMode.Automatic
+                        };
+
+                        var column2 = new DataGridViewColumn()
+                        {
+                            HeaderText = "ФИО владельца",
+                            Name = "OwnerName",
+                            ReadOnly = true,
+                            CellTemplate = new DataGridViewTextBoxCell(),
+                            AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                            SortMode = DataGridViewColumnSortMode.Automatic
+                        };
+
+                        var column3 = new DataGridViewColumn()
+                        {
+                            HeaderText = "Количество счетчиков",
+                            Name = "MeretsCount",
+                            ReadOnly = true,
+                            CellTemplate = new DataGridViewTextBoxCell(),
+                            AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
+                            SortMode = DataGridViewColumnSortMode.Automatic
+                        };
+
+                        dataGridView1.Columns.Add(column1);
+                        dataGridView1.Columns.Add(column2);
+                        dataGridView1.Columns.Add(column3);
+                        LoadingLabel.Visible = false;
+                        #endregion
+
+                        foreach (Homestead homestead in homesteadList.OrderBy(h => h.Number))
+                        {
+                            dataGridView1.Rows.Add(homestead.Number, homestead.OwnerName, homestead.Meter.Count);
+                        }
+                    }
+                    else
+                    {
+                        #region columns
+                        LoadingLabel.Visible = true;
+                        dataGridView1.Columns.Clear();
+                        dataGridView1.Rows.Clear();
+                        dataGridView1.Visible = true;
+                        dataGridView1.ScrollBars = ScrollBars.Both;
+
+                        var column1 = new DataGridViewColumn();
+                        column1.HeaderText = "Услуга";
+                        column1.Name = "Servise";
+                        column1.ReadOnly = true;
+                        column1.CellTemplate = new DataGridViewTextBoxCell();
+                        column1.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                        column1.SortMode = DataGridViewColumnSortMode.Automatic;
+
+                        var column2 = new DataGridViewColumn();
+                        column2.HeaderText = "Н/у";
+                        column2.Name = "HomeStead";
+                        column2.Width = 20;
+                        column2.ReadOnly = true;
+                        column2.CellTemplate = new DataGridViewTextBoxCell();
+                        column2.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                        column2.SortMode = DataGridViewColumnSortMode.Automatic;
+
+                        var column3 = new DataGridViewColumn();
+                        column3.HeaderText = "Ф.И.О.";
+                        column3.Name = "OwnerName";
+                        column3.ReadOnly = true;
+                        column3.CellTemplate = new DataGridViewTextBoxCell();
+                        column3.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                        column3.SortMode = DataGridViewColumnSortMode.Automatic;
+
+                        var column4 = new DataGridViewColumn();
+                        column4.HeaderText = "Дата оплаты";
+                        column4.Name = "Date";
+                        column4.ReadOnly = true;
+                        column4.CellTemplate = new DataGridViewTextBoxCell();
+                        column4.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                        column4.SortMode = DataGridViewColumnSortMode.Automatic;
+
+                        var column5 = new DataGridViewColumn();
+                        column5.HeaderText = "Задолженность"; 
+                        column5.Name = "Arrear";
+                        column5.ReadOnly = false;
+                        column5.CellTemplate = new DataGridViewTextBoxCell();
+                        column5.Width = 50;
+                        column5.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                        column5.MinimumWidth = 50;
+                        column5.SortMode = DataGridViewColumnSortMode.Automatic;
+
+                        var column6 = new DataGridViewColumn();
+                        column6.HeaderText = "Внесено";
+                        column6.Name = "Introdused";
+                        column6.ReadOnly = true;
+                        column6.CellTemplate = new DataGridViewTextBoxCell();
+                        column6.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                        column6.SortMode = DataGridViewColumnSortMode.Automatic;
+
+                        var column7 = new DataGridViewColumn();
+                        column7.HeaderText = "Поступило";
+                        column7.Name = "Entered";
+                        column7.ReadOnly = true;
+                        column7.CellTemplate = new DataGridViewTextBoxCell();
+                        column7.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                        column7.SortMode = DataGridViewColumnSortMode.Automatic;
+
+                        var column8 = new DataGridViewColumn();
+                        column8.HeaderText = "Разность";
+                        column8.Name = "Difference";
+                        column8.Width = 20;
+                        column8.ReadOnly = true;
+                        column8.CellTemplate = new DataGridViewTextBoxCell();
+                        column8.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+
+                        var column9 = new DataGridViewColumn();
+                        column9.HeaderText = "Кол-во кВТ за месяц";
+                        column9.Name = "DifferenceMeter";
+                        column9.Width = 20;
+                        column9.ReadOnly = true;
+                        column9.CellTemplate = new DataGridViewTextBoxCell();
+                        column9.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+
+                        var column10 = new DataGridViewColumn();
+                        column10.HeaderText = "Значение счётчика";
+                        column10.Name = "MeterData";
+                        column10.ReadOnly = true;
+                        column10.CellTemplate = new DataGridViewTextBoxCell();
+                        column10.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+
+                        var column11 = new DataGridViewColumn();
+                        column11.HeaderText = "Путь к файлу";
+                        column11.Name = "Path";
+                        column11.ReadOnly = true;
+                        column11.MinimumWidth = 50;
+                        column11.CellTemplate = new DataGridViewTextBoxCell();
+                        column11.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+
+                        var column12 = new DataGridViewColumn();
+                        column12.Name = "Id";
+                        column12.ReadOnly = true;
+                        column12.CellTemplate = new DataGridViewTextBoxCell();
+                        column12.Visible = false;
+
+                        var column14 = new DataGridViewColumn();
+                        column14.Name = "IdMeter";
+                        column14.ReadOnly = true;
+                        column14.CellTemplate = new DataGridViewTextBoxCell();
+                        column14.Visible = false;
+                        var column15 = new DataGridViewColumn();
+                        column15.Name = "IdMeterData";
+                        column15.ReadOnly = true;
+                        column15.CellTemplate = new DataGridViewTextBoxCell();
+                        column15.Visible = false;
+
+                        var column13 = new DataGridViewColumn();
+                        column13.HeaderText = "Тариф";
+                        column13.Name = "Rate";
+                        column13.ReadOnly = false;
+                        column13.CellTemplate = new DataGridViewTextBoxCell();
+                        column13.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                        column13.MinimumWidth = 50;
+                        column13.Width = 50;
+
+                        dataGridView1.Columns.Add(column12);
+                        dataGridView1.Columns.Add(column1);
+                        dataGridView1.Columns.Add(column2);
+                        dataGridView1.Columns.Add(column3);
+                        dataGridView1.Columns.Add(column4);
+                        dataGridView1.Columns.Add(column6);
+                        dataGridView1.Columns.Add(column7);
+                        dataGridView1.Columns.Add(column8);
+                        dataGridView1.Columns.Add(column5);
+                        dataGridView1.Columns.Add(column13);
+                        dataGridView1.Columns.Add(column9);
+                        dataGridView1.Columns.Add(column10);
+                        dataGridView1.Columns.Add(column11);
+                        dataGridView1.Columns.Add(column14);
+                        dataGridView1.Columns.Add(column15);
+                        LoadingLabel.Visible = false;
+
+                        #endregion
+
+                        if (param.FromDate.Year != 1)
+                            listdbr = listdbr.Where(c => c.Date >= param.FromDate && c.Date <= param.ToDate).ToList();
+                        dataGridView1.AllowUserToAddRows = false;
+
+                        int x = 0;
+                        if (param.HomesteadOwnName.Count != 0)
+                        {
+                            listdbr.Clear();
+                            foreach (string s in param.HomesteadOwnName)
                             {
-                                int n = s.MeterData.Count;
-                                for (int i = 1; i < n; i++)
+                                List<Payment> listpay = DBRepository.GetPayment().Where(c => c.Homestead.OwnerName == s).ToList();
+                                foreach (Payment p in listpay)
+                                    listdbr.Add(p);
+                            }
+
+                        }
+
+                        if (param.HomesteadNumbr != 0)
+                            listdbr = listdbr.Where(c => c.Homestead.Number == param.HomesteadNumbr).ToList();
+
+                        foreach (Payment s in listdbr)
+                        {
+                            if (s.IdService == 2)
+                            {
+                                dataGridView1.Rows.Add(s.Id, s.IdService, s.Homestead.Number, s.Homestead.OwnerName, s.Date.ToShortDateString(), s.Introduced, s.Entered,
+                                    (s.Introduced - s.Entered).ToString("F3"), s.Arrear, (int)DBRepository.GetRatePosition(s.MeterData.ToList()[0].Meter.Rate.Id),
+                                    (s.MeterData.ToList()[0].NewValue - s.MeterData.ToList()[0].OldValue), s.MeterData.ToList()[0].NewValue, s.File.Path, s.MeterData.ToList()[0].IdMeter, s.MeterData.ToList()[0].Id);
+                                if (s.Homestead.Meter.Count > 1)
                                 {
-                                    x++;
-                                    dataGridView1.Rows.Add(s.Id, s.IdService, s.Homestead.Number, s.Homestead.OwnerName, s.Date.ToShortDateString(), s.Introduced, s.Entered,
-                                        (s.Introduced - s.Entered).ToString("F3"), s.Arrear, (int)DBRepository.GetRatePosition(s.MeterData.ToList()[i].Meter.Rate.Id),
-                                        (s.MeterData.ToList()[i].NewValue - s.MeterData.ToList()[i].OldValue) + " (" + (i + 1) + ") счетчик", s.MeterData.ToList()[i].NewValue, s.File.Path, s.MeterData.ToList()[i].IdMeter, s.MeterData.ToList()[0].Id);
-                                    for (int j = 0; j < 11; j++)
+                                    int n = s.MeterData.Count;
+                                    for (int i = 1; i < n; i++)
                                     {
-                                        dataGridView1.Rows[x].Cells[j].Style.BackColor = Color.Lavender;
+                                        x++;
+                                        dataGridView1.Rows.Add(s.Id, s.IdService, s.Homestead.Number, s.Homestead.OwnerName, s.Date.ToShortDateString(), s.Introduced, s.Entered,
+                                            (s.Introduced - s.Entered).ToString("F3"), s.Arrear, (int)DBRepository.GetRatePosition(s.MeterData.ToList()[i].Meter.Rate.Id),
+                                            (s.MeterData.ToList()[i].NewValue - s.MeterData.ToList()[i].OldValue) + " (" + (i + 1) + ") счетчик", s.MeterData.ToList()[i].NewValue, s.File.Path, s.MeterData.ToList()[i].IdMeter, s.MeterData.ToList()[0].Id);
+                                        for (int j = 0; j < 11; j++)
+                                        {
+                                            dataGridView1.Rows[x].Cells[j].Style.BackColor = Color.Lavender;
+                                        }
                                     }
                                 }
                             }
+                            else
+                            {
+                                dataGridView1.Rows.Add(s.Id, s.IdService, s.Homestead.Number, s.Homestead.OwnerName, s.Date.ToShortDateString(),
+                                    s.Introduced, s.Entered, (s.Introduced - s.Entered).ToString("F3"), s.Arrear, "", "", "", s.File.Path, "~");
+                            }
+                            x++;
                         }
-                        else
-                        {
-                            dataGridView1.Rows.Add(s.Id, s.IdService, s.Homestead.Number, s.Homestead.OwnerName, s.Date.ToShortDateString(), 
-                                s.Introduced,  s.Entered, (s.Introduced - s.Entered).ToString("F3"), s.Arrear, "","", "", s.File.Path, "~");
-                        }
-                        x++;
+                        createExcelButton.Visible = true;
                     }
-                    createExcelButton.Visible = true;
                 }
                 else
                 {
