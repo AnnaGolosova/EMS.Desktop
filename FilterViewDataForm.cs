@@ -22,23 +22,6 @@ namespace EMS.Desktop
         public FilterViewDataForm(MainForm _obj, FilterParams filter, bool _IsArear)
         {
             InitializeComponent();
-            DBRepository repository = new DBRepository();
-            List<Payment> listdbr = repository.GetPayment();
-            string[] listhomestd = DBRepository.GetHomestead().OrderBy(h => h.OwnerName).Select(h => h.OwnerName).ToArray();
-            int[] listnumber = DBRepository.GetHomestead().OrderBy(h => h.Number).Select(h => h.Number).ToArray();
-            var values = new AutoCompleteStringCollection();
-            values.AddRange(listhomestd);
-
-            /*comboBoxOwnerName.DataSource = listhomestd.OrderBy(x => x).ToArray();
-            comboBoxOwnerName.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-            comboBoxOwnerName.AutoCompleteSource = AutoCompleteSource.ListItems;
-            comboBoxOwnerName.Text = null;
-            buttonApply.Focus();
-
-            comboBoxNumber.DataSource = listnumber.OrderBy(x => x).ToArray();
-            comboBoxNumber.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-            comboBoxNumber.AutoCompleteSource = AutoCompleteSource.ListItems;
-            comboBoxNumber.Text = null;*/
 
             param = filter;
             IsArear = _IsArear;
@@ -59,10 +42,6 @@ namespace EMS.Desktop
                 if (param.ServicId == 4)
                     radioButton4.Checked = true;
             }
-            /*if (param.HomesteadNumbr != 0)
-                comboBoxNumber.Text = param.HomesteadNumbr.ToString();
-            if (param.HomesteadOwnerName != null)
-                comboBoxOwnerName.Text = param.HomesteadOwnerName;*/
             if (param.FromDate.Year != 1)
             {
                 dateTimePickerAt.Enabled = true;
@@ -76,17 +55,9 @@ namespace EMS.Desktop
             obj = _obj;
         }
 
-        /*private void comboBox1_TextChanged(object sender, EventArgs e)
-        {
-            int index = comboBoxOwnerName.FindString(comboBoxOwnerName.Text);
-        }*/
-
         private FilterParams BuildParams()
         {
             FilterParams param = new FilterParams();
-            List<int> nbr = DBRepository.GetHomestead().Select(s => (int)s.Number).ToList();
-            List<string> homestd = DBRepository.GetHomestead().Select(s => s.OwnerName).ToList();
-            //listBoxOwnerName.GetSelected();
             if (!radioButtonAllTime.Checked)
             {
                 param.FromDate = dateTimePickerAt.Value.Date;
@@ -102,18 +73,6 @@ namespace EMS.Desktop
                 param.ServicId = 4;
             if (radioButtonAll.Checked)
                 param.ServicId = 0;
-            /*if (comboBoxOwnerName.Text != "")
-            {
-                if (homestd.Any(s => s == listBoxOwnerName.SelectedValue.ToString()))
-
-                    //param.HomesteadOwnName.Add();
-                else
-                {
-                    MessageBox.Show("Такого человека не существует");
-                    comboBoxOwnerName.Focus();
-                    return null;
-                }
-            }*/
             if(listBoxOwnerName.SelectedItems != null)
             {
                 ICollection selctd = listBoxOwnerName.SelectedItems;
@@ -124,29 +83,10 @@ namespace EMS.Desktop
                     param.HomesteadOwnName.Add(ss.Remove(0, ss.IndexOf("\t") + 1));
                 }
             }
-            /*try
-            {
-                if (nbr.Any(s => s == int.Parse(comboBoxNumber.Text)))
-                    param.HomesteadNumbr = int.Parse(comboBoxNumber.Text);
-                else
-                {
-                    MessageBox.Show("Такого участка не существует");
-                    comboBoxNumber.Focus();
-                    return null;
-                }
-            }
-            catch { }*/
-            if (IsArear)
-                param.IsArear = true;
-            else
-                param.IsArear = false;
+            param.IsArear = IsArear;
+            param.isBadReport = BadPeopleCheckBox.Checked;
             return param;
         }
-
-        /*private void comboBoxNumber_TextChanged(object sender, EventArgs e)
-        {
-            int index = comboBoxNumber.FindString(comboBoxNumber.Text);
-        }*/
         
         private void radioButtonAt_CheckedChanged(object sender, EventArgs e)
         {
@@ -164,7 +104,6 @@ namespace EMS.Desktop
 
         private void buttonApply_Click(object sender, EventArgs e)
         {
-            
             param = BuildParams();
             obj.filterPrm = param;
             obj.LoadDataGridView(param);
@@ -174,38 +113,6 @@ namespace EMS.Desktop
         private void buttonCancel_Click(object sender, EventArgs e)
         {
             Hide();
-        }
-
-        private void listBoxOwnerName_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            /*
-            int i;
-            DBRepository repository = new DBRepository();
-            List<Payment> listdbr = repository.GetPayment();
-            
-            ICollection selctd = listBoxOwnerName.SelectedItems;
-            ArrayList s = new ArrayList(selctd);
-            List<string> selectItems = s.Cast<string>().ToList();
-            listdbr = listdbr.Where(h => selectItems.Any(p => p.CompareTo(h.Homestead.OwnerName) == 0)).ToList();
-
-            for (i = 0; i < listBoxNumber.Items.Count; i++)
-            {
-                foreach (Payment p in listdbr)
-                {
-                    if (listBoxNumber.Items[i].ToString() == p.Homestead.Number.ToString())
-                    {
-                        if (listBoxNumber.GetSelected(i) == false)
-                            listBoxNumber.SetSelected(i, true);
-                        else
-                            listBoxNumber.SetSelected(i, false);
-                        //break;
-                    }
-                }
-            }
-            */
-
-
-
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -238,6 +145,11 @@ namespace EMS.Desktop
                     listBoxOwnerName.SetSelected(i, true);
                 i++;
             }
+        }
+
+        private void BadPeopleCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            groupBox1.Enabled = !BadPeopleCheckBox.Checked;
         }
     }
 }

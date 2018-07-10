@@ -25,7 +25,7 @@ namespace EMS.Desktop.Models
         public Nullable<int> IdFile { get; set; }
         public double Introduced { get; set; }
         public double Entered { get; set; }
-        public Nullable<System.DateTime> Date { get; set; }
+        public System.DateTime Date { get; set; }
         public double Arrear { get; set; }
         public int PackageNumber { get; set; }
     

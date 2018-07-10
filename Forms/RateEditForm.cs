@@ -27,9 +27,8 @@ namespace EMS.Desktop.Forms
                 splitContainer1.SplitterDistance = RateViewDGV.Height;
                 RateViewDGV.Dock = DockStyle.Fill;
                 RateDGV.CellValidating += RateDGV_CellValidating;
-                DBRepository db = new DBRepository();
                 int i = 1;
-                foreach (Rate rate in db.GetLastRates().OrderBy(r => r.Id))
+                foreach (Rate rate in DBRepository.GetLastRates().OrderBy(r => r.Id))
                 {
                     RateViewDGV.Rows.Add(i++, rate.Service.Name, rate.Value, ConfigAppManager.GetTariff(), ConfigAppManager.GetTariff() * rate.Value);
                 }
@@ -38,16 +37,9 @@ namespace EMS.Desktop.Forms
 
                     foreach (Report210.ReportData.MeterInfo meter in record.meterInfo)
                     {
-                        if (meter.rateId == null)
-                        {
-                            RateDGV.Rows.Add(record.HomeSteadNumber, record.OwnerName, meter.number, record.Arrer, "");
-                        }
-                        else
-                        {
-                            Rate rate = DBRepository.GetRate(null, meter.rateId);
-                            int? x = DBRepository.GetRatePosition(meter.rateId);
-                            RateDGV.Rows.Add(record.HomeSteadNumber, record.OwnerName, meter.number, record.Arrer, rate == null ? "" : x.ToString());
-                        }
+                        Rate rate = DBRepository.GetRate(null, meter.RateId);
+                        int? x = DBRepository.GetRatePosition(meter.RateId);
+                        RateDGV.Rows.Add(record.HomeSteadNumber, record.OwnerName, meter.number, record.Arrer, rate == null ? "" : x.ToString());
                     }
                 }
 
@@ -87,7 +79,6 @@ namespace EMS.Desktop.Forms
             try
             {
                 int i = 0;
-                DBRepository db = new DBRepository();
                 foreach (Report210.ReportData record in data.OrderBy(r => r.HomeSteadNumber))
                 {
                     foreach (Report210.ReportData.MeterInfo mi in record.meterInfo)
@@ -95,15 +86,15 @@ namespace EMS.Desktop.Forms
                         if (!string.IsNullOrEmpty(RateDGV[4, i].Value.ToString()))
                         {
                             int rateId = Int32.Parse(RateDGV[4, i].Value as string);
-                            rateId = db.GetLastRates().OrderBy(r => r.Id).First().Id + rateId - 1;
-                            if (mi.rateId != rateId)
-                                db.ChangeMeterData((int)mi.id, rateId);
+                            rateId = DBRepository.GetLastRates().OrderBy(r => r.Id).First().Id + rateId - 1;
+                            if (mi.RateId != rateId)
+                                DBRepository.ChangeMeterRate((int)mi.idMeter, rateId);
                         }
                         if (!string.IsNullOrEmpty(RateDGV[3, i].Value.ToString()))
                         {
                             string s = RateDGV[3, i].Value.ToString().Replace('.', ',');
                             double arrear = Double.Parse(s);
-                            db.SetArrear(record.Id, arrear);
+                            DBRepository.SetArrear(record.Id, arrear);
                         }
                         i++;
                     }

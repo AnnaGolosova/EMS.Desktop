@@ -26,16 +26,15 @@ namespace EMS.Desktop.Helpers
                 {
                     try
                     {
-                        DBRepository db = new DBRepository();
                         if(!DBRepository.TryConnection())
                         {
                             throw new DataBaseException("");
                         }
                         Report210 report = ExcelWriter.Read210(s);
                         report.PackageNumber = packageNumber;
-                        File file = db.CreateFile(s);
+                        File file = DBRepository.CreateFile(s);
                         report.FileId = file.Id;
-                        db.LoadReport210(report);
+                        DBRepository.LoadReport210(report);
                         Action MainPrBr = () =>
                         {
                             obj.MainProgressBar.Value++;
@@ -88,7 +87,7 @@ namespace EMS.Desktop.Helpers
                         }
                         FileManager.MoveFile(s, ConfigAppManager.GetReports210Path() + $"\\Downloaded\\{dateMonth} {dateYear}");
 
-                        db.SetFileAsDownloaded(file);
+                        DBRepository.SetFileAsDownloaded(file);
                     }
                     catch(DataBaseException)
                     {
@@ -98,7 +97,7 @@ namespace EMS.Desktop.Helpers
                     }
                     catch(Exception ex)
                     {
-                        MessageBox.Show(ex.StackTrace, "Ошибка при загрузки файла!");
+                        MessageBox.Show(ex.Message + "\n" + ex.StackTrace, "Ошибка при загрузки файла!");
                     }
                 }
                 Action ShowComp = () => 

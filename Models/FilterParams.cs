@@ -14,7 +14,8 @@ namespace EMS.Desktop.Models
         public string HomesteadOwnerName;
         public int ServicId;
         public int HomesteadNumbr;
-        public bool IsArear;                    
+        public bool IsArear;
+        public bool isBadReport; // Отобразить должников - тех, кто не платил за определенный период      
 
         public List<int> ServiceId;
         public List<int> HomesteadId;

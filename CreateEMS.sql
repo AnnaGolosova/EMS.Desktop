@@ -6,26 +6,17 @@ Drop Table [dbo].[MeterData]
 GO
 Drop Table [dbo].[Payment]
 GO
+Drop Table [dbo].[Meter]
+GO
 Drop Table [dbo].[Rate]
 GO
 Drop Table [dbo].[Service]
-GO
-Drop Table [dbo].[Meter]
 GO
 Drop Table [dbo].[Homestead]
 GO
 Drop Table [dbo].[File]
 GO
 
-Use [master]
-GO
-Drop DataBase [EMS]
-GO
-Create DataBase [EMS]
-GO
-
-Use [EMS]
-GO
 
 CREATE TABLE [dbo].[Copay] (
     [Id]    INT        IDENTITY (1, 1) NOT NULL PRIMARY KEY,
@@ -70,8 +61,10 @@ CREATE TABLE [dbo].[Meter] (
     [Id]           INT IDENTITY (1, 1) NOT NULL PRIMARY KEY,
     [Id_Homestead] INT NOT NULL,
     [Meter_Number] INT NOT NULL,
+	[Id_Rate]	INT		NOT NULL,
 	
 	CONSTRAINT FK_Meter_ToHomestead		FOREIGN KEY ([Id_Homestead])		REFERENCES Homestead(Id),
+	CONSTRAINT FK_Meter_ToRate FOREIGN KEY (Id_Rate) REFERENCES Rate(Id), 
 )
 GO
 
@@ -96,13 +89,11 @@ Create Table [dbo].[MeterData] (
 	[Id]		INT		NOT NULL identity(1,1)  PRIMARY KEY,
 	Id_Meter	INT		NOT NULL,
     [Id_Payment] INT        NULL,
-	[Id_Rate]	INT		NOT NULL,
 	oldValue		FLOAT	NOT NULL default 0,
 	newValue		FLOAT	NOT NULL default 0,
 	[Date]		DATE	NULL ,
 	
 	CONSTRAINT FK_MeterData_ToMeter FOREIGN KEY (Id_Meter) REFERENCES Meter(Id), 
-	CONSTRAINT FK_MeterData_ToRate FOREIGN KEY (Id_Rate) REFERENCES Rate(Id), 
 	CONSTRAINT FK_MeterData_ToPayment	FOREIGN KEY ([Id_Payment])	REFERENCES [Payment](Id)
 )
 GO
@@ -128,7 +119,7 @@ select	payment.Id,
 from ((payment left join meterdata on meterdata.id_payment = payment.id)
 	join homestead on homestead.Id = payment.id_homestead)
 	join meter on meter.Id = meterData.id_meter
-	left join rate on rate.id = meterdata.id_rate
+	left join rate on rate.id = meter.id_rate
 	join [file] on [file].id = payment.id_file
 go
 

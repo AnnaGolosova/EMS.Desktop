@@ -28,7 +28,7 @@ namespace EMS.Desktop.Helpers
                 datas.Datas[i - 1].ServiceId = int.Parse(str[1]);
                 datas.Datas[i - 1].HomeSteadNumber = int.Parse(str[2]);
                 datas.Datas[i - 1].OwnerName = str[3];
-                datas.Datas[i - 1].Date = new DateTime(int.Parse(str[5].Split('.')[1]), int.Parse(str[5].Split('.')[0]), 1);
+                datas.Datas[i - 1].Date = new DateTime(int.Parse(str[9].Substring(0, 4)), int.Parse(str[9].Substring(4, 2)), int.Parse(str[9].Substring(6, 2)));
                 datas.Datas[i - 1].Introduced = double.Parse(str[6].Replace(".", ","));
                 datas.Datas[i - 1].Arrer = double.Parse(str[7].Replace(".", ","));
                 datas.Datas[i - 1].Entered = double.Parse(str[8].Replace(".", ","));
@@ -38,14 +38,18 @@ namespace EMS.Desktop.Helpers
                 {
                     int countOfMeters = int.Parse(str[10].Split('~')[0]);
                     for (int j = 0; j < countOfMeters; j++)
+                    {
+                        string s = str[10].Split('~')[6 + 5 * j].Replace('.', ',');
+                        double old = double.Parse(s);
+                        double newW = double.Parse(str[10].Split('~')[8 + 5 * j].Replace('.', ','));
                         datas.Datas[i - 1].meterInfo.Add(new Report210.ReportData.MeterInfo()
                         {
-                            oldValue = int.Parse(str[10].Split('~')[6 + 5 * j]),
-                            newValue = int.Parse(str[10].Split('~')[8 + 5 * j]),
+                            oldValue = old,
+                            newValue = newW,
                             number = j + 1
                         });
+                    }
                 }
-
             }
             return datas;
         }
@@ -54,7 +58,7 @@ namespace EMS.Desktop.Helpers
         {
             List<Report202.ReportData.MeterInfo> mi = new List<Report202.ReportData.MeterInfo>();
             foreach (Report210.ReportData.MeterInfo mt in meter)
-                mi.Add(new Report202.ReportData.MeterInfo() { LocalRateId = mt.rateId, Value = mt.newValue });
+                mi.Add(new Report202.ReportData.MeterInfo() { LocalRateId = mt.RateId, Value = mt.newValue });
             return mi;
         }
 
@@ -69,14 +73,12 @@ namespace EMS.Desktop.Helpers
         {
             Report202 rep = new Report202();
             rep.LocalRates = rates;
-            DBRepository db = new DBRepository();
             rep.Datas = new List<Report202.ReportData>();
-            foreach (Report210.ReportData x in datas.Datas)
+            foreach (Report210.ReportData x in datas.Datas.OrderBy(d => d.HomeSteadNumber))
             {
                 rep.Datas.Add(new Report202.ReportData()
                 {
                     ServiceId = x.ServiceId,
-                    // Нужно разобраться с этим
                     Arrear = x.Arrer,
                     Date = x.Date,
                     HomeSteadNumber = x.HomeSteadNumber,
@@ -181,103 +183,97 @@ namespace EMS.Desktop.Helpers
 
         private static void WriteExcel(Report202 report, string fileName, NoRateState flag)
         {
-            using (DBRepository db = new DBRepository())
+            using (var excel = new ExcelPackage())
             {
-                using (var excel = new ExcelPackage())
+                var ws = excel.Workbook.Worksheets.Add("WorkSheet1");
+                int i = 2;
+                if (report.Datas[0].ServiceId == 2)
                 {
-                    var ws = excel.Workbook.Worksheets.Add("WorkSheet1");
-                    int i = 2;
-                    if (report.Datas[0].ServiceId == 2)
+                    foreach (Rate r in report.LocalRates)
                     {
-                        foreach (Rate r in report.LocalRates)
-                        {
-                            ws.Cells[i, 1].Value = 1;
-                            ws.Cells[i, 2].Value = r.Id;
-                            r.Service = DBRepository.GetService(r.IdService);
-                            ws.Cells[i, 3].Value = r.Service.Name;
-                            ws.Cells[i++, 8].Value = r.Value;
-                        }
+                        ws.Cells[i, 1].Value = 1;
+                        ws.Cells[i, 2].Value = r.Id;
+                        r.Service = DBRepository.GetService(r.IdService);
+                        ws.Cells[i, 3].Value = r.Service.Name;
+                        ws.Cells[i++, 8].Value = r.Value;
                     }
-                    foreach (Report202.ReportData x in report.Datas.Where(d => d.Introdused != 0))
+                }
+                foreach (Report202.ReportData x in report.Datas.Where(d => d.Introdused != 0))
+                {
+                    ws.Cells[i, 1].Value = "2";
+                    ws.Cells[i, 2].Value = x.HomeSteadNumber;
+                    ws.Cells[i, 3].Value = x.OwnerName;
+                    ws.Cells[i, 4].Value = "Номер участка " + x.HomeSteadNumber;
+                    ws.Cells[i, 5].Value = x.Date.ToShortDateString();
+                    ws.Cells[i, 6].Value = x.Arrear;
+                    if (x.ServiceId == 2)
                     {
-                        ws.Cells[i, 1].Value = "2";
-                        ws.Cells[i, 2].Value = x.HomeSteadNumber;
-                        ws.Cells[i, 3].Value = x.OwnerName;
-                        ws.Cells[i, 4].Value = "Номер участка " + x.HomeSteadNumber;
-                        ws.Cells[i, 5].Value = x.Date.Month.ToString() + "." + x.Date.Year.ToString();
-                        ws.Cells[i, 6].Value = x.Arrear;
-                        if (x.ServiceId == 2)
+                        string s = x.meterInfo.Count.ToString() + "~";
+                        int j = 1;
+                        foreach (Report202.ReportData.MeterInfo mi in x.meterInfo)
                         {
-                            string s = x.meterInfo.Count.ToString() + "~";
-                            int j = 1;
-                            foreach (Report202.ReportData.MeterInfo mi in x.meterInfo)
+                            string localId = "";
+                            if (mi.LocalRateId == null)
                             {
-                                string localId = "";
-                                if (mi.LocalRateId == null)
+                                if (flag == NoRateState.Yes)
                                 {
-                                    if (flag == NoRateState.Yes)
+                                    localId = "2";
+                                }
+                                else
+                                if (flag == NoRateState.NotAnswered)
+                                {
+                                    if (MessageBox.Show("Тарифы не установлены для одного или нескольких участков. Продолжить создание отчетов? Нажмите [Да], чтобы заменать неустановленне тарифы на 2",
+                                            "Тарифы не установлены", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
                                     {
+                                        flag = NoRateState.Yes;
                                         localId = "2";
                                     }
                                     else
-                                    if (flag == NoRateState.NotAnswered)
                                     {
-                                        if (MessageBox.Show("Тарифы не установлены для одного или нескольких участков. Продолжить создание отчетов? Нажмите [Да], чтобы заменать неустановленне тарифы на 2",
-                                                "Тарифы не установлены", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
-                                        {
-                                            flag = NoRateState.Yes;
-                                            localId = "2";
-                                        }
-                                        else
-                                        {
-                                            flag = NoRateState.No;
-                                            return;
-                                        }
+                                        flag = NoRateState.No;
+                                        return;
                                     }
                                 }
-                                else
-                                {
-                                    localId = DBRepository.GetRatePosition(mi.LocalRateId).ToString();
-                                }
-                                s += j++ + "~" + localId + "~~~6~" + mi.Value + "~";
                             }
-                            ws.Cells[i, 7].Value = s;
-                            ws.Cells[i++, 8].Value = "^^^^";
+                            else
+                            {
+                                localId = DBRepository.GetRatePosition(mi.LocalRateId).ToString();
+                            }
+                            s += j++ + "~" + localId + "~~~6~" + mi.Value + "~";
                         }
-                        else
-                        {
-                            ws.Cells[i, 8].Value = x.Introdused;
-                            ws.Cells[i++, 9].Value = "^^^^";
-                        }
+                        ws.Cells[i, 7].Value = s;
+                        ws.Cells[i++, 8].Value = "^^^^";
                     }
-                    try
+                    else
                     {
-                        excel.SaveAs(new FileInfo(ConfigAppManager.GetExcelPath() + "//" + fileName + ".xlsx"));
+                        ws.Cells[i, 8].Value = x.Introdused;
+                        ws.Cells[i++, 9].Value = "^^^^";
+                    }
+                }
+                try
+                {
+                    excel.SaveAs(new FileInfo(ConfigAppManager.GetExcelPath() + "//" + fileName + ".xlsx"));
 
-                    }
-                    catch (InvalidOperationException)
-                    {
-                        MessageBox.Show("Файл " + fileName +
-                            ".xlsx не может быть сохранен. Возможно, он уже существует и открыт в другом приложении. Закройте файл и повторите попытку.",
-                            "Файл не может быть сохранен", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
-                    }
-                    catch (ArgumentException)
-                    {
-                        MessageBox.Show("Неверное имя файла. Проверьте пути для сохранения файлов в настройках",
-                            "Неверное имя файла", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
-                    }
+                }
+                catch (InvalidOperationException)
+                {
+                    MessageBox.Show("Файл " + fileName +
+                        ".xlsx не может быть сохранен. Возможно, он уже существует и открыт в другом приложении. Закройте файл и повторите попытку.",
+                        "Файл не может быть сохранен", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                catch (ArgumentException)
+                {
+                    MessageBox.Show("Неверное имя файла. Проверьте пути для сохранения файлов в настройках",
+                        "Неверное имя файла", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
                 }
             }
         }
 
-        public static void WriteMonthReport(int month, string fileName, int serviceId)
+        public static void WriteMonthReport(int month, int year, string fileName, int serviceId)
         {
-            DBRepository db = new DBRepository();
-            List<Payment> datas = db.GetPaymentByMonth(month);
-            if(datas.Count != 0)
-            {
+            List<Payment> datas = DBRepository.GetPaymentByMonth(month, year).Where(i => i.Introduced != 0).OrderBy(i => i.Homestead.Number).ToList();
                 using (ExcelPackage excel = new ExcelPackage())
                 {
                     List<string> Months = new List<string>();
@@ -320,9 +316,9 @@ namespace EMS.Desktop.Helpers
                             ws.Cells[i, 3].Value = data.Homestead.OwnerName;
                             ws.Cells[i, 4].Value = data.Introduced;
                             ws.Cells[i, 6].Value = data.Entered;
-                            ws.Cells[i, 7].Value = "" + data.Date.Value.Year + '.' +
-                                (data.Date.Value.Month < 10 ? ('0' + data.Date.Value.Month.ToString()) : data.Date.Value.Month.ToString()) +
-                                '.' + (data.Date.Value.Day < 10 ? ('0' + data.Date.Value.Day.ToString()) : data.Date.Value.Day.ToString());
+                            ws.Cells[i, 7].Value = "" + data.Date.Year + '.' +
+                                (data.Date.Month < 10 ? ('0' + data.Date.Month.ToString()) : data.Date.Month.ToString()) +
+                                '.' + (data.Date.Day < 10 ? ('0' + data.Date.Day.ToString()) : data.Date.Day.ToString());
                             for (int j = 1; j < 8; j++)
                                 ws.Cells[i, j].Style.Border.BorderAround(ExcelBorderStyle.Thin);
                             i++;
@@ -357,7 +353,7 @@ namespace EMS.Desktop.Helpers
                         ws.Cells[2, 1, 2, 11].Merge = true;
                         ws.Cells[2, 1].Value = "уплаты за электроэнергию";
                         ws.Cells[3, 1, 3, 11].Merge = true;
-                        ws.Cells[3, 1].Value = "за " + Months[month - 1] + datas[0].Date.Value.Year + "г.";
+                        ws.Cells[3, 1].Value = "за " + Months[month - 1] + "." + year + "г.";
                         ws.Cells[4, 1, 4, 11].Merge = true;
                         ws.Cells[4, 1].Value = "Гос. тариф " + ConfigAppManager.GetTariff();
                         ws.Cells[5, 1, 6, 1].Merge = true;
@@ -385,18 +381,16 @@ namespace EMS.Desktop.Helpers
                         ws.Cells[5, 12].Value = ConfigAppManager.GetTariff();
 
                         int i = 6;
-                        foreach (Payment data in datas.OrderBy(x => x.Homestead.Number))
+                        foreach (Payment data in datas)
                         {
                             foreach(MeterData md in data.MeterData)
                             {
                                 ws.Cells[++i, 2].Value = data.Homestead.Number;
-                                ws.Cells[i, 3].Value = "" + data.Date.Value.Year + '.' +
-                                    (data.Date.Value.Month < 10 ? ('0' + data.Date.Value.Month.ToString()) : data.Date.Value.Month.ToString()) +
-                                    '.' + (data.Date.Value.Day < 10 ? ('0' + data.Date.Value.Day.ToString()) : data.Date.Value.Day.ToString());
+                                ws.Cells[i, 3].Value = data.Date.ToShortDateString();
                                 ws.Cells[i, 4].Value = data.Introduced;
                                 ws.Cells[i, 6].Value = md.NewValue - md.OldValue;
                                 ws.Cells[i, 8].Value = md.NewValue;
-                                ws.Cells[i, 9].Value = md.Rate.Value;
+                                ws.Cells[i, 9].Value = md.Meter.Rate.Value;
                                 // ws.Cells[i, 11].Value = "";
                                 ws.Cells[i, 12].Value = data.Entered;
                                 for (int j = 1; j < 12; j++)
@@ -439,11 +433,14 @@ namespace EMS.Desktop.Helpers
                         ws.Cells[6, 1, 6, 11].Style.Border.Bottom.Style = ExcelBorderStyle.Medium;
                         ws.Cells[1, 1, i, 11].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                         ws.Cells[1, 1, i, 11].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-                        ws.Cells[7, 12, i, 12].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
-                        ws.Cells[7, 12, i, 12].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-                        ws.Cells[7, 14, i + 1, 14].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                        ws.Cells[7, 14, i + 1, 14].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-                        ws.Cells[7, 14, i, 14].Style.Font.Color.SetColor(System.Drawing.Color.Red);
+                        if(i != 6)
+                        {
+                            ws.Cells[7, 12, i, 12].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            ws.Cells[7, 12, i, 12].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                            ws.Cells[7, 14, i + 1, 14].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                            ws.Cells[7, 14, i + 1, 14].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                            ws.Cells[7, 14, i, 14].Style.Font.Color.SetColor(System.Drawing.Color.Red);
+                        }
                     }
                     else
                     {
@@ -470,16 +467,17 @@ namespace EMS.Desktop.Helpers
                         ws.Cells[5, 8].Value = "Дата оплаты";
 
                         int i = 6;
-                        foreach (Payment data in datas)
+                        foreach (Payment data in datas.OrderBy(d => d.Homestead.Number))
                         {
                             ws.Cells[i, 1].Value = i - 5;
                             ws.Cells[i, 2].Value = data.Homestead.Number;
                             ws.Cells[i, 3].Value = data.Homestead.OwnerName;
                             ws.Cells[i, 5].Value = data.Introduced;
+                            ws.Cells[i, 11].Value = data.Arrear;
                             ws.Cells[i, 7].Value = data.Entered;
-                            ws.Cells[i, 8].Value = "" + data.Date.Value.Year + '.' +
-                                (data.Date.Value.Month < 10 ? ('0' + data.Date.Value.Month.ToString()) : data.Date.Value.Month.ToString()) +
-                                '.' + (data.Date.Value.Day < 10 ? ('0' + data.Date.Value.Day.ToString()) : data.Date.Value.Day.ToString());
+                            ws.Cells[i, 8].Value = "" + data.Date.Year + '.' +
+                                (data.Date.Month < 10 ? ('0' + data.Date.Month.ToString()) : data.Date.Month.ToString()) +
+                                '.' + (data.Date.Day < 10 ? ('0' + data.Date.Day.ToString()) : data.Date.Day.ToString());
                             for (int j = 1; j < 9; j++)
                                 ws.Cells[i, j].Style.Border.BorderAround(ExcelBorderStyle.Thin);
                             i++;
@@ -513,7 +511,6 @@ namespace EMS.Desktop.Helpers
                     try
                     {
                         excel.SaveAs(new FileInfo(ConfigAppManager.GetExcelPath() + "//" + fileName + ".xlsx"));
-
                     }
                     catch (InvalidOperationException)
                     {
@@ -528,7 +525,6 @@ namespace EMS.Desktop.Helpers
                             "Неверное имя файла", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
-                }
             }
         }
 
@@ -536,7 +532,6 @@ namespace EMS.Desktop.Helpers
         {
             using (var excel = new ExcelPackage())
             {
-                DBRepository repository = new DBRepository();
                 var ws = excel.Workbook.Worksheets.Add("WorkSheet1");
 
                 ws.Cells[2, 1].Value = "Услуга";
@@ -551,17 +546,17 @@ namespace EMS.Desktop.Helpers
                     ws.Cells[2, j].Style.Border.BorderAround(ExcelBorderStyle.Thin);
 
                 int i = 3;
-                foreach (Payment x in repository.GetPayment().OrderBy(s => s.Homestead.Number))
+                foreach (Payment x in DBRepository.GetPayment().OrderBy(s => s.Homestead.Number))
                 {
                     for (int j = 1; j < 10; j++)
                         ws.Cells[i, j].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                    ws.Cells[i, 1].Value = x.Service.Id;
+                    ws.Cells[i, 1].Value = x.IdService;
                     ws.Cells[i, 2].Value = x.Homestead.Number;
                     ws.Cells[i, 3].Value = x.Homestead.OwnerName;
                     ws.Cells[i, 4].Value = "Номер участка " + x.Homestead.Number;
-                    ws.Cells[i, 5].Value = x.Date.Value.ToShortDateString();
+                    ws.Cells[i, 5].Value = x.Date.ToShortDateString();
                     ws.Cells[i, 6].Value = x.Arrear;
-                    if (x.Service.Id == 2)
+                    if (x.IdService == 2)
                     {
                         for (int j = 0; j < x.MeterData.Count; j++)
                             ws.Cells[i + j, 7].Value = x.MeterData.ElementAt(j).NewValue;

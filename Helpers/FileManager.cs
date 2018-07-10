@@ -127,8 +127,7 @@ namespace EMS.Desktop.Helpers
         {
             using (FileParameterSetter setter = new FileParameterSetter(filePath))
             {
-                DBRepository db = new DBRepository();
-                Models.File f = db.FindOrAddFile(Id, filePath);
+                Models.File f = DBRepository.FindOrAddFile(Id, filePath);
                 setter.SetFileId(f.Id);
                 return f.Id;
             }
