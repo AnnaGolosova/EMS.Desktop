@@ -22,14 +22,13 @@ namespace EMS.Desktop
 
         private void ShowAmount()
         {
-            DBRepository db = new DBRepository();
             if (!DBRepository.TryConnection())
             {
                 AmountLabel.Visible = false;
             }
             else
             {
-                AmountLabel.Text = "Сумма на р/с : " + db.GetAmount() + " BYN";
+                AmountLabel.Text = "Сумма на р/с : " + DBRepository.GetAmount() + " BYN";
             }
         }
 
@@ -41,7 +40,6 @@ namespace EMS.Desktop
             connectionStringsSection.ConnectionStrings["EMSEntities"].ConnectionString = ConfigAppManager.GetConnectionString();
             config.Save();
             ConfigurationManager.RefreshSection("connectionStrings");
-            ShowAmount();
             filterPrm = new FilterParams();
         }
 
@@ -53,23 +51,42 @@ namespace EMS.Desktop
 
         void ShowArrearDrid()
         {
-            data = DBRepository.GetLastPayment();
-            ArrearEditDGV.Rows.Clear();
-            foreach (Payment p in data)
+            int i = 0;
+            try
             {
-                if (p.Service.Id == 2)
+                data = DBRepository.GetLastPayment();
+                ArrearEditDGV.Rows.Clear();
+                foreach (Payment p in data)
                 {
-                    ArrearEditDGV.Rows.Add(p.Id, p.Service.Id, p.Homestead.Number, p.Homestead.OwnerName,
-                        p.Introduced, p.Arrear,
-                        p.MeterData.OrderBy(md => md.Meter.MeterNumber).First().NewValue - p.MeterData.OrderBy(md => md.Meter.MeterNumber).First().OldValue,
-                        p.MeterData.OrderBy(md => md.Meter.MeterNumber).First().NewValue);
+                    if (p.IdService == 2)
+                    {
+                        if(p.MeterData.Count == 0)
+                        {
+                            MessageBox.Show("homestead - " + p.Homestead.OwnerName + ", " + p.Homestead.Number + "\n file - " + p.File.Path);
+                        }
+                        else
+                        {
+                            double newValue = p.MeterData.OrderBy(md => md.Meter.MeterNumber).First().NewValue;
+                            double oldValue = p.MeterData.OrderBy(md => md.Meter.MeterNumber).First().OldValue;
+                            ArrearEditDGV.Rows.Add(p.Id, p.IdService, p.Homestead.Number, p.Homestead.OwnerName,
+                                p.Introduced, p.Arrear,
+                                newValue - oldValue,
+                                newValue);
+                        }
+                    }
+                    else
+                        ArrearEditDGV.Rows.Add(p.Id, p.IdService, p.Homestead.Number, p.Homestead.OwnerName,
+                            p.Introduced, p.Arrear);
+                    i++;
+
                 }
-                else
-                    ArrearEditDGV.Rows.Add(p.Id, p.Service.Id, p.Homestead.Number, p.Homestead.OwnerName,
-                        p.Introduced, p.Arrear);
+                ArrearGB.Visible = true;
 
             }
-            ArrearGB.Visible = true;
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message + " " + ex.StackTrace, "Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
 
         public void OnCreate()
@@ -123,14 +140,15 @@ namespace EMS.Desktop
                     {
                         try
                         {
-                            ExcelWriter.WriteMonthReport(DateTime.Now.Month, ServiceName[0] + DateTime.Now.ToShortDateString(), 1);
-                            ExcelWriter.WriteMonthReport(DateTime.Now.Month, ServiceName[1] + DateTime.Now.ToShortDateString(), 2);
-                            ExcelWriter.WriteMonthReport(DateTime.Now.Month, ServiceName[2] + DateTime.Now.ToShortDateString(), 3);
-                            ExcelWriter.WriteMonthReport(DateTime.Now.Month, ServiceName[3] + DateTime.Now.ToShortDateString(), 4);
+                            ExcelWriter.WriteMonthReport(DateTime.Now.Month, DateTime.Now.Year, ServiceName[0] + DateTime.Now.ToShortDateString(), 1);
+                            ExcelWriter.WriteMonthReport(DateTime.Now.Month, DateTime.Now.Year, ServiceName[1] + DateTime.Now.ToShortDateString(), 2);
+                            ExcelWriter.WriteMonthReport(DateTime.Now.Month, DateTime.Now.Year, ServiceName[2] + DateTime.Now.ToShortDateString(), 3);
+                            ExcelWriter.WriteMonthReport(DateTime.Now.Month, DateTime.Now.Year, ServiceName[3] + DateTime.Now.ToShortDateString(), 4);
                         }
                         catch (ReportIsEmptyException ex)
                         {
-                            MessageBox.Show("Отчет по " + DBRepository.GetService(ex.ServiceId).Name + " за текущий месяц не был сформирован, т.к. не имеет записей!", "Формирование ежемесячных отчетов", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            MessageBox.Show("Отчет по " + DBRepository.GetService(ex.ServiceId).Name + " за текущий месяц не был сформирован, т.к. не имеет записей!", 
+                                "Формирование ежемесячных отчетов", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                         for (int j = 1; j < 5; j++)
                         {
@@ -140,18 +158,18 @@ namespace EMS.Desktop
                             param.ToDate = new DateTime(DateTime.Now.Year - 1, 12, 31);
                             param.ServiceId.Add(j);
                             list.AddRange(DBRepository.Convert(DBRepository.GetMonthData(param.ToDate, j)));
-                            list = new DBRepository().FilterParams(list, param, false);
-                            ExcelWriter.Write202(new Report210() { Datas = list }, new DBRepository().GetLastRates(), ServiceName[j - 1] + DateTime.Now.ToShortDateString(), false);
+                            list = DBRepository.FilterParams(list, param, false);
+                            ExcelWriter.Write202(new Report210() { Datas = list }, DBRepository.GetLastRates(), ServiceName[j - 1] + DateTime.Now.ToShortDateString(), false);
                         }
                     }
                     else
                     {
                         try
                         {
-                            ExcelWriter.WriteMonthReport(DateTime.Now.Month, ServiceName[0] + DateTime.Now.ToShortDateString(), 1);
-                            ExcelWriter.WriteMonthReport(DateTime.Now.Month, ServiceName[1] + DateTime.Now.ToShortDateString(), 2);
-                            ExcelWriter.WriteMonthReport(DateTime.Now.Month, ServiceName[2] + DateTime.Now.ToShortDateString(), 3);
-                            ExcelWriter.WriteMonthReport(DateTime.Now.Month, ServiceName[3] + DateTime.Now.ToShortDateString(), 4);
+                            ExcelWriter.WriteMonthReport(DateTime.Now.Month, DateTime.Now.Year, ServiceName[0] + DateTime.Now.ToShortDateString(), 1);
+                            ExcelWriter.WriteMonthReport(DateTime.Now.Month, DateTime.Now.Year, ServiceName[1] + DateTime.Now.ToShortDateString(), 2);
+                            ExcelWriter.WriteMonthReport(DateTime.Now.Month, DateTime.Now.Year, ServiceName[2] + DateTime.Now.ToShortDateString(), 3);
+                            ExcelWriter.WriteMonthReport(DateTime.Now.Month, DateTime.Now.Year, ServiceName[3] + DateTime.Now.ToShortDateString(), 4);
                         }
                         catch (ReportIsEmptyException ex)
                         {
@@ -165,8 +183,8 @@ namespace EMS.Desktop
                             param.ToDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month - 1, DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month - 1));
                             param.ServiceId.Add(j);
                             list.AddRange(DBRepository.Convert(DBRepository.GetMonthData(param.ToDate, j)));
-                            list = new DBRepository().FilterParams(list, param, false);
-                            ExcelWriter.Write202(new Report210() { Datas = list }, new DBRepository().GetLastRates(), ServiceName[j - 1] + DateTime.Now.ToShortDateString(), false);
+                            list = DBRepository.FilterParams(list, param, false);
+                            ExcelWriter.Write202(new Report210() { Datas = list }, DBRepository.GetLastRates(), ServiceName[j - 1] + DateTime.Now.ToShortDateString(), false);
                         }
                     }
                 }
@@ -175,10 +193,10 @@ namespace EMS.Desktop
                 string[] ServiceName = { "Взносы ", "Электроэнергия ", "Налог на землю ", "Налог на недвижимость " };
                 try
                 {
-                    ExcelWriter.WriteMonthReport(DateTime.Now.Month, ServiceName[0] + DateTime.Now.ToShortDateString(), 1);
-                    ExcelWriter.WriteMonthReport(DateTime.Now.Month, ServiceName[1] + DateTime.Now.ToShortDateString(), 2);
-                    ExcelWriter.WriteMonthReport(DateTime.Now.Month, ServiceName[2] + DateTime.Now.ToShortDateString(), 3);
-                    ExcelWriter.WriteMonthReport(DateTime.Now.Month, ServiceName[3] + DateTime.Now.ToShortDateString(), 4);
+                    ExcelWriter.WriteMonthReport(DateTime.Now.Month, DateTime.Now.Year, ServiceName[0] + DateTime.Now.ToShortDateString(), 1);
+                    ExcelWriter.WriteMonthReport(DateTime.Now.Month, DateTime.Now.Year, ServiceName[1] + DateTime.Now.ToShortDateString(), 2);
+                    ExcelWriter.WriteMonthReport(DateTime.Now.Month, DateTime.Now.Year, ServiceName[2] + DateTime.Now.ToShortDateString(), 3);
+                    ExcelWriter.WriteMonthReport(DateTime.Now.Month, DateTime.Now.Year, ServiceName[3] + DateTime.Now.ToShortDateString(), 4);
                 }
                 catch (ReportIsEmptyException ex)
                 {
@@ -192,16 +210,19 @@ namespace EMS.Desktop
                     param.ToDate = DateTime.Now;
                     param.ServiceId.Add(j);
                     list.AddRange(DBRepository.Convert(DBRepository.GetMonthData(param.ToDate, j)));
-                    list = new DBRepository().FilterParams(list, param, false);
-                    ExcelWriter.Write202(new Report210() { Datas = list }, new DBRepository().GetLastRates(), ServiceName[j - 1] + DateTime.Now.ToShortDateString(), false);
+                    list = DBRepository.FilterParams(list, param, false);
+                    ExcelWriter.Write202(new Report210() { Datas = list }, DBRepository.GetLastRates(), ServiceName[j - 1] + DateTime.Now.ToShortDateString(), false);
                 }
             }
         }
 
         private void ShowSaveCompleteMessage()
         {
-            LabelProgrBar.Visible = true;
-            LabelProgrBar.Text = "Ежемесячные отчеты обработаны";
+            if(DateTime.Now.Day == ConfigAppManager.GetReportDay())
+            {
+                LabelProgrBar.Visible = true;
+                LabelProgrBar.Text = "Ежемесячные отчеты обработаны";
+            }
         }
 
         private void saveComplete(IAsyncResult res)
@@ -223,6 +244,7 @@ namespace EMS.Desktop
             }
             LoadDelegate saveDelegate = SaveMonthReports;
             IAsyncResult saveResult = saveDelegate.BeginInvoke(new AsyncCallback(saveComplete), null);
+            BeginInvoke(new LoadDelegate(ShowAmount));
         }
 
         private void Closing_MainForm(object sender, FormClosingEventArgs e)
@@ -251,13 +273,12 @@ namespace EMS.Desktop
             {
                 LoadingLabel.Visible = true;
                 ArrearGB.Visible = false;
-
-                DBRepository dbrepository = new DBRepository();
+                
                 if(!DBRepository.TryConnection())
                 {
                     throw new DataBaseException("");
                 }
-                if (dbrepository.GetFiles().Count != 0)
+                if (DBRepository.GetFiles().Count != 0)
                 {
                     dataGridView1.Columns.Clear();
                     dataGridView1.Rows.Clear();
@@ -290,8 +311,7 @@ namespace EMS.Desktop
                     dataGridView1.Columns.Add(column3);
 
                     dataGridView1.AllowUserToAddRows = false;
-                    DBRepository repository = new DBRepository();
-                    List<Models.File> listdbr = repository.GetFiles();
+                    List<Models.File> listdbr = DBRepository.GetFiles();
                     listdbr.OrderBy(s => s.Date);
                     foreach (Models.File s in listdbr)
                     {
@@ -331,13 +351,15 @@ namespace EMS.Desktop
             {
                 LoadingLabel.Visible = true;
                 ArrearGB.Visible = false;
-                DBRepository repository = new DBRepository();
-                if (repository.GetFiles().Count != 0)
+                if (DBRepository.GetFiles().Count != 0)
                 {
                     if (!DBRepository.TryConnection())
                     {
+                        //MessageBox.Show("In `LoadDataGridView`");
                         throw new DataBaseException("");
                     }
+
+                    #region columns
                     LoadingLabel.Visible = true;
                     dataGridView1.Columns.Clear();
                     dataGridView1.Rows.Clear();
@@ -382,7 +404,9 @@ namespace EMS.Desktop
                     column5.Name = "Arrear";
                     column5.ReadOnly = false;
                     column5.CellTemplate = new DataGridViewTextBoxCell();
+                    column5.Width = 50;
                     column5.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                    column5.MinimumWidth = 50;
                     column5.SortMode = DataGridViewColumnSortMode.Automatic;
 
                     var column6 = new DataGridViewColumn();
@@ -428,6 +452,7 @@ namespace EMS.Desktop
                     column11.HeaderText = "Путь к файлу";
                     column11.Name = "Path";
                     column11.ReadOnly = true;
+                    column11.MinimumWidth = 50;
                     column11.CellTemplate = new DataGridViewTextBoxCell();
                     column11.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
 
@@ -438,10 +463,15 @@ namespace EMS.Desktop
                     column12.Visible = false;
 
                     var column14 = new DataGridViewColumn();
-                    column14.Name = "IdMeterData";
+                    column14.Name = "IdMeter";
                     column14.ReadOnly = true;
                     column14.CellTemplate = new DataGridViewTextBoxCell();
                     column14.Visible = false;
+                    var column15 = new DataGridViewColumn();
+                    column15.Name = "IdMeterData";
+                    column15.ReadOnly = true;
+                    column15.CellTemplate = new DataGridViewTextBoxCell();
+                    column15.Visible = false;
 
                     var column13 = new DataGridViewColumn();
                     column13.HeaderText = "Тариф";
@@ -449,6 +479,8 @@ namespace EMS.Desktop
                     column13.ReadOnly = false;
                     column13.CellTemplate = new DataGridViewTextBoxCell();
                     column13.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                    column13.MinimumWidth = 50;
+                    column13.Width = 50;
 
                     dataGridView1.Columns.Add(column12);
                     dataGridView1.Columns.Add(column1);
@@ -464,11 +496,14 @@ namespace EMS.Desktop
                     dataGridView1.Columns.Add(column10);
                     dataGridView1.Columns.Add(column11);
                     dataGridView1.Columns.Add(column14);
+                    dataGridView1.Columns.Add(column15);
                     LoadingLabel.Visible = false;
+
+                    #endregion
 
                     dataGridView1.AllowUserToAddRows = false;
 
-                    List<Payment> listdbr = repository.GetPayment();
+                    List<Payment> listdbr = DBRepository.GetPayment();
                     
                     int x = 0;
                     if (param.HomesteadOwnName.Count != 0)
@@ -476,7 +511,7 @@ namespace EMS.Desktop
                         listdbr.Clear();
                         foreach (string s in param.HomesteadOwnName)
                         {
-                            List<Payment> listpay = repository.GetPayment().Where(c => c.Homestead.OwnerName == s).ToList();
+                            List<Payment> listpay = DBRepository.GetPayment().Where(c => c.Homestead.OwnerName == s).ToList();
                             foreach (Payment p in listpay)
                                 listdbr.Add(p);
                         }
@@ -496,18 +531,18 @@ namespace EMS.Desktop
                     {
                         if (s.IdService == 2)
                         {
-                            dataGridView1.Rows.Add(s.Id, s.Service.Id, s.Homestead.Number, s.Homestead.OwnerName, s.Date.Value.ToShortDateString(), s.Introduced, s.Entered,
-                                (s.Introduced - s.Entered).ToString("F3"), s.Arrear, (int)DBRepository.GetRatePosition(s.MeterData.ToList()[0].Rate.Id), 
-                                (s.MeterData.ToList()[0].NewValue - s.MeterData.ToList()[0].OldValue), s.MeterData.ToList()[0].NewValue, s.File.Path, s.MeterData.ToList()[0].Id);
+                            dataGridView1.Rows.Add(s.Id, s.IdService, s.Homestead.Number, s.Homestead.OwnerName, s.Date.ToShortDateString(), s.Introduced, s.Entered,
+                                (s.Introduced - s.Entered).ToString("F3"), s.Arrear, (int)DBRepository.GetRatePosition(s.MeterData.ToList()[0].Meter.Rate.Id), 
+                                (s.MeterData.ToList()[0].NewValue - s.MeterData.ToList()[0].OldValue), s.MeterData.ToList()[0].NewValue, s.File.Path, s.MeterData.ToList()[0].IdMeter, s.MeterData.ToList()[0].Id);
                             if (s.Homestead.Meter.Count > 1)
                             {
                                 int n = s.MeterData.Count;
                                 for (int i = 1; i < n; i++)
                                 {
                                     x++;
-                                    dataGridView1.Rows.Add(s.Id, s.Service.Id, s.Homestead.Number, s.Homestead.OwnerName, s.Date.Value.ToShortDateString(), s.Introduced, s.Entered,
-                                        (s.Introduced - s.Entered).ToString("F3"), s.Arrear, (int)DBRepository.GetRatePosition(s.MeterData.ToList()[i].Rate.Id),
-                                        (s.MeterData.ToList()[i].NewValue - s.MeterData.ToList()[i].OldValue) + " (" + (i + 1) + ") счетчик", s.MeterData.ToList()[i].NewValue, s.File.Path, s.MeterData.ToList()[i].Id);
+                                    dataGridView1.Rows.Add(s.Id, s.IdService, s.Homestead.Number, s.Homestead.OwnerName, s.Date.ToShortDateString(), s.Introduced, s.Entered,
+                                        (s.Introduced - s.Entered).ToString("F3"), s.Arrear, (int)DBRepository.GetRatePosition(s.MeterData.ToList()[i].Meter.Rate.Id),
+                                        (s.MeterData.ToList()[i].NewValue - s.MeterData.ToList()[i].OldValue) + " (" + (i + 1) + ") счетчик", s.MeterData.ToList()[i].NewValue, s.File.Path, s.MeterData.ToList()[i].IdMeter, s.MeterData.ToList()[0].Id);
                                     for (int j = 0; j < 11; j++)
                                     {
                                         dataGridView1.Rows[x].Cells[j].Style.BackColor = Color.Lavender;
@@ -517,12 +552,8 @@ namespace EMS.Desktop
                         }
                         else
                         {
-                            dataGridView1.Rows.Add(s.Id, s.Service.Id, s.Homestead.Number, s.Homestead.OwnerName, s.Date.Value.ToShortDateString(), 
+                            dataGridView1.Rows.Add(s.Id, s.IdService, s.Homestead.Number, s.Homestead.OwnerName, s.Date.ToShortDateString(), 
                                 s.Introduced,  s.Entered, (s.Introduced - s.Entered).ToString("F3"), s.Arrear, "","", "", s.File.Path, "~");
-                            /*dataGridView1.Rows[x].Cells[7].Style.BackColor = Color.Lavender;
-                            dataGridView1.Rows[x].Cells[8].Style.BackColor = Color.Lavender;
-                            dataGridView1.Rows[x].Cells[9].Style.BackColor = Color.Lavender;
-                            dataGridView1.Rows[x].Cells[10].Style.BackColor = Color.Lavender;*/
                         }
                         x++;
                     }
@@ -596,8 +627,7 @@ namespace EMS.Desktop
                     "Проблемы с базой данных", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            DBRepository dbrepository = new DBRepository();
-            if (dbrepository.GetFiles().Count != 0)
+            if (DBRepository.GetFiles().Count != 0)
             {
                 FilterViewDataForm Flt = new FilterViewDataForm(this, filterPrm, true);
                 Flt.Show();
@@ -631,10 +661,10 @@ namespace EMS.Desktop
                     string[] ServiceName = { "Взносы ", "Электроэнергия ", "Налог на землю ", "Налог на недвижимость " };
                     if (DateTime.Now.Month == 1)
                     {
-                        ExcelWriter.WriteMonthReport(DateTime.Now.Month, ServiceName[0] + DateTime.Now.ToShortDateString(), 1);
-                        ExcelWriter.WriteMonthReport(DateTime.Now.Month, ServiceName[1] + DateTime.Now.ToShortDateString(), 2);
-                        ExcelWriter.WriteMonthReport(DateTime.Now.Month, ServiceName[2] + DateTime.Now.ToShortDateString(), 3);
-                        ExcelWriter.WriteMonthReport(DateTime.Now.Month, ServiceName[3] + DateTime.Now.ToShortDateString(), 4);
+                        ExcelWriter.WriteMonthReport(DateTime.Now.Month, DateTime.Now.Year, ServiceName[0] + DateTime.Now.ToShortDateString(), 1);
+                        ExcelWriter.WriteMonthReport(DateTime.Now.Month, DateTime.Now.Year, ServiceName[1] + DateTime.Now.ToShortDateString(), 2);
+                        ExcelWriter.WriteMonthReport(DateTime.Now.Month, DateTime.Now.Year, ServiceName[2] + DateTime.Now.ToShortDateString(), 3);
+                        ExcelWriter.WriteMonthReport(DateTime.Now.Month, DateTime.Now.Year, ServiceName[3] + DateTime.Now.ToShortDateString(), 4);
                         for (int j = 1; j < 5; j++)
                         {
                             FilterParams param = new FilterParams();
@@ -643,16 +673,16 @@ namespace EMS.Desktop
                             param.ToDate = new DateTime(DateTime.Now.Year - 1, 12, 31);
                             param.ServiceId.Add(j);
                             list.AddRange(DBRepository.Convert(DBRepository.GetMonthData(param.ToDate, j)));
-                            list = new DBRepository().FilterParams(list, param, false);
-                            ExcelWriter.Write202(new Report210() { Datas = list }, new DBRepository().GetLastRates(), ServiceName[j - 1] + DateTime.Now.ToShortDateString(), false);
+                            list = DBRepository.FilterParams(list, param, false);
+                            ExcelWriter.Write202(new Report210() { Datas = list }, DBRepository.GetLastRates(), ServiceName[j - 1] + DateTime.Now.ToShortDateString(), false);
                         }
                     }
                     else
                     {
-                        ExcelWriter.WriteMonthReport(DateTime.Now.Month, ServiceName[0] + DateTime.Now.ToShortDateString(), 1);
-                        ExcelWriter.WriteMonthReport(DateTime.Now.Month, ServiceName[1] + DateTime.Now.ToShortDateString(), 2);
-                        ExcelWriter.WriteMonthReport(DateTime.Now.Month, ServiceName[2] + DateTime.Now.ToShortDateString(), 3);
-                        ExcelWriter.WriteMonthReport(DateTime.Now.Month, ServiceName[3] + DateTime.Now.ToShortDateString(), 4);
+                        ExcelWriter.WriteMonthReport(DateTime.Now.Month, DateTime.Now.Year, ServiceName[0] + DateTime.Now.ToShortDateString(), 1);
+                        ExcelWriter.WriteMonthReport(DateTime.Now.Month, DateTime.Now.Year, ServiceName[1] + DateTime.Now.ToShortDateString(), 2);
+                        ExcelWriter.WriteMonthReport(DateTime.Now.Month, DateTime.Now.Year, ServiceName[2] + DateTime.Now.ToShortDateString(), 3);
+                        ExcelWriter.WriteMonthReport(DateTime.Now.Month, DateTime.Now.Year, ServiceName[3] + DateTime.Now.ToShortDateString(), 4);
                         for (int j = 1; j < 5; j++)
                         {
                             FilterParams param = new FilterParams();
@@ -661,18 +691,18 @@ namespace EMS.Desktop
                             param.ToDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month - 1, DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month - 1));
                             param.ServiceId.Add(j);
                             list.AddRange(DBRepository.Convert(DBRepository.GetMonthData(param.ToDate, j)));
-                            list = new DBRepository().FilterParams(list, param, false);
-                            ExcelWriter.Write202(new Report210() { Datas = list }, new DBRepository().GetLastRates(), ServiceName[j - 1] + DateTime.Now.ToShortDateString(), false);
+                            list = DBRepository.FilterParams(list, param, false);
+                            ExcelWriter.Write202(new Report210() { Datas = list }, DBRepository.GetLastRates(), ServiceName[j - 1] + DateTime.Now.ToShortDateString(), false);
                         }
                     }
                 }
             else if (DateTime.Now.Day == ConfigAppManager.GetReportDay() || DateTime.Now.Day.Equals(DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month)))
             {
                 string[] ServiceName = { "Взносы ", "Электроэнергия ", "Налог на землю ", "Налог на недвижимость " };
-                ExcelWriter.WriteMonthReport(DateTime.Now.Month, ServiceName[0] + DateTime.Now.ToShortDateString(), 1);
-                ExcelWriter.WriteMonthReport(DateTime.Now.Month, ServiceName[1] + DateTime.Now.ToShortDateString(), 2);
-                ExcelWriter.WriteMonthReport(DateTime.Now.Month, ServiceName[2] + DateTime.Now.ToShortDateString(), 3);
-                ExcelWriter.WriteMonthReport(DateTime.Now.Month, ServiceName[3] + DateTime.Now.ToShortDateString(), 4);
+                ExcelWriter.WriteMonthReport(DateTime.Now.Month, DateTime.Now.Year, ServiceName[0] + DateTime.Now.ToShortDateString(), 1);
+                ExcelWriter.WriteMonthReport(DateTime.Now.Month, DateTime.Now.Year, ServiceName[1] + DateTime.Now.ToShortDateString(), 2);
+                ExcelWriter.WriteMonthReport(DateTime.Now.Month, DateTime.Now.Year, ServiceName[2] + DateTime.Now.ToShortDateString(), 3);
+                ExcelWriter.WriteMonthReport(DateTime.Now.Month, DateTime.Now.Year, ServiceName[3] + DateTime.Now.ToShortDateString(), 4);
                 for (int j = 1; j < 5; j++)
                 {
                     FilterParams param = new FilterParams();
@@ -681,8 +711,8 @@ namespace EMS.Desktop
                     param.ToDate = DateTime.Now;
                     param.ServiceId.Add(j);
                     list.AddRange(DBRepository.Convert(DBRepository.GetMonthData(param.ToDate, j)));
-                    list = new DBRepository().FilterParams(list, param, false);
-                    ExcelWriter.Write202(new Report210() { Datas = list }, new DBRepository().GetLastRates(), ServiceName[j - 1] + DateTime.Now.ToShortDateString(), false);
+                    list = DBRepository.FilterParams(list, param, false);
+                    ExcelWriter.Write202(new Report210() { Datas = list }, DBRepository.GetLastRates(), ServiceName[j - 1] + DateTime.Now.ToShortDateString(), false);
                 }
             }
         }
@@ -704,8 +734,7 @@ namespace EMS.Desktop
             {
                 throw new DataBaseException("");
             }
-            DBRepository dbrepository = new DBRepository();
-            if (dbrepository.GetFiles().Count != 0)
+            if (DBRepository.GetFiles().Count != 0)
             {
                 new Forms.CreateExcel(data).ShowDialog();
             }
@@ -756,13 +785,12 @@ namespace EMS.Desktop
                     dataGridView1[e.ColumnIndex, e.RowIndex].Style.BackColor = Color.White;
                     if(e.FormattedValue.ToString() != "" && dataGridView1[13, e.RowIndex].Value.ToString() != "~")
                     {
-                        DBRepository db = new DBRepository();
                         int id = int.Parse(dataGridView1[13, e.RowIndex].Value.ToString());
-                        MeterData md = DBRepository.GetMeterData().Where(m => m.Id == id).First();
+                        Meter meter = DBRepository.GetMeter().Where(m => m.Id == id).First();
                         int rateId = Int32.Parse(e.FormattedValue.ToString());
-                        rateId = db.GetLastRates().OrderBy(r => r.Id).First().Id + rateId - 1;
-                        if (md.IdRate != rateId)
-                            db.ChangeMeterData((int)md.Id, rateId);
+                        rateId = DBRepository.GetLastRates().OrderBy(r => r.Id).First().Id + rateId - 1;
+                        if (meter.IdRate != rateId)
+                            DBRepository.ChangeMeterRate((int)meter.Id, rateId);
                     }
                 }
             }
@@ -770,13 +798,12 @@ namespace EMS.Desktop
         
         private void dataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            //if(e.ColumnIndex == 9 && dataGridView1[13, e.RowIndex].Value.ToString() != "~")
-            //{
-            //    DBRepository db = new DBRepository();
-            //    int id = int.Parse(dataGridView1[13, e.RowIndex].Value.ToString());
-            //    MeterData md = DBRepository.GetMeterData().Where(m => m.Id == id).First();
-            //    dataGridView1[e.ColumnIndex, e.RowIndex].ToolTipText = (md.NewValue - md.OldValue) + " * " + md.Rate.Value + " * " + ConfigAppManager.GetTariff() + " = " + ConfigAppManager.GetTariff() * md.Rate.Value;
-            //}
+            if (e.ColumnIndex == 9 && dataGridView1[13, e.RowIndex].Value.ToString() != "~")
+            {
+                int id = int.Parse(dataGridView1[14, e.RowIndex].Value.ToString());
+                MeterData md = DBRepository.GetMeterData().Where(m => m.Id == id).First();
+                dataGridView1[e.ColumnIndex, e.RowIndex].ToolTipText = (md.NewValue - md.OldValue) + " * " + md.Meter.Rate.Value + " * " + ConfigAppManager.GetTariff() + " = " + ConfigAppManager.GetTariff() * md.Meter.Rate.Value;
+            }
         }
     }
 }

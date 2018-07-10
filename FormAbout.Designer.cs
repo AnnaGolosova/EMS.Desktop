@@ -161,11 +161,11 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label2.Location = new System.Drawing.Point(13, 367);
+            this.label2.Location = new System.Drawing.Point(12, 367);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(80, 17);
             this.label2.TabIndex = 4;
-            this.label2.Text = "Version 2.0";
+            this.label2.Text = "Version 4.0";
             // 
             // FormAboutProgram
             // 

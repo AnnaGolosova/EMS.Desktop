@@ -22,8 +22,10 @@ namespace EMS.Desktop.Models
         public int Id { get; set; }
         public int IdHomestead { get; set; }
         public int MeterNumber { get; set; }
+        public int IdRate { get; set; }
     
         public virtual Homestead Homestead { get; set; }
         public virtual ICollection<MeterData> MeterData { get; set; }
+        public virtual Rate Rate { get; set; }
     }
 }

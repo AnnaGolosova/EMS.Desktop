@@ -27,10 +27,9 @@ namespace EMS.Desktop
                 CreateExcelCB.Checked = true;
                 Service2RB.Checked = true;
                 MonthRB.Checked = true;
-                DBRepository db = new DBRepository();
                 int i = 1;
                 RateDGV.Rows.Clear();
-                foreach (Rate rate in db.GetLastRates().OrderBy(r => r.Id))
+                foreach (Rate rate in DBRepository.GetLastRates().OrderBy(r => r.Id))
                 {
                     RateDGV.Rows.Add(i++, rate.Service.Name, rate.Value, ConfigAppManager.GetTariff(), rate.Value * ConfigAppManager.GetTariff());
                 }
@@ -65,17 +64,14 @@ namespace EMS.Desktop
 
         private List<Report210.ReportData> BuildData()
         {
-            using (DBRepository db = new DBRepository())
+            FilterParams param = BuildParams();
+            List<Report210.ReportData> list = new List<Report210.ReportData>();
+            foreach (int i in param.ServiceId)
             {
-                FilterParams param = BuildParams();
-                List<Report210.ReportData> list = new List<Report210.ReportData>();
-                foreach (int i in param.ServiceId)
-                {
-                    list.AddRange( DBRepository.Convert(DBRepository.GetMonthData(param.ToDate, i)));
-                }
-                list = db.FilterParams(list, param, false);
-                return list;
+                list.AddRange( DBRepository.Convert(DBRepository.GetMonthData(param.ToDate, i)));
             }
+            list = DBRepository.FilterParams(list, param, false).OrderBy(d => d.HomeSteadNumber).ToList();
+            return list;
         }
 
         private FilterParams BuildParams()
@@ -110,45 +106,42 @@ namespace EMS.Desktop
                 FileNameTB.Focus();
                 return;
             }
-
-            using (DBRepository db = new DBRepository())
+            
+            try
             {
-                try
+                List<Rate> oldRates = DBRepository.GetLastRates();
+                List<Rate> newRates = new List<Rate>();
+                int i = 0;
+                foreach (Rate r in oldRates)
                 {
-                    List<Rate> oldRates = db.GetLastRates();
-                    List<Rate> newRates = new List<Rate>();
-                    int i = 0;
-                    foreach (Rate r in oldRates)
+                    string s = RateDGV[2, i++].Value.ToString().Replace('.', ',');
+                    double d;
+                    if (!Double.TryParse(s, out d))
                     {
-                        string s = RateDGV[2, i++].Value.ToString().Replace('.', ',');
-                        double d;
-                        if (!Double.TryParse(s, out d))
-                        {
-                            MessageBox.Show("Неверное значение " + s + "!");
-                            return;
-                        }
-                        newRates.Add(new Rate() { Date = r.Date, Value = d, Id = r.Id, IdService = r.IdService });
-                    }
-                    db.ChangeRate(newRates);
-                
-                    List<Report210.ReportData> list = BuildData();
-                    if(list.Count == 0)
-                    {
-                        MessageBox.Show("Отчет по заданным параметрам не имеет записей! Измените параметры и повторите попытку.",
-                            "Отчет не содержит записей", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("Неверное значение " + s + "!");
                         return;
                     }
-                    ExcelWriter.Write202(new Report210() { Datas = list }, newRates, FileNameTB.Text, CreateExcelCB.Checked);
-                    this.Close();
-                    (Owner as MainForm).LabelProgrBar.Text = "Отчет сохранен успешно!";
-                    (Owner as MainForm).LabelProgrBar.Visible = true;
+                    newRates.Add(new Rate() { Date = r.Date, Value = d, Id = r.Id, IdService = r.IdService });
                 }
-                catch(DataBaseException)
+                DBRepository.ChangeRate(newRates);
+                
+                List<Report210.ReportData> list = BuildData();
+                if(list.Count == 0)
                 {
-                    MessageBox.Show("Проблемы с базой данных. Проверьте настройки строки подключения, правильно ли указано имя сервера",
-                        "Проблемы с базой данных", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Отчет по заданным параметрам не имеет записей! Измените параметры и повторите попытку.",
+                        "Отчет не содержит записей", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
+                ExcelWriter.Write202(new Report210() { Datas = list }, newRates, FileNameTB.Text, CreateExcelCB.Checked);
+                this.Close();
+                (Owner as MainForm).LabelProgrBar.Text = "Отчет сохранен успешно!";
+                (Owner as MainForm).LabelProgrBar.Visible = true;
+            }
+            catch(DataBaseException)
+            {
+                MessageBox.Show("Проблемы с базой данных. Проверьте настройки строки подключения, правильно ли указано имя сервера",
+                    "Проблемы с базой данных", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
         }
         
@@ -196,8 +189,7 @@ namespace EMS.Desktop
         {
             try
             {
-                DBRepository db = new DBRepository();
-                List<Rate> oldRates = db.GetLastRates();
+                List<Rate> oldRates = DBRepository.GetLastRates();
                 List<Rate> newRates = new List<Rate>();
                 int i = 0;
                 foreach (Rate r in oldRates)
@@ -211,7 +203,7 @@ namespace EMS.Desktop
                     }
                     newRates.Add(new Rate() { Date = r.Date, Value = d, Id = r.Id, IdService = r.IdService });
                 }
-                db.ChangeRate(newRates);
+                DBRepository.ChangeRate(newRates);
                 var data = BuildData();
                 if (data.Count > 0)
                 {

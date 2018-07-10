@@ -40,13 +40,11 @@
             this.Menu = new System.Windows.Forms.MenuStrip();
             this.MenuFail = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripDownloadNewFile = new System.Windows.Forms.ToolStripMenuItem();
-            this.CLearFileStatesMI = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuRepos = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuReposForERIP = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuReposForExcel = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuDocuments = new System.Windows.Forms.ToolStripMenuItem();
             this.MainJournal = new System.Windows.Forms.ToolStripMenuItem();
-            this.DebtorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.добавитьДанныеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.добавитьПлательщикаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -85,22 +83,20 @@
             this.MenuRepos,
             this.MenuDocuments,
             this.MainJournal,
-            this.DebtorToolStripMenuItem,
             this.MenuSettings,
             this.добавитьДанныеToolStripMenuItem,
             this.MenuAboutProgram});
             this.Menu.Location = new System.Drawing.Point(0, 0);
             this.Menu.Name = "Menu";
             this.Menu.Padding = new System.Windows.Forms.Padding(11, 2, 0, 2);
-            this.Menu.Size = new System.Drawing.Size(1475, 28);
+            this.Menu.Size = new System.Drawing.Size(1718, 28);
             this.Menu.TabIndex = 0;
             this.Menu.Text = "menuStrip1";
             // 
             // MenuFail
             // 
             this.MenuFail.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ToolStripDownloadNewFile,
-            this.CLearFileStatesMI});
+            this.ToolStripDownloadNewFile});
             this.MenuFail.Name = "MenuFail";
             this.MenuFail.Size = new System.Drawing.Size(57, 24);
             this.MenuFail.Text = "Файл";
@@ -108,17 +104,9 @@
             // ToolStripDownloadNewFile
             // 
             this.ToolStripDownloadNewFile.Name = "ToolStripDownloadNewFile";
-            this.ToolStripDownloadNewFile.Size = new System.Drawing.Size(282, 26);
+            this.ToolStripDownloadNewFile.Size = new System.Drawing.Size(248, 26);
             this.ToolStripDownloadNewFile.Text = "Загрузка новых файлов";
             this.ToolStripDownloadNewFile.Click += new System.EventHandler(this.ToolStripDownloadNewFile_Click);
-            // 
-            // CLearFileStatesMI
-            // 
-            this.CLearFileStatesMI.Enabled = false;
-            this.CLearFileStatesMI.Name = "CLearFileStatesMI";
-            this.CLearFileStatesMI.Size = new System.Drawing.Size(282, 26);
-            this.CLearFileStatesMI.Text = "Сбросить состояния файлов";
-            this.CLearFileStatesMI.Click += new System.EventHandler(this.CLearFileStatesMI_Click);
             // 
             // MenuRepos
             // 
@@ -132,14 +120,14 @@
             // MenuReposForERIP
             // 
             this.MenuReposForERIP.Name = "MenuReposForERIP";
-            this.MenuReposForERIP.Size = new System.Drawing.Size(161, 26);
+            this.MenuReposForERIP.Size = new System.Drawing.Size(181, 26);
             this.MenuReposForERIP.Text = "Отчёт .202";
             this.MenuReposForERIP.Click += new System.EventHandler(this.MenuReposForERIP_Click);
             // 
             // MenuReposForExcel
             // 
             this.MenuReposForExcel.Name = "MenuReposForExcel";
-            this.MenuReposForExcel.Size = new System.Drawing.Size(161, 26);
+            this.MenuReposForExcel.Size = new System.Drawing.Size(181, 26);
             this.MenuReposForExcel.Text = "Отчёт Excel";
             this.MenuReposForExcel.Click += new System.EventHandler(this.MenuReposForExcel_Click);
             // 
@@ -156,13 +144,6 @@
             this.MainJournal.Size = new System.Drawing.Size(75, 24);
             this.MainJournal.Text = "Журнал";
             this.MainJournal.Click += new System.EventHandler(this.MainJournal_Click);
-            // 
-            // DebtorToolStripMenuItem
-            // 
-            this.DebtorToolStripMenuItem.Name = "DebtorToolStripMenuItem";
-            this.DebtorToolStripMenuItem.Size = new System.Drawing.Size(93, 24);
-            this.DebtorToolStripMenuItem.Text = "Должники";
-            this.DebtorToolStripMenuItem.Click += new System.EventHandler(this.DebtorToolStripMenuItem_Click);
             // 
             // MenuSettings
             // 
@@ -207,7 +188,7 @@
             this.MainProgressBar.Location = new System.Drawing.Point(0, 813);
             this.MainProgressBar.Margin = new System.Windows.Forms.Padding(5);
             this.MainProgressBar.Name = "MainProgressBar";
-            this.MainProgressBar.Size = new System.Drawing.Size(1475, 34);
+            this.MainProgressBar.Size = new System.Drawing.Size(1718, 34);
             this.MainProgressBar.TabIndex = 1;
             // 
             // ColorPanel
@@ -220,7 +201,7 @@
             this.ColorPanel.Location = new System.Drawing.Point(0, 28);
             this.ColorPanel.Margin = new System.Windows.Forms.Padding(4);
             this.ColorPanel.Name = "ColorPanel";
-            this.ColorPanel.Size = new System.Drawing.Size(1475, 785);
+            this.ColorPanel.Size = new System.Drawing.Size(1718, 785);
             this.ColorPanel.TabIndex = 2;
             // 
             // ArrearGB
@@ -232,7 +213,7 @@
             this.ArrearGB.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.ArrearGB.Name = "ArrearGB";
             this.ArrearGB.Padding = new System.Windows.Forms.Padding(4, 2, 4, 2);
-            this.ArrearGB.Size = new System.Drawing.Size(1475, 785);
+            this.ArrearGB.Size = new System.Drawing.Size(1718, 785);
             this.ArrearGB.TabIndex = 3;
             this.ArrearGB.TabStop = false;
             this.ArrearGB.Text = "Отредактируйте задолженности";
@@ -244,7 +225,7 @@
             this.ArrearConfirmB.Location = new System.Drawing.Point(4, 742);
             this.ArrearConfirmB.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.ArrearConfirmB.Name = "ArrearConfirmB";
-            this.ArrearConfirmB.Size = new System.Drawing.Size(1467, 41);
+            this.ArrearConfirmB.Size = new System.Drawing.Size(1710, 41);
             this.ArrearConfirmB.TabIndex = 3;
             this.ArrearConfirmB.Text = "Сохранить";
             this.ArrearConfirmB.UseVisualStyleBackColor = true;
@@ -280,7 +261,7 @@
             this.ArrearEditDGV.RowHeadersVisible = false;
             this.ArrearEditDGV.RowTemplate.DefaultCellStyle.BackColor = System.Drawing.SystemColors.Control;
             this.ArrearEditDGV.RowTemplate.Height = 24;
-            this.ArrearEditDGV.Size = new System.Drawing.Size(1467, 766);
+            this.ArrearEditDGV.Size = new System.Drawing.Size(1710, 766);
             this.ArrearEditDGV.TabIndex = 2;
             this.ArrearEditDGV.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.ArrearEditDGV_CellValidating);
             // 
@@ -387,7 +368,7 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
-            this.dataGridView1.Size = new System.Drawing.Size(1475, 785);
+            this.dataGridView1.Size = new System.Drawing.Size(1718, 785);
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.Visible = false;
             this.dataGridView1.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dataGridView1_CellFormatting);
@@ -404,7 +385,7 @@
             this.LabelProgrBar.Location = new System.Drawing.Point(0, 811);
             this.LabelProgrBar.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.LabelProgrBar.Name = "LabelProgrBar";
-            this.LabelProgrBar.Size = new System.Drawing.Size(1479, 34);
+            this.LabelProgrBar.Size = new System.Drawing.Size(1722, 34);
             this.LabelProgrBar.TabIndex = 0;
             this.LabelProgrBar.Text = "Файлы загружены";
             this.LabelProgrBar.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -415,17 +396,17 @@
             this.AmountLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.AmountLabel.AutoSize = true;
             this.AmountLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.AmountLabel.Location = new System.Drawing.Point(1279, 7);
+            this.AmountLabel.Location = new System.Drawing.Point(1010, 7);
             this.AmountLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.AmountLabel.Name = "AmountLabel";
-            this.AmountLabel.Size = new System.Drawing.Size(183, 17);
+            this.AmountLabel.Size = new System.Drawing.Size(202, 17);
             this.AmountLabel.TabIndex = 3;
-            this.AmountLabel.Text = "Сумма на р/с : 100 BYN";
+            this.AmountLabel.Text = "Сумма на р/с : Загрузка...";
             // 
             // createExcelButton
             // 
             this.createExcelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.createExcelButton.Location = new System.Drawing.Point(1302, 813);
+            this.createExcelButton.Location = new System.Drawing.Point(1545, 813);
             this.createExcelButton.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.createExcelButton.Name = "createExcelButton";
             this.createExcelButton.Size = new System.Drawing.Size(169, 28);
@@ -439,7 +420,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1475, 847);
+            this.ClientSize = new System.Drawing.Size(1718, 847);
             this.Controls.Add(this.createExcelButton);
             this.Controls.Add(this.AmountLabel);
             this.Controls.Add(this.LabelProgrBar);
@@ -451,7 +432,7 @@
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MinimumSize = new System.Drawing.Size(1034, 573);
             this.Name = "MainForm";
-            this.Text = "E.M.S.";
+            this.Text = "E.M.S. 4.0";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Closing_MainForm);
             this.Load += new System.EventHandler(this.Load_MainForm);
             this.Menu.ResumeLayout(false);
@@ -485,7 +466,6 @@
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Label LoadingLabel;
         private System.Windows.Forms.ToolStripMenuItem ToolStripDownloadNewFile;
-        private System.Windows.Forms.ToolStripMenuItem CLearFileStatesMI;
         private System.Windows.Forms.Label AmountLabel;
         private System.Windows.Forms.DataGridView ArrearEditDGV;
         private System.Windows.Forms.GroupBox ArrearGB;
@@ -502,7 +482,6 @@
         private System.Windows.Forms.ToolStripMenuItem добавитьДанныеToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem добавитьПлательщикаToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem добавитьУчастокToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem DebtorToolStripMenuItem;
     }
 }
 

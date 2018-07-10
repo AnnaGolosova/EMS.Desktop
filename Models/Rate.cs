@@ -16,7 +16,7 @@ namespace EMS.Desktop.Models
     {
         public Rate()
         {
-            this.MeterData = new HashSet<MeterData>();
+            this.Meter = new HashSet<Meter>();
         }
     
         public int Id { get; set; }
@@ -27,6 +27,6 @@ namespace EMS.Desktop.Models
         public Nullable<int> Tariff { get; set; }
     
         public virtual Service Service { get; set; }
-        public virtual ICollection<MeterData> MeterData { get; set; }
+        public virtual ICollection<Meter> Meter { get; set; }
     }
 }

@@ -157,7 +157,13 @@ namespace EMS.Desktop.Forms
 
         private void HomesteadNumberCB_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ChangeOwnerNameTB.Text = homesteadList.Where(l => l.Number == int.Parse(HomesteadNumberCB.Text)).First().OwnerName;
+            Homestead homestead = homesteadList.Where(l => l.Number == int.Parse(HomesteadNumberCB.Text)).First();
+            ChangeOwnerNameTB.Text = homestead.OwnerName;
+
+            Service1CB.Enabled = !homestead.Payment.Any(p => p.IdService == 1);
+            Service2CB.Enabled = !homestead.Payment.Any(p => p.IdService == 2);
+            Service3CB.Enabled = !homestead.Payment.Any(p => p.IdService == 3);
+            Service4CB.Enabled = !homestead.Payment.Any(p => p.IdService == 4);
         }
     }
 }

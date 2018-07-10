@@ -4,6 +4,7 @@ using System.Linq;
 using EMS.Desktop.Models;
 using EMS.Desktop.Exceptions;
 using EMS.Desktop.Helpers;
+using System.Windows.Forms;
 
 namespace EMS.Desktop.Services
 {
@@ -12,14 +13,14 @@ namespace EMS.Desktop.Services
         public static EMSEntities db;
 
         #region Getters
-        public int GetNextFileId()
+        public static int GetNextFileId()
         {
             if (db.File.Count() == 0)
                 return 1;
             return db.File.Max(f => f.Id) + 1;
         }
 
-        public List<Report210.ReportData> FilterParams(List<Report210.ReportData> list, FilterParams _params, bool useDate = true)
+        public static List<Report210.ReportData> FilterParams(List<Report210.ReportData> list, FilterParams _params, bool useDate = true)
         {
             if (_params.HomesteadId != null && _params.HomesteadId.Count != 0)
             {
@@ -40,7 +41,7 @@ namespace EMS.Desktop.Services
             return list;
         }
 
-        public List<Payment> FilterParams(List<Payment> list, FilterParams _params)
+        public static List<Payment> FilterParams(List<Payment> list, FilterParams _params)
         {
 
             if (_params.HomesteadId != null && _params.HomesteadId.Count != 0)
@@ -55,8 +56,8 @@ namespace EMS.Desktop.Services
             {
                 if (_params.FromDate.Date <= _params.ToDate.Date)
                 {
-                    list = list.Where(r => r.Date.Value.Date >= _params.FromDate.Date &&
-                                           r.Date.Value.Date <= _params.ToDate.Date).ToList();
+                    list = list.Where(r => r.Date.Date >= _params.FromDate.Date &&
+                                           r.Date.Date <= _params.ToDate.Date).ToList();
                 }
             }
             return list;
@@ -99,7 +100,6 @@ namespace EMS.Desktop.Services
                     {
                         IdPayment = newPayment.Id,
                         Date = DateTime.Now,
-                        IdRate = rateId,
                         IdMeter = meterId,
                         NewValue = meterDataValue,
                         OldValue = 0,
@@ -110,7 +110,7 @@ namespace EMS.Desktop.Services
             }
         }
 
-        public double GetAmount()
+        public static double GetAmount()
         {
             try
             {
@@ -132,11 +132,27 @@ namespace EMS.Desktop.Services
             return (int)rateId - firstRateId + 1;
         }
 
+        static DBRepository()
+        {
+            try
+            {
+                if (db == null)
+                {
+                    return;
+                }
+                db.Dispose();
+            }
+            finally
+            {
+                db = new EMSEntities();
+            }
+        }
+
         public DBRepository()
         {
             try
             {
-                if(db == null)
+                if (db == null)
                 {
                     return;
                 }
@@ -158,7 +174,7 @@ namespace EMS.Desktop.Services
             return db.Copay.ToList();
         }
 
-        public File FindOrAddFile(int? id, string filePath)
+        public static File FindOrAddFile(int? id, string filePath)
         {
             try
             {
@@ -178,7 +194,7 @@ namespace EMS.Desktop.Services
 
         }
 
-        public List<File> GetFiles()
+        public static List<File> GetFiles()
         {
             try
             {
@@ -190,7 +206,7 @@ namespace EMS.Desktop.Services
             }
         }
 
-        public List<File> GetFiles(DateTime date)
+        public static List<File> GetFiles(DateTime date)
         {
             try
             {
@@ -209,14 +225,14 @@ namespace EMS.Desktop.Services
             return db.Database.Exists();
         }
 
-        internal void ChangeMeterData(int id, int rateId)
+        internal static void ChangeMeterRate(int idMeter, int rateId)
         {
-            MeterData md = db.MeterData.Where(m => m.Id == id).First();
-            md.IdRate = rateId;
+            Meter m = db.Meter.Where(mm => mm.Id == idMeter).First();
+            m.IdRate = rateId;
             db.SaveChanges();
         }
 
-        internal void SetArrear(int id, double arrear)
+        internal static void SetArrear(int id, double arrear)
         {
             Payment pay = db.Payment.Where(p => p.Id == id).First();
             pay.Arrear = arrear;
@@ -244,7 +260,7 @@ namespace EMS.Desktop.Services
             }
         }
 
-        public Homestead GetHomestead(string ownerName)
+        public static Homestead GetHomestead(string ownerName)
         {
             try
             {
@@ -262,7 +278,7 @@ namespace EMS.Desktop.Services
             }
         }
 
-        public List<Rate> GetLastRates()
+        public static List<Rate> GetLastRates()
         {
             try
             {
@@ -279,12 +295,12 @@ namespace EMS.Desktop.Services
             }
         }
 
-        public List<Meter> GetMeter()
+        public static List<Meter> GetMeter()
         {
             return db.Meter.ToList();
         }
 
-        public Meter GetMeter(int id)
+        public static Meter GetMeter(int id)
         {
             try
             {
@@ -319,7 +335,7 @@ namespace EMS.Desktop.Services
         //        .ToList();
         //}
 
-        public List<MeterData> GetMeterData(DateTime date)
+        public static List<MeterData> GetMeterData(DateTime date)
         {
             return db.MeterData
                 .Where(md => md.Date.Value != null &&
@@ -327,7 +343,7 @@ namespace EMS.Desktop.Services
                 .ToList();
         }
 
-        public void ChangeRate(List<Rate> rates)
+        public static void ChangeRate(List<Rate> rates)
         {
             try
             {
@@ -361,13 +377,13 @@ namespace EMS.Desktop.Services
             db.SaveChanges();
         }
 
-        public List<MeterData> GetMeterData(int meterId)
+        public static List<MeterData> GetMeterData(int meterId)
         {
             return db.MeterData.Where(md => md.IdMeter == meterId)
                 .ToList();
         }
 
-        public int? GetMeterNumber(int id)
+        public static int? GetMeterNumber(int id)
         {
             try
             {
@@ -387,7 +403,7 @@ namespace EMS.Desktop.Services
             }
         }
 
-        public List<Payment> GetPayment()
+        public static List<Payment> GetPayment()
         {
             try
             {
@@ -399,31 +415,31 @@ namespace EMS.Desktop.Services
             }
         }
 
-        public List<Payment> GetPayment(DateTime date)
+        public static List<Payment> GetPayment(DateTime date)
         {
             return db.Payment
-                .Where(p => p.Date.Value != null &&
-                    p.Date.Value.ToLongDateString().CompareTo(date.ToLongDateString()) == 0)
+                .Where(p => p.Date != null &&
+                    p.Date.ToLongDateString().CompareTo(date.ToLongDateString()) == 0)
                 .ToList();
         }
 
-        public List<Payment> GetPayment(DateTime date, int serviceId)
+        public static List<Payment> GetPayment(DateTime date, int serviceId)
         {
             return db.Payment
-                .Where(p => p.Date.Value != null &&
-                    p.Date.Value.ToShortDateString().CompareTo(date.ToShortDateString()) == 0 &&
+                .Where(p => p.Date != null &&
+                    p.Date.ToShortDateString().CompareTo(date.ToShortDateString()) == 0 &&
                     p.IdService == serviceId)
                 .ToList();
         }
 
-        public List<Payment> GetPaymentByFile(int fileId)
+        public static List<Payment> GetPaymentByFile(int fileId)
         {
             return db.Payment
                 .Where(p => p.IdFile == fileId)
                 .ToList();
         }
 
-        public List<Rate> GetRate()
+        public static List<Rate> GetRate()
         {
             return db.Rate.AsNoTracking().ToList();
         }
@@ -458,7 +474,7 @@ namespace EMS.Desktop.Services
             }
         }
 
-        public int? GetLastRateNumber()
+        public static int? GetLastRateNumber()
         {
             try
             {
@@ -470,7 +486,7 @@ namespace EMS.Desktop.Services
             }
         }
 
-        public int? GetPreviousRateNumber()
+        public static int? GetPreviousRateNumber()
         {
             if (GetLastRateNumber() == null)
                 return null;
@@ -480,7 +496,7 @@ namespace EMS.Desktop.Services
             return db.Rate.ToList().Except(lastRates).Max(r => r.Number);
         }
 
-        public List<Service> GetService()
+        public static List<Service> GetService()
         {
             return db.Service.ToList();
         }
@@ -503,7 +519,7 @@ namespace EMS.Desktop.Services
             }
         }
 
-        public Service GetService(string name)
+        public static Service GetService(string name)
         {
             try
             {
@@ -524,7 +540,7 @@ namespace EMS.Desktop.Services
         public static List<Payment> GetLastPayment()
         {
             int maxPackageNumber = db.Payment.Max(p => p.PackageNumber);
-            return db.Payment.Where(p => p.PackageNumber == maxPackageNumber).OrderBy(p => p.Homestead.Number).OrderBy(p => p.Service.Id).ToList();
+            return db.Payment.Where(p => p.PackageNumber == maxPackageNumber).OrderBy(p => p.Homestead.Number).OrderBy(p => p.IdService).ToList();
         }
 
         public static void ChangeArrear(int paymentId, double Arrear)
@@ -534,12 +550,12 @@ namespace EMS.Desktop.Services
             db.SaveChanges();
         }
 
-        public double PreviousArrear(Payment pay)
+        public static double PreviousArrear(Payment pay)
         {
             try
             {
-                List<Payment> pp = db.Payment.Where(p => p.IdHomestead == pay.IdHomestead && p.Date.Value < pay.Date.Value).OrderByDescending(p => p.Date.Value).ToList();
-                return db.Payment.Where(p => p.IdHomestead == pay.IdHomestead && p.Date.Value < pay.Date.Value).OrderByDescending(p => p.Date.Value).First().Arrear;
+                List<Payment> pp = db.Payment.Where(p => p.IdHomestead == pay.IdHomestead && p.Date < pay.Date).OrderByDescending(p => p.Date).ToList();
+                return db.Payment.Where(p => p.IdHomestead == pay.IdHomestead && p.Date < pay.Date).OrderByDescending(p => p.Date).First().Arrear;
             }
             catch (InvalidOperationException)
             {
@@ -554,7 +570,7 @@ namespace EMS.Desktop.Services
             return db.Database.SqlQuery<int>("DECLARE	@return_value Int  = [dbo].[GetNextPackageNumber]() SELECT	@return_value").First();
         }
 
-        public void LoadReport210(Report210 report)
+        public static void LoadReport210(Report210 report)
         {
             try
             {
@@ -586,7 +602,6 @@ namespace EMS.Desktop.Services
                         {
                             MeterData meterData = new MeterData();
                             Meter meter;
-                            
                             try
                             {
                                 meter = GetMeter().Where(m => m.IdHomestead == homestead.Id && m.MeterNumber == info.number).First();
@@ -600,32 +615,36 @@ namespace EMS.Desktop.Services
                                 meter = new Meter();
                                 meter.IdHomestead = (int)homestead.Id;
                                 meter.MeterNumber = info.number;
+                                meter.IdRate = GetRate(1).Id;
                                 db.Meter.Add(meter);
                                 db.SaveChanges();
                             }
+                            if(homestead.Number == 45)
+                            {
 
+                            }
                             meterData.IdMeter = meter.Id;
                             meterData.NewValue = info.newValue;
-                            meterData.IdRate = GetRate(1).Id;
                             meterData.OldValue = info.oldValue;
                             meterData.Date = data.Date;
                             meterData.IdPayment = currentPayment.Id;
                             db.MeterData.Add(meterData);
                             db.SaveChanges();
-                            
-                            currentPayment.Arrear = Math.Round(PreviousArrear(currentPayment) - (currentPayment.Introduced -
+                            currentPayment.Arrear = Math.Round((currentPayment.Introduced -
                                 Math.Round(data.meterInfo.Sum(m => m.newValue - m.oldValue) * ConfigAppManager.GetTariff(), 2) -
-                                Math.Round(data.meterInfo.Sum(m => m.newValue - m.oldValue) * ConfigAppManager.GetTariff() * ( DBRepository.GetRate(null, meterData.IdRate).Value), 2)), 2);
+                                Math.Round(data.meterInfo.Sum(m => m.newValue - m.oldValue) * ConfigAppManager.GetTariff() * ( DBRepository.GetRate(null, meter.IdRate).Value), 2)) - PreviousArrear(currentPayment), 2);
                         }
                     }
                 }
             }
             catch(InvalidCastException ex)
             {
+                //MessageBox.Show("In DbRepository, LoadReport210 1");
                 throw new DataBaseException("Упс, что-то пошло не так! Проверьте кодключение к базе данных.", ex);
             }
             catch (System.Data.Entity.Core.EntityException e)
             {
+                //MessageBox.Show("In DbRepository, LoadReport210 2");
                 throw new DataBaseException(e.Message, e);
             }
         }
@@ -639,8 +658,8 @@ namespace EMS.Desktop.Services
                 {
                     list.Add(db.Payment.Where( p => p.IdService == serviceId)
                         .Where(p => p.IdHomestead == h.Id)
-                        .Where(p => p.Date.Value <= date)
-                        .OrderByDescending(p => p.Date.Value).First());
+                        .Where(p => p.Date <= date)
+                        .OrderByDescending(p => p.Date).First());
                 }
                 catch (InvalidOperationException)
                 {
@@ -673,8 +692,8 @@ namespace EMS.Desktop.Services
                             newValue = md.NewValue,
                             oldValue = md.OldValue,
                             number = md.Meter.MeterNumber,
-                            rateId = md.IdRate,
-                            id = md.Id
+                            idMeter = md.IdMeter,
+                            RateId = md.Meter.IdRate
                         });
                     }
                 }
@@ -683,19 +702,20 @@ namespace EMS.Desktop.Services
             return list;
         }
 
-        public List<Payment> GetPaymentByMonth(int month)
+        public static List<Payment> GetPaymentByMonth(int month, int year)
         {
-            return db.Payment.Where(p => p.Date.Value.Month == month).ToList();
+            return db.Payment.Where(p => p.Date.Month == month && p.Date.Year == year).ToList();
         }
 
-        public File CreateFile(string path)
+        public static File CreateFile(string path)
         {
             File file = new File() { Date = DateTime.Now, Path = path, Id = GetNextFileId() };
             db.File.Add(file);
+            db.SaveChanges();
             return file;
         }
 
-        public void SetFileAsDownloaded(File file)
+        public static void SetFileAsDownloaded(File file)
         {
             File f = db.File.Where(fl => fl.Id == file.Id).First();
             string fileName = file.Path.Split('\\').Last();

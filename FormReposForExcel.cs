@@ -51,7 +51,7 @@ namespace EMS.Desktop
             if (Service2RB.Checked) serviceId = 2;
             if (Service3RB.Checked) serviceId = 3;
             if (Service4RB.Checked) serviceId = 4;
-            ExcelWriter.WriteMonthReport(MonthTimePicker.Value.Month, FileNameTB.Text, serviceId);
+            ExcelWriter.WriteMonthReport(MonthTimePicker.Value.Month, MonthTimePicker.Value.Year, FileNameTB.Text, serviceId);
 
             Hide();
         }
