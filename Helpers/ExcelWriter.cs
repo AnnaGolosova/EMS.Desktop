@@ -408,13 +408,15 @@ namespace EMS.Desktop.Helpers
                                         ws.Cells[i - j, 12].Value = 0;
                                 }
                             }
+                            //ws.Cells[i, 14].Formula = $"D{i}-G{i}";
                         }
 
                         ws.Cells[7, 1].Value = 1;
                         ws.Cells[8, 1, i, 1].Formula = "A7 + 1";
                         ws.Cells[7, 5, i, 5].Formula = "D7 - L7";
                         ws.Cells[7, 7, i, 7].Formula = "ROUND(F7 * $L$5, 2)";
-                        ws.Cells[7, 10, i, 10].Formula = "ROUND(F7 * I7 * $L$5, 2)";
+                        //ws.Cells[7, 10, i, 10].Formula = "ROUND(F7 * I7 * $L$5, 2)";
+                        ws.Cells[7, 10, i, 10].Formula = "D7 - G7";
                         ws.Cells[7, 14, i, 14].Formula = "G7 + J7 + K7";
                         ws.Cells[i + 1, 4, i + 1, 5].Formula = "SUM(D7:D" + i + ')';
                         ws.Cells[i + 1, 7].Formula = "SUM(G7:G" + i + ')';

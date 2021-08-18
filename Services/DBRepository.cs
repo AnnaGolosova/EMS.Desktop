@@ -160,14 +160,14 @@ namespace EMS.Desktop.Services
             {
                 try
                 {
-                    return db.File.Where(f => f.Id == id).First();
+                    return db.File.IncludeRelaions().Where(f => f.Id == id).First();
                 }
                 catch (InvalidOperationException)
                 {
                     File file = new File() { Date = DateTime.Now, Path = filePath };
                     db.File.Add(file);
                     db.SaveChanges();
-                    return file;
+                    return db.File.IncludeRelaions().FirstOrDefault(f => f.Id == file.Id);
                 }
                 catch (System.Data.Entity.Core.EntityException e)
                 {
@@ -182,8 +182,7 @@ namespace EMS.Desktop.Services
             {
                 using (EMSEntities db = new EMSEntities())
                 {
-                    return db.File
-                        .Include("Payment")
+                    return db.File.IncludeRelaions()
                         .ToList();
                 }
             }
@@ -199,7 +198,7 @@ namespace EMS.Desktop.Services
             {
                 using (EMSEntities db = new EMSEntities())
                 {
-                    return db.File.Where(f => f.Date.Value != null &&
+                    return db.File.IncludeRelaions().Where(f => f.Date.Value != null &&
                                       f.Date.Value.ToLongDateString().CompareTo(date.ToShortDateString()) == 0)
                                       .ToList();
                 }
@@ -242,7 +241,7 @@ namespace EMS.Desktop.Services
         {
             using (EMSEntities db = new EMSEntities())
             {
-                return db.Homestead.ToList();
+                return db.Homestead.IncludeRelaions().ToList();
             }
         }
 
@@ -252,7 +251,7 @@ namespace EMS.Desktop.Services
             {
                 using (EMSEntities db = new EMSEntities())
                 {
-                    return db.Homestead.Where(h => h.Number == HomesteadNumber).FirstOrDefault();
+                    return db.Homestead.IncludeRelaions().Where(h => h.Number == HomesteadNumber).FirstOrDefault();
                 }
             }
             catch (System.Data.Entity.Core.EntityException e)
@@ -267,7 +266,7 @@ namespace EMS.Desktop.Services
             {
                 using (EMSEntities db = new EMSEntities())
                 {
-                    return db.Homestead
+                    return db.Homestead.IncludeRelaions()
                     .Where(h => h.OwnerName.CompareTo(ownerName) == 0)
                     .First();
                 }
@@ -289,16 +288,20 @@ namespace EMS.Desktop.Services
                 using (EMSEntities db = new EMSEntities())
                 {
                     int? lastNumber = GetLastRateNumber();
-                    return db.Rate.Where(r => r.Number == lastNumber).OrderBy(r => r.Id).ToList();
+                    return db.Rate
+                        .IncludeRelaions()
+                        .Where(r => r.Number == lastNumber)
+                        .OrderBy(r => r.Id)
+                        .ToList();
                 }
             }
             catch(System.Data.Entity.Core.EntityException e)
             {
-                throw new DataBaseException(e.Message);
+                throw new DataBaseException(e.Message, e);
             }
             catch(DataBaseException e)
             {
-                throw new DataBaseException(e.Message);
+                throw new DataBaseException(e.Message, e);
             }
         }
 
@@ -306,7 +309,7 @@ namespace EMS.Desktop.Services
         {
             using (EMSEntities db = new EMSEntities())
             {
-                return db.Meter.ToList();
+                return db.Meter.IncludeRelaions().ToList();
             }
         }
 
@@ -317,8 +320,9 @@ namespace EMS.Desktop.Services
                 using (EMSEntities db = new EMSEntities())
                 {
                     return db.Meter
-                    .Where(m => m.Id == id)
-                    .First();
+                        .IncludeRelaions()
+                        .Where(m => m.Id == id)
+                        .First();
                 }
             }
             catch (InvalidOperationException)
@@ -335,7 +339,7 @@ namespace EMS.Desktop.Services
         {
             using (EMSEntities db = new EMSEntities())
             {
-                return db.Payment.Where(p => p.Id == Id).First();
+                return db.Payment.IncludeRelaions().Where(p => p.Id == Id).First();
             }
         }
 
@@ -343,7 +347,7 @@ namespace EMS.Desktop.Services
         {
             using (EMSEntities db = new EMSEntities())
             {
-                return db.MeterData.ToList();
+                return db.MeterData.IncludeRelaions().ToList();
             }
         }
 
@@ -358,7 +362,7 @@ namespace EMS.Desktop.Services
         {
             using (EMSEntities db = new EMSEntities())
             {
-                return db.MeterData
+                return db.MeterData.IncludeRelaions()
                 .Where(md => md.Date.Value != null &&
                        md.Date.Value.ToLongDateString().CompareTo(date.ToLongDateString()) == 0)
                 .ToList();
@@ -406,7 +410,7 @@ namespace EMS.Desktop.Services
         {
             using (EMSEntities db = new EMSEntities())
             {
-                return db.MeterData.Where(md => md.IdMeter == meterId)
+                return db.MeterData.IncludeRelaions().Where(md => md.IdMeter == meterId)
                 .ToList();
             }
         }
@@ -439,7 +443,7 @@ namespace EMS.Desktop.Services
             {
                 using (EMSEntities db = new EMSEntities())
                 {
-                    return db.Payment.ToList();
+                    return db.Payment.IncludeRelaions().ToList();
                 }
             }
             catch(System.Data.Entity.Core.EntityException e)
@@ -452,7 +456,7 @@ namespace EMS.Desktop.Services
         {
             using (EMSEntities db = new EMSEntities())
             {
-                return db.Payment
+                return db.Payment.IncludeRelaions()
                 .Where(p => p.Date != null &&
                     p.Date.ToLongDateString().CompareTo(date.ToLongDateString()) == 0)
                 .ToList();
@@ -463,7 +467,7 @@ namespace EMS.Desktop.Services
         {
             using (EMSEntities db = new EMSEntities())
             {
-                return db.Payment
+                return db.Payment.IncludeRelaions()
                 .Where(p => p.Date != null &&
                     p.Date.ToShortDateString().CompareTo(date.ToShortDateString()) == 0 &&
                     p.IdService == serviceId)
@@ -475,7 +479,7 @@ namespace EMS.Desktop.Services
         {
             using (EMSEntities db = new EMSEntities())
             {
-                return db.Payment
+                return db.Payment.IncludeRelaions()
                 .Where(p => p.IdFile == fileId)
                 .ToList();
             }
@@ -485,7 +489,7 @@ namespace EMS.Desktop.Services
         {
             using (EMSEntities db = new EMSEntities())
             {
-                return db.Rate.AsNoTracking().ToList();
+                return db.Rate.IncludeRelaions().AsNoTracking().ToList();
             }
         }
 
@@ -493,7 +497,7 @@ namespace EMS.Desktop.Services
         {
             using (EMSEntities db = new EMSEntities())
             {
-                return db.Rate.OrderByDescending(r => r.Id).Take(3)
+                return db.Rate.IncludeRelaions().OrderByDescending(r => r.Id).Take(3)
                 .OrderBy(r => r.Id).ToList()[position - 1];
             }
         }
@@ -505,13 +509,17 @@ namespace EMS.Desktop.Services
                 using (EMSEntities db = new EMSEntities())
                 {
                     if (number != null)
-                        return db.Rate
+                    {
+                        return db.Rate.IncludeRelaions()
                             .Where(r => r.Number == (int)number)
                             .First();
+                    }
                     else
-                        return db.Rate
+                    {
+                        return db.Rate.IncludeRelaions()
                             .Where(r => r.Id == id)
                             .First();
+                    }
                 }
             }
             catch (InvalidOperationException)
@@ -556,7 +564,7 @@ namespace EMS.Desktop.Services
         {
             using (EMSEntities db = new EMSEntities())
             {
-                return db.Service.ToList();
+                return db.Service.IncludeRelaions().ToList();
             }
         }
 
@@ -566,7 +574,7 @@ namespace EMS.Desktop.Services
             {
                 using (EMSEntities db = new EMSEntities())
                 {
-                    return db.Service
+                    return db.Service.IncludeRelaions()
                     .Where(s => s.Id == serviceId)
                     .First();
                 }
@@ -587,7 +595,7 @@ namespace EMS.Desktop.Services
             {
                 using (EMSEntities db = new EMSEntities())
                 {
-                    return db.Service
+                    return db.Service.IncludeRelaions()
                     .Where(s => s.Name.CompareTo(name) == 0)
                     .First();
                 }
@@ -607,7 +615,12 @@ namespace EMS.Desktop.Services
             using (EMSEntities db = new EMSEntities())
             {
                 int maxPackageNumber = db.Payment.Max(p => p.PackageNumber);
-                return db.Payment.Where(p => p.PackageNumber == maxPackageNumber).OrderBy(p => p.Homestead.Number).OrderBy(p => p.IdService).ToList();
+
+                return db.Payment
+                    .IncludeRelaions()
+                    .Where(p => p.PackageNumber == maxPackageNumber)
+                    .OrderBy(p => p.Homestead.Number)
+                    .OrderBy(p => p.IdService).ToList();
             }
         }
 
@@ -735,19 +748,16 @@ namespace EMS.Desktop.Services
             using (EMSEntities db = new EMSEntities())
             {
                 List<Payment> list = new List<Payment>();
-                foreach (Homestead h in db.Homestead)
-                {
-                    try
-                    {
-                        list.Add(db.Payment.Where(p => p.IdService == serviceId)
-                            .Where(p => p.IdHomestead == h.Id)
-                            .Where(p => p.Date <= date)
-                            .OrderByDescending(p => p.Date).First());
-                    }
-                    catch (InvalidOperationException)
-                    {
-                    }
-                }
+
+                IEnumerable<int> homesteadIds = db.Homestead.Select(h => h.Id).ToList();
+
+                list.AddRange(db.Payment
+                    .IncludeRelaions()
+                    .Where(p => p.IdService == serviceId)
+                    .Where(p => homesteadIds.Contains(p.IdHomestead))
+                    .Where(p => p.Date <= date)
+                    .OrderByDescending(p => p.Date));
+                 
                 return list;
             }
         }
@@ -790,7 +800,10 @@ namespace EMS.Desktop.Services
         {
             using (EMSEntities db = new EMSEntities())
             {
-                return db.Payment.Where(p => p.Date.Month == month && p.Date.Year == year).ToList();
+                return db.Payment
+                    .IncludeRelaions()
+                    .Where(p => p.Date.Month == month && p.Date.Year == year)
+                    .ToList();
             }
         }
 
@@ -801,7 +814,9 @@ namespace EMS.Desktop.Services
                 File file = new File() { Date = DateTime.Now, Path = path, Id = GetNextFileId() };
                 db.File.Add(file);
                 db.SaveChanges();
-                return file;
+
+                return db.File.IncludeRelaions()
+                    .FirstOrDefault(f => f.Id == file.Id);
             }
         }
 
