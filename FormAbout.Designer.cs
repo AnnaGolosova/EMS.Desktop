@@ -1,4 +1,6 @@
-﻿namespace EMS.Desktop
+﻿using System.Reflection;
+
+namespace EMS.Desktop
 {
     partial class FormAboutProgram
     {
@@ -155,7 +157,7 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(60, 13);
             this.label2.TabIndex = 4;
-            this.label2.Text = "Version 6.0";
+            this.label2.Text = $"Version {Assembly.GetExecutingAssembly().GetName().Version.Major}.{Assembly.GetExecutingAssembly().GetName().Version.Minor}.{Assembly.GetExecutingAssembly().GetName().Version.Build}";
             // 
             // FormAboutProgram
             // 

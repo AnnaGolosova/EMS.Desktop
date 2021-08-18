@@ -1,6 +1,4 @@
-﻿USE [EMS]
-GO
-DROP TABLE [dbo].[Copay];
+﻿DROP TABLE [dbo].[Copay]
 GO
 Drop Table [dbo].[MeterData]
 GO

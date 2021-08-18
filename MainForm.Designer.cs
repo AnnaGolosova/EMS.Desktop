@@ -1,4 +1,6 @@
-﻿namespace EMS.Desktop
+﻿using System.Reflection;
+
+namespace EMS.Desktop
 {
     partial class MainForm
     {
@@ -428,7 +430,7 @@
             this.MainMenuStrip = this.Menu;
             this.MinimumSize = new System.Drawing.Size(780, 473);
             this.Name = "MainForm";
-            this.Text = "E.M.S. 6.0";
+            this.Text = $"E.M.S. {Assembly.GetExecutingAssembly().GetName().Version.Major}.{Assembly.GetExecutingAssembly().GetName().Version.Minor}.{Assembly.GetExecutingAssembly().GetName().Version.Build}";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Closing_MainForm);
             this.Load += new System.EventHandler(this.Load_MainForm);
             this.Menu.ResumeLayout(false);

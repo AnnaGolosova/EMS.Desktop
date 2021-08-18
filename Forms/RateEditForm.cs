@@ -4,12 +4,9 @@ using EMS.Desktop.Models;
 using EMS.Desktop.Services;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace EMS.Desktop.Forms
@@ -46,9 +43,9 @@ namespace EMS.Desktop.Forms
                 RateDGV.Focus();
                 RateDGV.CurrentCell = RateDGV.Rows[0].Cells[3];
             }
-            catch (DataBaseException)
+            catch (DataBaseException ex)
             {
-                MessageBox.Show("Проблемы с базой данных. Проверьте настройки строки подключения, правильно ли указано имя сервера",
+                MessageBox.Show("Проблемы с базой данных. Проверьте настройки строки подключения, правильно ли указано имя сервера. " + ex.Message + ex.InnerException?.Message ?? "",
                     "Проблемы с базой данных", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
@@ -99,17 +96,16 @@ namespace EMS.Desktop.Forms
                         i++;
                     }
                 }
-                DBRepository.db.SaveChanges();
             }
-            catch (DataBaseException)
+            catch (DataBaseException ex)
             {
-                MessageBox.Show("Проблемы с базой данных. Проверьте настройки строки подключения, правильно ли указано имя сервера",
+                MessageBox.Show("Проблемы с базой данных. Проверьте настройки строки подключения, правильно ли указано имя сервера. " + ex.Message + ex.InnerException?.Message ?? "",
                     "Проблемы с базой данных", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            catch (System.Data.Entity.Infrastructure.DbUpdateException)
+            catch (System.Data.Entity.Infrastructure.DbUpdateException ex)
             {
-                MessageBox.Show("Один или несколько тарифов указаны неверно. Неверные тарифы были отмечены красным цветом.",
+                MessageBox.Show("Один или несколько тарифов указаны неверно. Неверные тарифы были отмечены красным цветом. " + ex.Message + ex.InnerException?.Message ?? "",
                     "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             }

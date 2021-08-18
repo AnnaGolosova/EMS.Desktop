@@ -19,6 +19,7 @@ namespace EMS.Desktop.Models
         public EMSEntities()
             : base("name=EMSEntities")
         {
+            this.Configuration.LazyLoadingEnabled = false;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
