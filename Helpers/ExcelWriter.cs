@@ -273,7 +273,7 @@ namespace EMS.Desktop.Helpers
 
         public static void WriteMonthReport(int month, int year, string fileName, int serviceId)
         {
-            List<Payment> datas = DBRepository.GetPaymentByMonth(month, year).Where(i => i.Introduced != 0).OrderBy(i => i.Homestead.Number).ToList();
+            List<Payment> datas = DBRepository.GetPaymentByMonth(month, year, serviceId).Where(i => i.Introduced != 0).OrderBy(i => i.Homestead.Number).ToList();
             using (ExcelPackage excel = new ExcelPackage())
             {
                 List<string> Months = new List<string>();

@@ -796,13 +796,13 @@ namespace EMS.Desktop.Services
             return list;
         }
 
-        public static List<Payment> GetPaymentByMonth(int month, int year)
+        public static List<Payment> GetPaymentByMonth(int month, int year, int serviceId)
         {
             using (EMSEntities db = new EMSEntities())
             {
                 return db.Payment
                     .IncludeRelaions()
-                    .Where(p => p.Date.Month == month && p.Date.Year == year)
+                    .Where(p => p.Date.Month == month && p.Date.Year == year && p.IdService == serviceId)
                     .ToList();
             }
         }
