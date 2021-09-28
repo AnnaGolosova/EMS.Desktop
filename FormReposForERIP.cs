@@ -31,7 +31,7 @@ namespace EMS.Desktop
                 RateDGV.Rows.Clear();
                 foreach (Rate rate in DBRepository.GetLastRates().OrderBy(r => r.Id))
                 {
-                    RateDGV.Rows.Add(i++, rate.Service.Name, rate.Value, ConfigAppManager.GetTariff(), rate.Value * ConfigAppManager.GetTariff());
+                    RateDGV.Rows.Add(i++, rate.Service.Name, rate.Value, ConfigAppManager.GetTariff(), (1 + rate.Value) * ConfigAppManager.GetTariff());
                 }
                 FileNameTB.Focus();
             }
